@@ -1,0 +1,37 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+
+package DSM;
+
+option go_package = "github.com/EricChiquitoG/Remanet_DSM/DSM_protos";
+
+service SubmissionService {
+    rpc CheckAvailabilty(Process) returns (ProcessResponse) {}
+    rpc CheckInterest(Purchase) returns (PurchaseResponse) {}
+}
+
+message Process {
+    string step_name = 1;            // Name of the step
+    string product_type = 2;
+    string economic_operator = 3;   // Name or identifier of the economic operator
+    google.protobuf.Timestamp submitted_at = 4;        // Submission timestamp (ISO 8601 format recommended)
+    repeated string requirements = 5; // List of requirements as strings
+}
+
+message ProcessResponse {
+    string status = 1;        // Status of the submission (e.g., "success" or "failure")
+    string message = 2;       // Additional details or error message
+}
+
+message Purchase {
+    string product_type = 1;
+    string economic_operator = 2;
+    google.protobuf.Timestamp submitted_at = 3;
+    repeated string requirements = 4;
+}
+
+message PurchaseResponse {
+    string status = 1;
+    string message = 2;
+
+}

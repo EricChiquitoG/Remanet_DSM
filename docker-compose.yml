@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  server1:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    ports:
+      - "50051:50051"
+    environment:
+      - GRPC_PORT=50051
+      - Company=ICA
+
+  server2:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    ports:
+      - "50052:50052"
+    environment:
+      - GRPC_PORT=50052
+      - Company=Coop
+
+
+  server3:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    ports:
+      - "50053:50053"
+    environment:
+      - GRPC_PORT=50053
+      - Company=Willys
+
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    depends_on:
+      - server1
+      - server2
+      - server3

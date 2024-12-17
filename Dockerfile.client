@@ -1,0 +1,27 @@
+# Dockerfile.client
+# Use the official Golang image as a builder
+FROM golang:alpine as builder
+
+WORKDIR /app
+
+# Copy Go module files and download dependencies
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy the source code
+COPY . .
+
+# Build the client binary
+RUN go build -o client client/client.go
+
+# Use a minimal image to run the client
+FROM alpine:3.14
+
+WORKDIR /app
+COPY --from=builder /app/client .
+COPY DSM_protos DSM_protos
+COPY src src
+COPY DSM.proto DSM.proto
+
+# Command to run the client
+CMD ["./client"]
