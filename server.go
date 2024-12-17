@@ -24,7 +24,7 @@ func (s *server) CheckAvailabilty(context context.Context, pr *pb.Process) (*pb.
 	if err != nil {
 		return &pb.ProcessResponse{
 			Status:  "Unable to set up data",
-			Message: "Unable to set up data",
+			Message: "Unable to set up data in server",
 		}, nil
 	}
 	for _, process := range src.AvailabilityExample.P {
