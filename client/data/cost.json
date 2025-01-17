@@ -1,0 +1,40 @@
+{
+    "Processes": [
+
+        {
+        "ProcessID": "KL01",
+        "ProcessName": "Inspection",
+        "Co2_em": 1.0, 
+        "Energy": 10.0, 
+        "Cost": 100 
+    },
+    {
+        "ProcessID": "KL02",
+        "ProcessName": "Cleaning",
+        "Co2_em": 1.0,
+        "Energy": 20.0,
+        "Cost": 200
+    },
+    {
+        "ProcessID": "KL03",
+        "ProcessName": "Component_change",
+        "Co2_em": 3.0,
+        "Energy": 30.0,
+        "Cost": 300
+      },
+      {
+        "ProcessID": "KL04",
+        "ProcessName": "Resharpen",
+        "Co2_em": 3.0,
+        "Energy": 40.0,
+        "Cost": 320
+      },
+      {
+        "ProcessID": "KL05",
+        "ProcessName": "Dissasembly",
+        "Co2_em": 5.0,
+        "Energy": 50.0,
+        "Cost": 400
+      }
+    ]
+}

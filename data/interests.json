@@ -1,0 +1,10 @@
+{
+    "user_name":"buyer",
+    "location":"65.584816,22.156704",
+    "interests": [
+        {
+            "product":"PclassA",
+            "capacity":10
+        }
+    ]
+}

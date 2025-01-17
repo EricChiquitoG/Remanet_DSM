@@ -1,0 +1,19 @@
+{
+    "Contacts": [
+      {
+        "Name": "CleanIO",
+        "Address": "server1:50051",
+        "Offerings": ["KL01","KL02","KL03"]
+      },
+      {
+        "Name": "toothW",
+        "Address": "server2:50052",
+        "Offerings": ["KL03","KL04","KL05"]
+      },
+      {
+        "Name": "Workshoppen",
+        "Address": "server3:50053",
+        "Offerings": ["KL01","KL04","KL05"]
+      }
+    ]
+  }

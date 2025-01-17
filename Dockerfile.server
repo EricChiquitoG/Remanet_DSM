@@ -20,6 +20,7 @@ WORKDIR /app
 COPY --from=builder /app/server .
 COPY DSM_protos DSM_protos
 COPY src src
+COPY data data
 COPY DSM.proto DSM.proto
 
 EXPOSE 50051

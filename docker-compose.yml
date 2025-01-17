@@ -9,7 +9,7 @@ services:
       - "50051:50051"
     environment:
       - GRPC_PORT=50051
-      - Company=ICA
+      - Company=CleanIO
 
   server2:
     build:
@@ -19,7 +19,7 @@ services:
       - "50052:50052"
     environment:
       - GRPC_PORT=50052
-      - Company=Coop
+      - Company=toothW
 
 
   server3:
@@ -30,7 +30,7 @@ services:
       - "50053:50053"
     environment:
       - GRPC_PORT=50053
-      - Company=Willys
+      - Company=Workshoppen
 
   client:
     build:

@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net"
 	"os"
@@ -20,21 +19,23 @@ type server struct {
 
 func (s *server) CheckAvailabilty(context context.Context, pr *pb.Process) (*pb.ProcessResponse, error) {
 	company := os.Getenv("Company")
-	compData, err := src.InitializeData((company))
+	_, err := src.InitializeData((company))
 	if err != nil {
 		return &pb.ProcessResponse{
 			Status:  "Unable to set up data",
 			Message: "Unable to set up data in server",
 		}, nil
 	}
-	for _, process := range src.AvailabilityExample.P {
+
+	//fmt.Println(pr)
+	/* for _, process := range src.AvailabilityExample.P {
 		// Check if the process exists in exampleData
 		fmt.Println("Is this working?")
 		foundProcess := false
 
 		if process.Process == compData.Process {
 			// Process matched, now check for productType
-			fmt.Println(compData)
+			//fmt.Println(compData)
 			for _, product := range compData.ProductTypes {
 				fmt.Println(process.ProductType, product)
 
@@ -55,7 +56,7 @@ func (s *server) CheckAvailabilty(context context.Context, pr *pb.Process) (*pb.
 			}, nil
 		}
 
-	}
+	} */
 	return &pb.ProcessResponse{
 		Status:  "Process not found",
 		Message: "Process not Found",

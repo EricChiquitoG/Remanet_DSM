@@ -1,39 +1,62 @@
 package src
 
 import (
+	"encoding/json"
+	"fmt"
+	"io"
+
 	"os"
 )
 
+// Define the Process struct
+// Define the Contact struct
 type Contact struct {
-	Name      string
-	Address   string
-	Offerings []string
+	Name      string   `json:"Name"`
+	Address   string   `json:"Address"`
+	Offerings []string `json:"Offerings"`
 }
 
+// Define the Directory struct
 type Directory struct {
-	Contacts []Contact
-}
-
-var ICA = Contact{
-	Name:      "ICA",
-	Address:   "server1:50051",
-	Offerings: []string{"Process"},
-}
-
-var Willys = Contact{
-	Name:      "Willys",
-	Address:   "server2:50052",
-	Offerings: []string{"Process", "Product"},
-}
-
-var Coop = Contact{
-	Name:      "Coop",
-	Address:   "server3:50053",
-	Offerings: []string{"Product"},
-}
-
-var MyDir = Directory{
-	Contacts: []Contact{ICA, Willys, Coop},
+	Contacts []Contact `json:"Contacts"`
 }
 
 var Port = os.Getenv("GRPC_PORT")
+
+func ReadJSONFile(filename string) ([]byte, error) {
+	// Open the file
+	file, err := os.Open(filename)
+	if err != nil {
+		return nil, fmt.Errorf("error opening file: %v", err)
+	}
+	defer file.Close()
+
+	// Read the file contents
+	bytes, err := io.ReadAll(file)
+	if err != nil {
+		return nil, fmt.Errorf("error reading file: %v", err)
+	}
+	return bytes, nil
+}
+
+func DataToDir(json_data []byte) (*Directory, error) {
+	var directory Directory
+	err := json.Unmarshal(json_data, &directory)
+	if err != nil {
+		return nil, fmt.Errorf("error unmarshalling JSON: %v", err)
+	}
+
+	return &directory, nil
+}
+
+func MyDir(filename string) (*Directory, error) {
+	jsonbytes, err := ReadJSONFile(filename)
+	if err != nil {
+		return nil, fmt.Errorf("error opening file: %v", err)
+	}
+	dir, err := DataToDir(jsonbytes)
+	if err != nil {
+		return nil, fmt.Errorf("error opening file: %v", err)
+	}
+	return dir, err
+}
