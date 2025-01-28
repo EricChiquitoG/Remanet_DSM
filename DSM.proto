@@ -1,6 +1,8 @@
 syntax = "proto3";
 import "google/protobuf/timestamp.proto";
 
+
+
 package DSM;
 
 option go_package = "github.com/EricChiquitoG/Remanet_DSM/DSM_protos";
@@ -21,6 +23,7 @@ message Process {
 message ProcessResponse {
     string status = 1;        // Status of the submission (e.g., "success" or "failure")
     string message = 2;       // Additional details or error message
+    repeated string capability = 3;
 }
 
 message Purchase {
@@ -33,5 +36,6 @@ message Purchase {
 message PurchaseResponse {
     string status = 1;
     string message = 2;
+    repeated string capability = 3;
 
 }

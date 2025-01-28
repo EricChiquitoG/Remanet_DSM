@@ -7,7 +7,7 @@ import (
 	"os"
 
 	pb "github.com/EricChiquitoG/Remanet_DSM/DSM_protos"
-	"github.com/EricChiquitoG/Remanet_DSM/src"
+	"github.com/EricChiquitoG/Remanet_DSM/server/src"
 	"google.golang.org/grpc"
 )
 
@@ -19,15 +19,22 @@ type server struct {
 
 func (s *server) CheckAvailabilty(context context.Context, pr *pb.Process) (*pb.ProcessResponse, error) {
 	company := os.Getenv("Company")
-	_, err := src.InitializeData((company))
+	CData, err := src.InitializeData((company))
 	if err != nil {
 		return &pb.ProcessResponse{
 			Status:  "Unable to set up data",
 			Message: "Unable to set up data in server",
 		}, nil
 	}
+	MatchList := src.Match(pr, CData)
 
-	//fmt.Println(pr)
+	if len(MatchList) != 0 {
+		return &pb.ProcessResponse{
+			Capability: MatchList,
+			Message:    "Matches found",
+		}, nil
+	}
+
 	/* for _, process := range src.AvailabilityExample.P {
 		// Check if the process exists in exampleData
 		fmt.Println("Is this working?")

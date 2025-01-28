@@ -16,12 +16,12 @@ RUN go build -o client client/client.go
 
 # Use a minimal image to run the client
 FROM alpine:3.14
-
 WORKDIR /app
 COPY --from=builder /app/client .
 COPY DSM_protos DSM_protos
-COPY src src
+COPY client/src src
 COPY DSM.proto DSM.proto
 
 # Command to run the client
 CMD ["./client"]
+

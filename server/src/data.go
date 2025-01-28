@@ -16,67 +16,12 @@ type Product struct {
 type Offering struct {
 	ProcessID   string    `json:"ProcessID"`
 	ProcessName string    `json:"ProcessName"`
-	Products    []Product `json:"Product"`
+	Products    []Product `json:"Products"`
 }
 
 // Define the Directory struct
 type Offerings struct {
 	Offerings []Offering `json:"Offerings"`
-}
-
-type ProcessData struct {
-	Company      string
-	Process      string
-	ProductTypes []string
-}
-
-type AvailableProcesses struct {
-	Activities []ProcessData
-}
-
-var DataICA = ProcessData{
-	Company:      "ICA",
-	Process:      "Cleaning",
-	ProductTypes: []string{"SawbladesX", "SawbladesY", "SawBladesZ"},
-}
-
-var DataCoop = ProcessData{
-	Company:      "Coop",
-	Process:      "Inspection",
-	ProductTypes: []string{"SawbladesX", "SawbladesY", "SawBladesZ"},
-}
-
-var DataWillys = ProcessData{
-	Company:      "Willys",
-	Process:      "Resharpen",
-	ProductTypes: []string{"SawbladesX", "SawbladesY"},
-}
-
-var ExampleData = AvailableProcesses{
-	Activities: []ProcessData{DataCoop, DataICA, DataWillys},
-}
-
-type Avilability struct {
-	Process           string
-	ProductType       string
-	economic_operator string
-}
-
-type Processes struct {
-	P []Avilability
-}
-
-var ProcessExample1 = Avilability{
-	Process:     "Dump",
-	ProductType: "SawbladesX",
-}
-var ProcessExample2 = Avilability{
-	Process:     "Inspection",
-	ProductType: "SawbladesY",
-}
-
-var AvailabilityExample = Processes{
-	P: []Avilability{ProcessExample1, ProcessExample2},
 }
 
 func ReadJSONFile(filename string) ([]byte, error) {

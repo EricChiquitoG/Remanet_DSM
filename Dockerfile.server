@@ -12,15 +12,15 @@ RUN go mod download
 COPY . .
 
 # Build the server binary
-RUN go build -o server server.go
+RUN go build -o server server/server.go
 
 # Use a minimal image to run the server
 FROM alpine:3.14
 WORKDIR /app
 COPY --from=builder /app/server .
 COPY DSM_protos DSM_protos
-COPY src src
-COPY data data
+COPY server/src src
+COPY server/data data
 COPY DSM.proto DSM.proto
 
 EXPOSE 50051

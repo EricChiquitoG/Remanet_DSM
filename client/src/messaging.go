@@ -12,15 +12,22 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+type Result struct {
+	ContactName string
+	Matches     []string
+	Response    string
+}
+
 // ProcessDirectory using goroutines
 func ProcessDirectory(dir *Directory) {
-	results := make(chan string) // Channel to collect results
+	results := make(chan Result) // Channel to collect results
 
 	routes := map[string][]string{
 		"R1": {"KL01", "KL02", "KL03"},
 		"R2": {"KL01", "KL02", "KL04"},
 		"R3": {"KL01", "KL05"},
 	}
+	product_match := "SawbladeX"
 	processToFetch := GetDistinct(routes)
 
 	defer close(results)
@@ -34,7 +41,10 @@ func ProcessDirectory(dir *Directory) {
 			// Establish a gRPC connection to the contact's server
 			conn, err := grpc.NewClient(address, grpc.WithTransportCredentials(insecure.NewCredentials()))
 			if err != nil {
-				results <- fmt.Sprintf("Failed to connect to %s at %s: %v", contact.Name, address, err)
+				results <- Result{
+					ContactName: contact.Name,
+					Response:    fmt.Sprintf("Failed to connect: %v", err),
+				}
 				return
 			}
 			defer conn.Close()
@@ -43,8 +53,11 @@ func ProcessDirectory(dir *Directory) {
 			client := pb.NewSubmissionServiceClient(conn)
 
 			// Ping the server, need to change later when we add different messages
-			response := Ping(client, prList)
-			results <- fmt.Sprintf("Response from %s: %v", contact.Name, response)
+			response := Ping(client, prList, product_match)
+			results <- Result{
+				ContactName: contact.Name,
+				Matches:     response.Capability,
+			}
 		}(contact)
 	}
 
@@ -89,12 +102,13 @@ func GetDistinct(routes map[string][]string) []string {
 
 }
 
-func Ping(c pb.SubmissionServiceClient, tasks []string) *pb.ProcessResponse {
+func Ping(c pb.SubmissionServiceClient, tasks []string, product string) *pb.ProcessResponse {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	now := time.Now()
 	submittedAt := timestamppb.New(now)
 	process := &pb.Process{
+		ProductType:  product,
 		SubmittedAt:  submittedAt,
 		Requirements: tasks,
 	}
