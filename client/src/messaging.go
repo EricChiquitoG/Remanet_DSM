@@ -3,7 +3,8 @@ package src
 import (
 	"context"
 	"fmt"
-	"log"
+	"slices"
+	"sort"
 	"time"
 
 	pb "github.com/EricChiquitoG/Remanet_DSM/DSM_protos"
@@ -12,6 +13,10 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+type ResultCollection struct {
+	Results []Result
+}
+
 type Result struct {
 	ContactName string
 	Matches     []string
@@ -19,9 +24,11 @@ type Result struct {
 }
 
 // ProcessDirectory using goroutines
-func ProcessDirectory(dir *Directory) {
-	results := make(chan Result) // Channel to collect results
-
+func ProcessDirectory(dir *Directory, costs *CostData) {
+	results := make(chan Result)                  // Channel to collect results
+	var PossibleRoutesI [][]string                //Individual routes
+	PossibleRoutes := make(map[string][][]string) //All routes
+	var taskN = 0
 	routes := map[string][]string{
 		"R1": {"KL01", "KL02", "KL03"},
 		"R2": {"KL01", "KL02", "KL04"},
@@ -29,6 +36,9 @@ func ProcessDirectory(dir *Directory) {
 	}
 	product_match := "SawbladeX"
 	processToFetch := GetDistinct(routes)
+
+	resultCollection := ResultCollection{}
+	allCost := AllCost{}
 
 	defer close(results)
 
@@ -63,8 +73,55 @@ func ProcessDirectory(dir *Directory) {
 
 	// Collect and log results
 	for range dir.Contacts {
-		log.Println(<-results)
+		resultCollection.Results = append(resultCollection.Results, <-results)
+
 	}
+	fmt.Println(resultCollection)
+	resultMap := CreateMap(processToFetch, resultCollection)
+	routeIndex := indexBuilder(resultMap)
+	for index, route := range routes {
+
+		route_c := []string{}
+		taskN = 0
+		pathList := pathMaker(route_c, taskN, resultMap, routeIndex, PossibleRoutesI, route)
+		PossibleRoutes[index] = pathList
+	}
+	fmt.Println("Possible Routes are", PossibleRoutes)
+	distances := costCalculator(dir, PossibleRoutes, routes, costs, &allCost)
+	fmt.Println("Cost of each route ", distances)
+
+}
+
+func indexBuilder(taskMap map[string][]string) []string {
+	keys := make([]string, 0, len(taskMap))
+	for key := range taskMap {
+		keys = append(keys, key)
+	}
+
+	sort.Strings(keys)
+	return keys
+}
+
+func pathMaker(path_c []string, taskN int, taskMap map[string][]string, index []string, routes [][]string, route []string) [][]string {
+	if taskN == len(route) {
+		routes = append(routes, append([]string{}, path_c...))
+
+	} else {
+
+		for _, key := range index {
+			if key == route[taskN] { // Match found
+				for _, com := range taskMap[key] {
+					newPath := append([]string{}, path_c...)
+					newPath = append(newPath, com)
+					routes = pathMaker(newPath, taskN+1, taskMap, index, routes, route) // Move to the next in `route`
+				}
+				break // Stop searching once we find the correct key
+			}
+		}
+
+	}
+	return routes
+
 }
 
 func FindCommon(list1, list2 []string) []string {
@@ -81,6 +138,20 @@ func FindCommon(list1, list2 []string) []string {
 		}
 	}
 	return common
+}
+
+// Creates the mao of the actors that can provide certain activities
+func CreateMap(Activities []string, resultCollection ResultCollection) map[string][]string {
+	activityMap := make(map[string][]string)
+
+	for _, task := range Activities {
+		for _, result := range resultCollection.Results {
+			if slices.Contains(result.Matches, task) {
+				activityMap[task] = append(activityMap[task], result.ContactName)
+			}
+		}
+	}
+	return activityMap
 }
 
 func GetDistinct(routes map[string][]string) []string {

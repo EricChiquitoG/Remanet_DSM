@@ -3,6 +3,7 @@ module github.com/EricChiquitoG/Remanet_DSM
 go 1.23
 
 require (
+	github.com/daveroberts0321/distancecalculator v1.2.0 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	golang.org/x/net v0.31.0 // indirect
 	golang.org/x/sys v0.27.0 // indirect

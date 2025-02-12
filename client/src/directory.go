@@ -11,9 +11,10 @@ import (
 // Define the Process struct
 // Define the Contact struct
 type Contact struct {
-	Name      string   `json:"Name"`
-	Address   string   `json:"Address"`
-	Offerings []string `json:"Offerings"`
+	Name      string    `json:"Name"`
+	Address   string    `json:"Address"`
+	Location  []float64 `json:"Location"`
+	Offerings []string  `json:"Offerings"`
 }
 
 // Define the Directory struct

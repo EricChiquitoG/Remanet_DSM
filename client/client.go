@@ -13,8 +13,13 @@ func main() {
 	dir, err := src.MyDir("./data/directory.json")
 	if err != nil {
 		log.Fatalf("Error: %v", err)
+	}
+
+	allCosts, err := src.Costs("./data/cost.json")
+	if err != nil {
+		log.Fatalf("Error: %v", err)
 
 	}
-	src.ProcessDirectory(dir)
+	src.ProcessDirectory(dir, allCosts)
 
 }
