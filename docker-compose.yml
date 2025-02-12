@@ -40,3 +40,5 @@ services:
       - server1
       - server2
       - server3
+    ports:
+      - "0.0.0.0:8080:8080"

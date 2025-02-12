@@ -1,25 +1,18 @@
 package main
 
 import (
-	"log"
-
 	"github.com/EricChiquitoG/Remanet_DSM/client/src"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	// Create a new grpc client
 
 	// give us a context that we can cancel, but also a timeout just to illustrate a point
-	dir, err := src.MyDir("./data/directory.json")
-	if err != nil {
-		log.Fatalf("Error: %v", err)
-	}
 
-	allCosts, err := src.Costs("./data/cost.json")
-	if err != nil {
-		log.Fatalf("Error: %v", err)
+	r := gin.Default()
+	r.POST("/get_options", src.ProcessDirectory)
 
-	}
-	src.ProcessDirectory(dir, allCosts)
+	r.Run(":8080")
 
 }

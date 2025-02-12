@@ -20,17 +20,18 @@ type CostData struct {
 	Processes []Cost `json:"Processes"`
 }
 
-type optionCost struct {
-	route     []string
-	option    []string
-	logistics float64
-	co2_em    float64
-	energy    float64
-	cost_eur  float64
+type OptionCost struct {
+	RouteID   string   `json:"route_id"`
+	Route     []string `json:"route"`
+	Option    []string `json:"option"`
+	Logistics float64  `json:"logistics"`
+	CO2Em     float64  `json:"co2_em"`
+	Energy    float64  `json:"energy"`
+	CostEUR   float64  `json:"cost_eur"`
 }
 
 type AllCost struct {
-	options []optionCost
+	Options []OptionCost `json:"options"`
 }
 
 // TransportCosts holds predefined values for different transport mechanisms
@@ -53,26 +54,22 @@ func locationMapper(dir *Directory) map[string]distancecalculator.Coord {
 	return companyLocations
 }
 
-// Calculates the distance between 2 cities
-func logistics(locations map[string]distancecalculator.Coord, compA string, compB string) (float64, error) {
-	destinations := []distancecalculator.Coord{}
-	destinations = append(destinations, locations[compB])
-
-	distancesInKilometers, err := distancecalculator.Kilometers(locations[compA], destinations)
+// Calculates the distance between two companies
+func logistics(locations map[string]distancecalculator.Coord, compA, compB string) (float64, error) {
+	destinations := []distancecalculator.Coord{locations[compB]}
+	distances, err := distancecalculator.Kilometers(locations[compA], destinations)
 	if err != nil {
 		fmt.Println("Error calculating distances:", err)
 		return 0, err
 	}
-	return distancesInKilometers[0], nil
+	return distances[0], nil
 }
 
 func costCalculator(dir *Directory, possibleRoutes map[string][][]string, routes map[string][]string, cost *CostData, allCost *AllCost) *AllCost {
-	currentCost := optionCost{}
-	var co2 float64
-	var energy float64
-	var cost_eur float64
+	var co2, energy, cost_eur float64
 	companyLocations := locationMapper(dir)
 	for routeID, route := range possibleRoutes {
+		co2, energy, cost_eur = 0, 0, 0
 		//Iterate over the different tasks associated with that route
 		for _, task := range routes[routeID] {
 			//Iterate over the processes in the cost JSON
@@ -82,14 +79,20 @@ func costCalculator(dir *Directory, possibleRoutes map[string][][]string, routes
 					co2 += process.Co2Em
 					energy += process.Energy
 					cost_eur += process.Cost
+					break
 				}
 			}
 		}
 		for _, option := range route {
-
-			currentCost.route = routes[routeID]
-			currentCost.option = option
-			for i, _ := range option {
+			currentCost := OptionCost{
+				RouteID: routeID,
+				Route:   routes[routeID],
+				Option:  option,
+				CO2Em:   co2,
+				Energy:  energy,
+				CostEUR: cost_eur,
+			}
+			for i := range option {
 				if i != 0 {
 					if option[i] != option[i-1] {
 						distance, err := logistics(companyLocations, option[i], option[i-1])
@@ -97,15 +100,12 @@ func costCalculator(dir *Directory, possibleRoutes map[string][][]string, routes
 							fmt.Println("Calculating logistics:", err)
 							return allCost
 						}
-						currentCost.logistics += distance * (TransportEmissions["Truck"] * 10)
+						currentCost.Logistics += distance * (TransportEmissions["Truck"] * 10)
 					}
 				}
 			}
-			currentCost.co2_em = co2
-			currentCost.cost_eur = cost_eur
-			currentCost.energy = energy
-			allCost.options = append(allCost.options, currentCost)
-			currentCost = optionCost{}
+			allCost.Options = append(allCost.Options, currentCost)
+
 		}
 	}
 	return allCost

@@ -3,11 +3,14 @@ package src
 import (
 	"context"
 	"fmt"
+	"log"
+	"net/http"
 	"slices"
 	"sort"
 	"time"
 
 	pb "github.com/EricChiquitoG/Remanet_DSM/DSM_protos"
+	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -23,18 +26,40 @@ type Result struct {
 	Response    string
 }
 
+type RouteRequest struct {
+	ProductMatch string              `json:"product_match"`
+	Routes       map[string][]string `json:"routes"`
+}
+
 // ProcessDirectory using goroutines
-func ProcessDirectory(dir *Directory, costs *CostData) {
+func ProcessDirectory(c *gin.Context) {
+	var request RouteRequest
+
+	// Bind JSON to the struct
+	if err := c.ShouldBindJSON(&request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
+		return
+	}
+	product_match := request.ProductMatch
+	routes := request.Routes
+
+	fmt.Println(routes)
+
+	dir, err := MyDir("./data/directory.json")
+	if err != nil {
+		log.Fatalf("Error: %v", err)
+	}
+
+	costs, err := Costs("./data/cost.json")
+	if err != nil {
+		log.Fatalf("Error: %v", err)
+
+	}
 	results := make(chan Result)                  // Channel to collect results
 	var PossibleRoutesI [][]string                //Individual routes
 	PossibleRoutes := make(map[string][][]string) //All routes
 	var taskN = 0
-	routes := map[string][]string{
-		"R1": {"KL01", "KL02", "KL03"},
-		"R2": {"KL01", "KL02", "KL04"},
-		"R3": {"KL01", "KL05"},
-	}
-	product_match := "SawbladeX"
+
 	processToFetch := GetDistinct(routes)
 
 	resultCollection := ResultCollection{}
@@ -86,9 +111,12 @@ func ProcessDirectory(dir *Directory, costs *CostData) {
 		pathList := pathMaker(route_c, taskN, resultMap, routeIndex, PossibleRoutesI, route)
 		PossibleRoutes[index] = pathList
 	}
-	fmt.Println("Possible Routes are", PossibleRoutes)
 	distances := costCalculator(dir, PossibleRoutes, routes, costs, &allCost)
-	fmt.Println("Cost of each route ", distances)
+	fmt.Println(distances)
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Data received successfully",
+		"Options": distances,
+	})
 
 }
 
