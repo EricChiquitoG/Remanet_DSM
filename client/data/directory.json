@@ -4,19 +4,25 @@
         "Name": "CleanIO",
         "Address": "server1:50051",
         "Location": [65.584816, 22.156704],
+        "cost_EURH": 92,
         "Offerings": ["KL01","KL02","KL03"]
       },
       {
         "Name": "toothW",
         "Address": "server2:50052",
         "Location":[45.464664, 9.188540],
+        "cost_EURH": 110,
         "Offerings": ["KL03","KL04","KL05"]
       },
       {
         "Name": "Workshoppen",
         "Address": "server3:50053",
         "Location": [53.551086, 9.993682],
+        "cost_EURH": 95,
         "Offerings": ["KL01","KL04","KL05"]
       }
     ]
   }
+
+
+

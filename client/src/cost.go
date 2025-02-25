@@ -42,7 +42,7 @@ var TransportEmissions = map[string]float64{
 }
 
 // Creates a map with the locations of each company
-func locationMapper(dir *Directory) map[string]distancecalculator.Coord {
+func locationMapper(dir *Directory, r *RouteRequest) map[string]distancecalculator.Coord {
 	companyLocations := make(map[string]distancecalculator.Coord)
 
 	for _, contact := range dir.Contacts {
@@ -50,6 +50,10 @@ func locationMapper(dir *Directory) map[string]distancecalculator.Coord {
 			Lat:  contact.Location[0],
 			Long: contact.Location[1],
 		}
+	}
+	companyLocations["origin"] = distancecalculator.Coord{
+		Lat:  r.StartingPoint[0],
+		Long: r.StartingPoint[1],
 	}
 	return companyLocations
 }
@@ -65,13 +69,13 @@ func logistics(locations map[string]distancecalculator.Coord, compA, compB strin
 	return distances[0], nil
 }
 
-func costCalculator(dir *Directory, possibleRoutes map[string][][]string, routes map[string][]string, cost *CostData, allCost *AllCost) *AllCost {
+func costCalculator(dir *Directory, possibleRoutes map[string][][]string, cost *CostData, allCost *AllCost, request *RouteRequest) *AllCost {
 	var co2, energy, cost_eur float64
-	companyLocations := locationMapper(dir)
+	companyLocations := locationMapper(dir, request)
 	for routeID, route := range possibleRoutes {
 		co2, energy, cost_eur = 0, 0, 0
 		//Iterate over the different tasks associated with that route
-		for _, task := range routes[routeID] {
+		for _, task := range request.Routes[routeID] {
 			//Iterate over the processes in the cost JSON
 			for _, process := range cost.Processes {
 				//Match if the process is in the cost json
@@ -86,7 +90,7 @@ func costCalculator(dir *Directory, possibleRoutes map[string][][]string, routes
 		for _, option := range route {
 			currentCost := OptionCost{
 				RouteID: routeID,
-				Route:   routes[routeID],
+				Route:   request.Routes[routeID],
 				Option:  option,
 				CO2Em:   co2,
 				Energy:  energy,
@@ -102,6 +106,13 @@ func costCalculator(dir *Directory, possibleRoutes map[string][][]string, routes
 						}
 						currentCost.Logistics += distance * (TransportEmissions["Truck"] * 10)
 					}
+				} else {
+					distance, err := logistics(companyLocations, option[i], "origin")
+					if err != nil {
+						fmt.Println("Calculating logistics:", err)
+						return allCost
+					}
+					currentCost.Logistics += distance * (TransportEmissions["Truck"] * 10)
 				}
 			}
 			allCost.Options = append(allCost.Options, currentCost)

@@ -27,8 +27,9 @@ type Result struct {
 }
 
 type RouteRequest struct {
-	ProductMatch string              `json:"product_match"`
-	Routes       map[string][]string `json:"routes"`
+	ProductMatch  string              `json:"product_match"`
+	Routes        map[string][]string `json:"routes"`
+	StartingPoint []float64           `json:"starting_point"`
 }
 
 // ProcessDirectory using goroutines
@@ -41,9 +42,6 @@ func ProcessDirectory(c *gin.Context) {
 		return
 	}
 	product_match := request.ProductMatch
-	routes := request.Routes
-
-	fmt.Println(routes)
 
 	dir, err := MyDir("./data/directory.json")
 	if err != nil {
@@ -60,7 +58,7 @@ func ProcessDirectory(c *gin.Context) {
 	PossibleRoutes := make(map[string][][]string) //All routes
 	var taskN = 0
 
-	processToFetch := GetDistinct(routes)
+	processToFetch := GetDistinct(request.Routes)
 
 	resultCollection := ResultCollection{}
 	allCost := AllCost{}
@@ -104,14 +102,14 @@ func ProcessDirectory(c *gin.Context) {
 	fmt.Println(resultCollection)
 	resultMap := CreateMap(processToFetch, resultCollection)
 	routeIndex := indexBuilder(resultMap)
-	for index, route := range routes {
+	for index, route := range request.Routes {
 
 		route_c := []string{}
 		taskN = 0
 		pathList := pathMaker(route_c, taskN, resultMap, routeIndex, PossibleRoutesI, route)
 		PossibleRoutes[index] = pathList
 	}
-	distances := costCalculator(dir, PossibleRoutes, routes, costs, &allCost)
+	distances := costCalculator(dir, PossibleRoutes, costs, &allCost, &request)
 	fmt.Println(distances)
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Data received successfully",

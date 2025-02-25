@@ -1,10 +1,77 @@
-{
-    "user_name":"buyer",
-    "location":"65.584816,22.156704",
-    "interests": [
-        {
-            "product":"PclassA",
-            "capacity":10
-        }
-    ]
-}
+[
+    {
+        "uid": "2",
+        "location": [0.9983864389320978,0.4693859406038372],
+        "interests": [
+            {
+                "product": "IE4",
+                "capacity": 16,
+                "usage": 13,
+                "phase_n": 3,
+                "rated_speed": null,
+                "rated_power": 5.5,
+                "axis_height": 100
+            }
+        ]
+    },
+    {
+        "uid": "8",
+        "location": [0.13395504871786934,0.7928050322897952],
+        "interests": [
+            {
+                "product": "IE4",
+                "capacity": 98,
+                "usage": 2,
+                "phase_n": 3,
+                "rated_speed": null,
+                "rated_power": 5.5,
+                "axis_height": 100
+            }
+        ]
+    },
+    {
+        "uid": "17",
+        "location": [0.4009404873835969,0.751153244924268],
+        "interests": [
+            {
+                "product": "IE4",
+                "capacity": 78,
+                "usage": 15,
+                "phase_n": 3,
+                "rated_speed": null,
+                "rated_power": 5.5,
+                "axis_height": 100
+            }
+        ]
+    },
+    {
+        "uid": "22",
+        "location": [0.8239108694057353,0.40932125675422726],
+        "interests": [
+            {
+                "product": "IE4",
+                "capacity": 71,
+                "usage": 3,
+                "phase_n": 3,
+                "rated_speed": null,
+                "rated_power": 5.5,
+                "axis_height": 100
+            }
+        ]
+    },
+    {
+        "uid": "23",
+        "location": [0.7168763801395369,0.2381867698274367],
+        "interests": [
+            {
+                "product": "IE4",
+                "capacity": 8,
+                "usage": 23,
+                "phase_n": 3,
+                "rated_speed": null,
+                "rated_power": 5.5,
+                "axis_height": 100
+            }
+        ]
+    }
+]
