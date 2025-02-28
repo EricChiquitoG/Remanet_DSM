@@ -32,6 +32,37 @@ services:
       - GRPC_PORT=50053
       - Company=Workshoppen
 
+  server4:
+    build:
+      context: .
+      dockerfile: Dockerfile.customer
+    ports:
+      - "50054:50054"
+    environment:
+      - GRPC_PORT=50054
+      - Company=CustA
+
+  server5:
+    build:
+      context: .
+      dockerfile: Dockerfile.customer
+    ports:
+      - "50055:50055"
+    environment:
+      - GRPC_PORT=50055
+      - Company=CustB
+
+
+  server6:
+    build:
+      context: .
+      dockerfile: Dockerfile.customer
+    ports:
+      - "50056:50056"
+    environment:
+      - GRPC_PORT=50056
+      - Company=Custc
+
   client:
     build:
       context: .

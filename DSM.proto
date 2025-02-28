@@ -28,14 +28,18 @@ message ProcessResponse {
 
 message Purchase {
     string product_type = 1;
-    string economic_operator = 2;
-    google.protobuf.Timestamp submitted_at = 3;
-    repeated string requirements = 4;
+    string amount = 2;
+    repeated float location = 3;
+    double logistics = 4;
+    double co2 = 5;
+    double energy = 6;
+    double costEUR = 7;
+    repeated string requirements = 8;
 }
 
 message PurchaseResponse {
     string status = 1;
     string message = 2;
-    repeated string capability = 3;
+    bool capability = 3;
 
 }

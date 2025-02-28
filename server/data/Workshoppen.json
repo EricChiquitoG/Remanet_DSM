@@ -5,11 +5,11 @@
         "ProcessName": "Cleaning",
         "Products": [
             {
-                "Product_name": "SawbladeX",
+                "Product_name": "IE4",
                 "Stock":100
             },
             {
-                "Product_name":"SawbladeY",
+                "Product_name":"IE5",
                 "Stock":150
             }
         ]
@@ -18,11 +18,11 @@
         "ProcessID": "KL03",
         "Products": [
             {
-                "Product_name": "SawbladeX",
+                "Product_name": "IE4",
                 "Stock":100
             },
             {
-                "Product_name":"SawbladeY",
+                "Product_name":"IE5",
                 "Stock":150
             }
         ]
@@ -32,11 +32,11 @@
         "ProcessName": "Resharpen",
         "Products": [
             {
-                "Product_name": "SawbladeX",
+                "Product_name": "IE4",
                 "Stock":100
             },
             {
-                "Product_name":"SawbladeY",
+                "Product_name":"IE5",
                 "Stock":150
             }
         ]
@@ -46,11 +46,11 @@
         "ProcessName": "Dissasembly",
         "Products": [
             {
-                "Product_name": "SawbladeX",
+                "Product_name": "IE4",
                 "Stock":100
             },
             {
-                "Product_name":"SawbladeY",
+                "Product_name":"IE5",
                 "Stock":150
             }
         ]

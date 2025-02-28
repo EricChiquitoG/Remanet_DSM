@@ -3,6 +3,8 @@ package src
 import (
 	"encoding/json"
 	"fmt"
+	"math"
+	"sort"
 
 	"github.com/daveroberts0321/distancecalculator"
 )
@@ -118,8 +120,9 @@ func costCalculator(dir *Directory, possibleRoutes map[string][][]string, cost *
 			allCost.Options = append(allCost.Options, currentCost)
 
 		}
+
 	}
-	return allCost
+	return Sort_Options(allCost)
 }
 func DatatoCost(json_data []byte) (*CostData, error) {
 	var cost CostData
@@ -129,6 +132,22 @@ func DatatoCost(json_data []byte) (*CostData, error) {
 	}
 
 	return &cost, nil
+}
+
+func Sort_Options(allcost *AllCost) *AllCost {
+	sort.Slice(allcost.Options, func(i, j int) bool {
+		if allcost.Options[i].CostEUR != allcost.Options[j].CostEUR {
+			return allcost.Options[i].CostEUR < allcost.Options[j].CostEUR // Primary: Lower cost first
+		}
+		if allcost.Options[i].Logistics != allcost.Options[j].Logistics {
+			return allcost.Options[i].Logistics < allcost.Options[j].Logistics // Secondary: Lower logistics cost
+		}
+		if allcost.Options[i].CO2Em != allcost.Options[j].CO2Em {
+			return allcost.Options[i].CO2Em < allcost.Options[j].CO2Em // Tertiary: Lower CO₂ emissions
+		}
+		return allcost.Options[i].Energy < allcost.Options[j].Energy // Finally: Lower energy consumption
+	})
+	return allcost
 }
 
 func Costs(filename string) (*CostData, error) {
@@ -141,4 +160,29 @@ func Costs(filename string) (*CostData, error) {
 		return nil, fmt.Errorf("error opening file: %v", err)
 	}
 	return dir, err
+}
+
+// haversine calculates the distance between two points (lat1, lon1) and (lat2, lon2) in kilometers
+func Haversine(Point1, Point2 []float64) float64 {
+	const R = 6371 // Earth radius in km
+
+	// Convert degrees to radians
+	lat1Rad := Point1[0] * (math.Pi / 180)
+	lon1Rad := Point1[1] * (math.Pi / 180)
+	lat2Rad := Point2[0] * (math.Pi / 180)
+	lon2Rad := Point2[1] * (math.Pi / 180)
+
+	// Differences
+	deltaLat := lat2Rad - lat1Rad
+	deltaLon := lon2Rad - lon1Rad
+
+	// Haversine formula
+	a := math.Sin(deltaLat/2)*math.Sin(deltaLat/2) +
+		math.Cos(lat1Rad)*math.Cos(lat2Rad)*
+			math.Sin(deltaLon/2)*math.Sin(deltaLon/2)
+
+	c := 2 * math.Atan2(math.Sqrt(a), math.Sqrt(1-a))
+
+	// Distance in km
+	return R * c
 }

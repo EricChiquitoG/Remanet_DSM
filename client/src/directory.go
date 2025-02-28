@@ -22,6 +22,23 @@ type Directory struct {
 	Contacts []Contact `json:"Contacts"`
 }
 
+type Customer struct {
+	UID      string    `json:"uid"`
+	Address  string    `json:"Address"`
+	Location []float64 `json:"location"`
+}
+
+// PClassEntry represents each "PClass" with its list of users
+type PClassEntry struct {
+	PClass string     `json:"PClass"`
+	Users  []Customer `json:"users"`
+}
+
+// Root structure that holds all PClass entries
+type PClasses struct {
+	PClasses []PClassEntry `json:"PClasses"`
+}
+
 var Port = os.Getenv("GRPC_PORT")
 
 func ReadJSONFile(filename string) ([]byte, error) {
@@ -38,6 +55,28 @@ func ReadJSONFile(filename string) ([]byte, error) {
 		return nil, fmt.Errorf("error reading file: %v", err)
 	}
 	return bytes, nil
+}
+
+func getInterestBytes(json_data []byte) (*PClasses, error) {
+	var products PClasses
+	err := json.Unmarshal(json_data, &products)
+	if err != nil {
+		return nil, fmt.Errorf("error unmarshalling JSON: %v", err)
+	}
+
+	return &products, nil
+}
+
+func getInterests(filename string) (*PClasses, error) {
+	jsonbytes, err := ReadJSONFile(filename)
+	if err != nil {
+		return nil, fmt.Errorf("error opening file: %v", err)
+	}
+	dir, err := getInterestBytes(jsonbytes)
+	if err != nil {
+		return nil, fmt.Errorf("error opening file: %v", err)
+	}
+	return dir, err
 }
 
 func DataToDir(json_data []byte) (*Directory, error) {

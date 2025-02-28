@@ -1,0 +1,22 @@
+{
+    "interests": [
+        {
+            "product": "IE4",
+            "capacity": 71,
+            "usage": 3,
+            "phase_n": 3,
+            "rated_speed": null,
+            "rated_power": 5.5,
+            "axis_height": 100
+        },
+        {
+            "product": "IE5",
+            "capacity": 31,
+            "usage": 3,
+            "phase_n": 3,
+            "rated_speed": null,
+            "rated_power": 5.5,
+            "axis_height": 100
+        }
+    ]
+}

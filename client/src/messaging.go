@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"slices"
 	"sort"
+	"sync"
 	"time"
 
 	pb "github.com/EricChiquitoG/Remanet_DSM/DSM_protos"
@@ -21,9 +22,11 @@ type ResultCollection struct {
 }
 
 type Result struct {
-	ContactName string
-	Matches     []string
-	Response    string
+	ContactName    string
+	Matches        []string
+	Response       string
+	Capability     bool
+	TotalLogistics float64
 }
 
 type RouteRequest struct {
@@ -47,6 +50,10 @@ func ProcessDirectory(c *gin.Context) {
 	if err != nil {
 		log.Fatalf("Error: %v", err)
 	}
+	PClasses, err := getInterests("./data/interests.json")
+	if err != nil {
+		log.Fatalf("Error: %v", err)
+	}
 
 	costs, err := Costs("./data/cost.json")
 	if err != nil {
@@ -61,6 +68,7 @@ func ProcessDirectory(c *gin.Context) {
 	processToFetch := GetDistinct(request.Routes)
 
 	resultCollection := ResultCollection{}
+	resultCollectionLog := ResultCollection{}
 	allCost := AllCost{}
 
 	defer close(results)
@@ -92,14 +100,8 @@ func ProcessDirectory(c *gin.Context) {
 				Matches:     response.Capability,
 			}
 		}(contact)
-	}
-
-	// Collect and log results
-	for range dir.Contacts {
 		resultCollection.Results = append(resultCollection.Results, <-results)
-
 	}
-	fmt.Println(resultCollection)
 	resultMap := CreateMap(processToFetch, resultCollection)
 	routeIndex := indexBuilder(resultMap)
 	for index, route := range request.Routes {
@@ -110,10 +112,79 @@ func ProcessDirectory(c *gin.Context) {
 		PossibleRoutes[index] = pathList
 	}
 	distances := costCalculator(dir, PossibleRoutes, costs, &allCost, &request)
-	fmt.Println(distances)
+	var wg sync.WaitGroup
+	results_log := make(chan Result)
+	for _, PClass := range PClasses.PClasses {
+		if PClass.PClass == product_match {
+			for _, cost := range distances.Options {
+				for _, customer := range PClass.Users {
+					wg.Add(1)
+					go func(customer Customer, cost OptionCost) {
+						defer wg.Done() // Ensure goroutine is marked as done
+
+						distanceMap := make(map[string]float64)
+						for _, contact := range dir.Contacts {
+							distanceMap[contact.Name] = Haversine(contact.Location, customer.Location)
+						}
+						fmt.Println(distanceMap)
+						// Establish a gRPC connection to the contact's server
+						conn, err := grpc.NewClient(customer.Address, grpc.WithTransportCredentials(insecure.NewCredentials()))
+						if err != nil {
+							return
+						}
+						defer conn.Close()
+
+						// Create a client
+						client := pb.NewSubmissionServiceClient(conn)
+						lastItem_user := cost.Option[len(cost.Option)-1]
+
+						response := CheckCustomer(client, cost, product_match, distanceMap[lastItem_user])
+
+						if response.Capability {
+							final_logistics := cost.Logistics + distanceMap[lastItem_user]
+							results_log <- Result{
+								ContactName:    customer.UID,
+								Capability:     true,
+								Response:       cost.RouteID,
+								TotalLogistics: final_logistics,
+							}
+							return
+
+						}
+					}(customer, cost)
+
+				}
+				go func() {
+					wg.Wait()
+					close(results_log) // Close channel when done
+				}()
+				for res := range results_log {
+					resultCollectionLog.Results = append(resultCollectionLog.Results, res)
+				}
+				if len(resultCollectionLog.Results) == 0 {
+					fmt.Println("No results received.")
+				} else {
+					fmt.Println("Results received:", resultCollectionLog.Results)
+					break
+				}
+
+			}
+		}
+	}
+
+	// Collect results
+
+	sort.Slice(resultCollectionLog.Results, func(i, j int) bool {
+		return resultCollectionLog.Results[i].TotalLogistics < resultCollectionLog.Results[j].TotalLogistics
+	})
+	fmt.Println(resultCollectionLog.Results)
+
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Data received successfully",
-		"Options": distances,
+		"message":         "Data received successfully",
+		"customer":        resultCollectionLog.Results[0].ContactName,
+		"final_logistics": resultCollectionLog.Results[0].TotalLogistics,
+		"selected_route":  resultCollectionLog.Results[0].Response,
+		//"Options":         distances,
 	})
 
 }
@@ -216,6 +287,31 @@ func Ping(c pb.SubmissionServiceClient, tasks []string, product string) *pb.Proc
 	if err != nil {
 		// Handle the error case, return a default response or log the error
 		return &pb.ProcessResponse{
+			Status:  "Error",
+			Message: fmt.Sprintf("Failed to check availability: %v", err),
+		}
+	}
+
+	// Return the successful server response
+	return serverResponse
+}
+
+func CheckCustomer(c pb.SubmissionServiceClient, cost OptionCost, product string, logistics float64) *pb.PurchaseResponse {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+
+	defer cancel()
+	process := &pb.Purchase{
+		ProductType: product,
+		Logistics:   logistics,
+		Amount:      "1",
+	}
+	fmt.Println(process)
+
+	// Make a simple call to order all the items on the menu
+	serverResponse, err := c.CheckInterest(ctx, process)
+	if err != nil {
+		// Handle the error case, return a default response or log the error
+		return &pb.PurchaseResponse{
 			Status:  "Error",
 			Message: fmt.Sprintf("Failed to check availability: %v", err),
 		}

@@ -5,15 +5,15 @@
         "ProcessName": "Component_change",
         "Products": [
             {
-                "Product_name": "SawbladeX",
+                "Product_name": "IE4",
                 "Stock":100
             },
             {
-                "Product_name":"SawbladeY",
+                "Product_name":"IE5",
                 "Stock":150
             },
             {
-                "Product_name":"SawbladeZ",
+                "Product_name":"IE3",
                 "Stock":110
             }
         ]
@@ -23,15 +23,15 @@
         "ProcessName": "Resharpen",
         "Products": [
             {
-                "Product_name": "SawbladeX",
+                "Product_name": "IE4",
                 "Stock":100
             },
             {
-                "Product_name":"SawbladeY",
+                "Product_name":"IE5",
                 "Stock":150
             },
             {
-                "Product_name":"SawbladeZ",
+                "Product_name":"IE3",
                 "Stock":110
             }
         ]
