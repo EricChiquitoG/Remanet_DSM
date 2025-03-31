@@ -10,6 +10,7 @@ option go_package = "github.com/EricChiquitoG/Remanet_DSM/DSM_protos";
 service SubmissionService {
     rpc CheckAvailabilty(Process) returns (ProcessResponse) {}
     rpc CheckInterest(Purchase) returns (PurchaseResponse) {}
+    rpc EnrollServer(Enroll) returns (EnrollResponse) {}
 }
 
 message Process {
@@ -42,4 +43,17 @@ message PurchaseResponse {
     string message = 2;
     bool capability = 3;
 
+}
+
+message Enroll {
+    string Name = 1;
+    string Address = 2;
+    repeated double Location = 3;
+    double CostH = 4;
+    repeated string Offerings = 5;
+}
+
+message EnrollResponse {
+    string status = 1;
+    string message = 2;
 }

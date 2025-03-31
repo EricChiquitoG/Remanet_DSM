@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-
+	"log"
 	"os"
 )
 
@@ -99,4 +99,23 @@ func MyDir(filename string) (*Directory, error) {
 		return nil, fmt.Errorf("error opening file: %v", err)
 	}
 	return dir, err
+}
+
+func UpdateJson(newContact Contact) error {
+	dir, err := MyDir("./data/directory.json")
+	if err != nil {
+		log.Fatalf("Error: %v", err)
+	}
+	dir.Contacts = append(dir.Contacts, newContact)
+	// Step 4: Marshal back to JSON
+	updatedJSON, err := json.MarshalIndent(dir, "", "  ")
+	if err != nil {
+		return fmt.Errorf("error marshaling updated data: %v", err)
+	}
+
+	// Step 5: Write back to the file
+	if err := os.WriteFile("./data/directory.json", updatedJSON, 0644); err != nil {
+		return fmt.Errorf("error writing updated JSON to file: %v", err)
+	}
+	return nil
 }

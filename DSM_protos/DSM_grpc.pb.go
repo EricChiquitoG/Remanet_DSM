@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	SubmissionService_CheckAvailabilty_FullMethodName = "/DSM.SubmissionService/CheckAvailabilty"
 	SubmissionService_CheckInterest_FullMethodName    = "/DSM.SubmissionService/CheckInterest"
+	SubmissionService_EnrollServer_FullMethodName     = "/DSM.SubmissionService/EnrollServer"
 )
 
 // SubmissionServiceClient is the client API for SubmissionService service.
@@ -29,6 +30,7 @@ const (
 type SubmissionServiceClient interface {
 	CheckAvailabilty(ctx context.Context, in *Process, opts ...grpc.CallOption) (*ProcessResponse, error)
 	CheckInterest(ctx context.Context, in *Purchase, opts ...grpc.CallOption) (*PurchaseResponse, error)
+	EnrollServer(ctx context.Context, in *Enroll, opts ...grpc.CallOption) (*EnrollResponse, error)
 }
 
 type submissionServiceClient struct {
@@ -59,12 +61,23 @@ func (c *submissionServiceClient) CheckInterest(ctx context.Context, in *Purchas
 	return out, nil
 }
 
+func (c *submissionServiceClient) EnrollServer(ctx context.Context, in *Enroll, opts ...grpc.CallOption) (*EnrollResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(EnrollResponse)
+	err := c.cc.Invoke(ctx, SubmissionService_EnrollServer_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SubmissionServiceServer is the server API for SubmissionService service.
 // All implementations must embed UnimplementedSubmissionServiceServer
 // for forward compatibility.
 type SubmissionServiceServer interface {
 	CheckAvailabilty(context.Context, *Process) (*ProcessResponse, error)
 	CheckInterest(context.Context, *Purchase) (*PurchaseResponse, error)
+	EnrollServer(context.Context, *Enroll) (*EnrollResponse, error)
 	mustEmbedUnimplementedSubmissionServiceServer()
 }
 
@@ -80,6 +93,9 @@ func (UnimplementedSubmissionServiceServer) CheckAvailabilty(context.Context, *P
 }
 func (UnimplementedSubmissionServiceServer) CheckInterest(context.Context, *Purchase) (*PurchaseResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckInterest not implemented")
+}
+func (UnimplementedSubmissionServiceServer) EnrollServer(context.Context, *Enroll) (*EnrollResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EnrollServer not implemented")
 }
 func (UnimplementedSubmissionServiceServer) mustEmbedUnimplementedSubmissionServiceServer() {}
 func (UnimplementedSubmissionServiceServer) testEmbeddedByValue()                           {}
@@ -138,6 +154,24 @@ func _SubmissionService_CheckInterest_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SubmissionService_EnrollServer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Enroll)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SubmissionServiceServer).EnrollServer(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SubmissionService_EnrollServer_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SubmissionServiceServer).EnrollServer(ctx, req.(*Enroll))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SubmissionService_ServiceDesc is the grpc.ServiceDesc for SubmissionService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -152,6 +186,10 @@ var SubmissionService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CheckInterest",
 			Handler:    _SubmissionService_CheckInterest_Handler,
+		},
+		{
+			MethodName: "EnrollServer",
+			Handler:    _SubmissionService_EnrollServer_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

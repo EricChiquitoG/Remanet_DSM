@@ -1,13 +1,27 @@
 version: '3.8'
 
 services:
+
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    ports:
+      - "0.0.0.0:8080:8080"
+      - "50050:50050"
+    environment:
+      - GRPC_PORT=50050
+
   server1:
     build:
       context: .
       dockerfile: Dockerfile.server
+    depends_on:
+      - client
     ports:
       - "50051:50051"
     environment:
+      - ServiceName = server1
       - GRPC_PORT=50051
       - Company=CleanIO
 
@@ -15,9 +29,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.server
+    depends_on:
+      - client
     ports:
       - "50052:50052"
     environment:
+      - ServiceName = server2
       - GRPC_PORT=50052
       - Company=toothW
 
@@ -26,9 +43,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.server
+    depends_on:
+      - client
     ports:
       - "50053:50053"
     environment:
+      - ServiceName = server3
       - GRPC_PORT=50053
       - Company=Workshoppen
 
@@ -36,9 +56,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.customer
+    depends_on:
+      - client
     ports:
       - "50054:50054"
     environment:
+      - ServiceName = server4
       - GRPC_PORT=50054
       - Company=CustA
 
@@ -46,9 +69,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.customer
+    depends_on:
+    - client
     ports:
       - "50055:50055"
     environment:
+      - ServiceName = server5
       - GRPC_PORT=50055
       - Company=CustB
 
@@ -57,19 +83,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.customer
+    depends_on:
+      - client
     ports:
       - "50056:50056"
     environment:
+      - ServiceName = server6
       - GRPC_PORT=50056
       - Company=Custc
 
-  client:
-    build:
-      context: .
-      dockerfile: Dockerfile.client
-    depends_on:
-      - server1
-      - server2
-      - server3
-    ports:
-      - "0.0.0.0:8080:8080"

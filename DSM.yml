@@ -1,0 +1,64 @@
+openapi: '3.0.3'
+info:
+  title: Demand Supply Matching System
+  version: '2.1'
+servers:
+  - url: http://localhost:8080
+paths:
+  /get_options:
+    post:
+      summary: Submit product to match and possible routes involving the product class
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product_match:
+                  type: string
+                  description: The name or product class of the product to match
+                  example: IE4
+                routes:
+                  type: object
+                  description: A map of route ID's and the different steps associated to these routes
+                  additionalProperties:
+                    type: array
+                    items:
+                      type: string
+                  example:
+                    R1: ["KL01", "KL02", "KL03", "KL05"]
+                    R2: ["KL01", "KL02", "KL04"]
+                    R3: ["KL01", "KL02", "KL05"]
+                starting_point:
+                  type: array
+                  description: Geographic coordinates of the user requesting route calculation to DSM [lat,lon]
+                  minItems: 2
+                  maxItems: 2
+                  items:
+                    type: number
+                  example: [45.464664, 9.188540]
+              required:
+                - product_match
+                - routes
+                - starting_point
+      responses:
+        '200':
+          description: Route Calculated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  customer:
+                    type: string
+                    description: Selected end product customer.
+                  final_logistics:
+                    type: number
+                    description: Final calculated logistics cost for the selected route.
+                  message:
+                    type: string
+                    description: Status message.
+                  selected_route:
+                    type: string
+                    description: Route selected for the remanufacturing strategy 
