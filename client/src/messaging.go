@@ -111,6 +111,7 @@ func ProcessDirectory(c *gin.Context) {
 		pathList := pathMaker(route_c, taskN, resultMap, routeIndex, PossibleRoutesI, route)
 		PossibleRoutes[index] = pathList
 	}
+	fmt.Println(PossibleRoutes)
 	distances := costCalculator(dir, PossibleRoutes, costs, &allCost, &request)
 	var wg sync.WaitGroup
 	results_log := make(chan Result)

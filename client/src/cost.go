@@ -37,10 +37,11 @@ type AllCost struct {
 }
 
 // TransportCosts holds predefined values for different transport mechanisms
+
 var TransportEmissions = map[string]float64{
-	"Truck": 0.1,   // Example values
-	"Train": 0.015, // Lower emissions per km
-	"Ship":  0.03,  // Even lower emissions
+	"Truck": 0.1,
+	"Train": 0.015,
+	"Ship":  0.03,
 }
 
 // Creates a map with the locations of each company

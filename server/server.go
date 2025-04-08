@@ -49,6 +49,7 @@ func main() {
 	port := os.Getenv("GRPC_PORT")
 	name := os.Getenv("Company")
 	servername := os.Getenv("ServiceName")
+	address := servername + ":" + port
 	Offerings := []string{"KL01", "KL02", "KL03"}
 	Location := []float64{65.584816, 22.156704}
 	CostH := 101.22
@@ -62,7 +63,7 @@ func main() {
 	// Create a client
 	client := pb.NewSubmissionServiceClient(conn)
 
-	response := EnrollService(client, name, servername, Location, CostH, Offerings)
+	response := EnrollService(client, name, address, Location, CostH, Offerings)
 
 	fmt.Println(response)
 	// setup a listener on port 9001
