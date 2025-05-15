@@ -5,10 +5,6 @@ import (
 	"fmt"
 	"math"
 	"sort"
-
-	"github.com/daveroberts0321/distancecalculator"
-	"gonum.org/v1/gonum/graph"
-	"gonum.org/v1/gonum/graph/simple"
 )
 
 type Cost struct {
@@ -53,88 +49,6 @@ var TransportEmissions = map[string]float64{
 	"Ship":  0.03,
 }
 
-// Creates a map with the locations of each company
-func locationMapper(dir *Directory, r *RouteRequest) map[string]distancecalculator.Coord {
-	companyLocations := make(map[string]distancecalculator.Coord)
-
-	for _, contact := range dir.Contacts {
-		companyLocations[contact.Name] = distancecalculator.Coord{
-			Lat:  contact.Location[0],
-			Long: contact.Location[1],
-		}
-	}
-	companyLocations["origin"] = distancecalculator.Coord{
-		Lat:  r.StartingPoint[0],
-		Long: r.StartingPoint[1],
-	}
-	return companyLocations
-}
-
-// Calculates the distance between two companies
-func logistics(locations map[string]distancecalculator.Coord, compA, compB string) (float64, error) {
-	destinations := []distancecalculator.Coord{locations[compB]}
-	distances, err := distancecalculator.Kilometers(locations[compA], destinations)
-	if err != nil {
-		fmt.Println("Error calculating distances:", err)
-		return 0, err
-	}
-	return distances[0], nil
-}
-
-func costCalculator(dir *Directory, possibleRoutes map[string][][]string, cost *CostData, allCost *AllCost, request *RouteRequest) *AllCost {
-	var co2, energy, cost_eur float64
-	companyLocations := locationMapper(dir, request)
-	fmt.Println(companyLocations)
-	for routeID, route := range possibleRoutes {
-		co2, energy, cost_eur = 0, 0, 0
-		//Iterate over the different tasks associated with that route
-		for _, task := range request.Routes[routeID] {
-			//Iterate over the processes in the cost JSON
-			for _, process := range cost.Processes {
-				//Match if the process is in the cost json
-				if task == process.ProcessID {
-					co2 += process.Co2Em
-					energy += process.Energy
-					cost_eur += process.Cost
-					break
-				}
-			}
-		}
-		for _, option := range route {
-			currentCost := OptionCost{
-				RouteID: routeID,
-				Route:   request.Routes[routeID],
-				Option:  option,
-				CO2Em:   co2,
-				Energy:  energy,
-				CostEUR: cost_eur,
-			}
-			for i := range option {
-				if i != 0 {
-					if option[i] != option[i-1] {
-						distance, err := logistics(companyLocations, option[i], option[i-1])
-						if err != nil {
-							fmt.Println("Calculating logistics:", err)
-							return allCost
-						}
-						currentCost.Logistics += distance * (TransportEmissions["Truck"] * 10)
-					}
-				} else {
-					distance, err := logistics(companyLocations, option[i], "origin")
-					if err != nil {
-						fmt.Println("Calculating logistics:", err)
-						return allCost
-					}
-					currentCost.Logistics += distance * (TransportEmissions["Truck"] * 10)
-				}
-			}
-			allCost.Options = append(allCost.Options, currentCost)
-
-		}
-
-	}
-	return Sort_Options(allCost)
-}
 func DatatoCost(json_data []byte) (*CostData, error) {
 	var cost CostData
 	err := json.Unmarshal(json_data, &cost)
@@ -176,7 +90,6 @@ func Costs(filename string) (*CostData, error) {
 func DistanceMatrixConstructor(LocAddresses *LocAdd) (DistanceMatrix map[string]map[string]float64) {
 	n := len(LocAddresses.Contacts)
 	distanceMatrix := make(map[string]map[string]float64)
-	fmt.Println(LocAddresses.Contacts)
 	for i := 0; i < n; i++ {
 		from := LocAddresses.Contacts[i].Name
 		distanceMatrix[from] = make(map[string]float64)
@@ -218,84 +131,6 @@ func Haversine(Point1, Point2 []float64) float64 {
 
 	// Distance in km
 	return R * c
-}
-
-func layerMap(dir *Directory, capMap map[string][]string, processList []string, originNode Node, endNode Node) (map[int][]Node, []string) {
-	// map[step][]Node
-	layers := make(map[int][]Node)
-	processList = append([]string{"P0"}, processList...) // prepend
-	processList = append(processList, "PN")
-	idCounter := int64(0)
-	for stepIdx, process := range processList { // e.g., ["P1", "P2", "P3"]
-		if stepIdx == 0 {
-			layers[stepIdx] = append(layers[stepIdx], originNode)
-			idCounter++
-		}
-
-		for _, company := range dir.Contacts {
-
-			if hasProcess(process, company.Name, capMap) {
-				node := Node{
-					ID:      idCounter,
-					Company: company.Name,
-					Step:    stepIdx,
-					Process: process,
-				}
-				layers[stepIdx] = append(layers[stepIdx], node)
-				idCounter++
-			}
-		}
-		//fmt.Println(stepIdx, len(processList))
-		if stepIdx == len(processList)-1 {
-			layers[stepIdx] = append(layers[stepIdx], endNode)
-			return layers, processList
-		}
-	}
-	return layers, processList
-}
-func hasProcess(process string, company string, klMap map[string][]string) bool {
-	if companies, ok := klMap[process]; ok {
-		for _, c := range companies {
-			if c == company {
-				return true
-			}
-		}
-	}
-	return false
-}
-
-func graphConstructor(layerMap map[int][]Node, costMatrix map[string]map[string]float64, routeSteps []string) graph.WeightedDirected {
-	g := simple.NewWeightedDirectedGraph(0, 0)
-
-	for _, nodes := range layerMap {
-		for _, node := range nodes {
-			g.AddNode(simple.Node(node.ID))
-		}
-	}
-
-	// Assume distanceMatrix[companyA][companyB] is precomputed
-	for i := 0; i < len(routeSteps)-1; i++ {
-		for _, from := range layerMap[i] {
-			for _, to := range layerMap[i+1] {
-				if from.Company != to.Company {
-					cost := costMatrix[from.Company][to.Company]
-					g.SetWeightedEdge(g.NewWeightedEdge(
-						simple.Node(from.ID),
-						simple.Node(to.ID),
-						cost,
-					))
-				} else {
-					// same company does two steps, no transport needed
-					g.SetWeightedEdge(g.NewWeightedEdge(
-						simple.Node(from.ID),
-						simple.Node(to.ID),
-						0,
-					))
-				}
-			}
-		}
-	}
-	return g
 }
 
 func CreateCostMatrixFromResults(rc ResultCollection, costs *CostData) (map[string]map[string]float64, error) {

@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"os"
 	"slices"
-	"sort"
 	"sync"
 	"time"
 
@@ -79,15 +78,11 @@ func ProcessDirectory(c *gin.Context) {
 		log.Fatalf("Error: %v", err)
 
 	}
-	results := make(chan Result)                  // Channel to collect results
-	var PossibleRoutesI [][]string                //Individual routes
-	PossibleRoutes := make(map[string][][]string) //All routes
-	var taskN = 0
+	results := make(chan Result) // Channel to collect results
 
 	processToFetch := GetDistinct(request.Routes)
 
 	resultCollection := ResultCollection{}
-	resultCollectionLog := ResultCollection{}
 
 	defer close(results)
 
@@ -164,78 +159,6 @@ func ProcessDirectory(c *gin.Context) {
 		"message": "Data received successfully",
 		"Options": optResults,
 	})
-	//_____________From here we do the changes, this map is what we need to construct the graph
-	//First we need to calculate the matrix of distances between all companies
-	routeIndex := indexBuilder(resultMap)
-	for index, route := range request.Routes {
-
-		route_c := []string{}
-		taskN = 0
-		pathList := pathMaker(route_c, taskN, resultMap, routeIndex, PossibleRoutesI, route)
-		PossibleRoutes[index] = pathList
-	}
-	var wg sync.WaitGroup
-	results_log := make(chan Result)
-	for _, PClass := range PClasses.PClasses {
-		if PClass.PClass == product_match {
-			for _, customer := range PClass.Users {
-				wg.Add(1)
-				go func(customer Customer) {
-					defer wg.Done() // Ensure goroutine is marked as done
-
-					// Establish a gRPC connection to the contact's server
-					conn, err := grpc.NewClient(customer.Address, grpc.WithTransportCredentials(insecure.NewCredentials()))
-					if err != nil {
-						return
-					}
-					defer conn.Close()
-
-					// Create a client
-					client := pb.NewSubmissionServiceClient(conn)
-
-					response := CheckCustomer(client, product_match)
-
-					if response.Capability {
-						results_log <- Result{
-							ContactName: customer.UID,
-							Capability:  true,
-						}
-						return
-
-					}
-				}(customer)
-
-			}
-			go func() {
-				wg.Wait()
-				close(results_log) // Close channel when done
-			}()
-			for res := range results_log {
-				resultCollectionLog.Results = append(resultCollectionLog.Results, res)
-			}
-			if len(resultCollectionLog.Results) == 0 {
-				fmt.Println("No results received.")
-			} else {
-				fmt.Println("Results received:", resultCollectionLog.Results)
-				break
-			}
-
-		}
-	}
-
-	// Collect results
-
-	sort.Slice(resultCollectionLog.Results, func(i, j int) bool {
-		return resultCollectionLog.Results[i].TotalLogistics < resultCollectionLog.Results[j].TotalLogistics
-	})
-
-	c.JSON(http.StatusOK, gin.H{
-		"message":         "Data received successfully",
-		"customer":        resultCollectionLog.Results[0].ContactName,
-		"final_logistics": resultCollectionLog.Results[0].TotalLogistics,
-		"selected_route":  resultCollectionLog.Results[0].Response,
-		//"Options":         distances,
-	})
 
 }
 
@@ -262,38 +185,6 @@ func exportToJson(processes []string, CostMatrix map[string]map[string]float64, 
 		fmt.Println("Data written to output.json")
 	}
 	return data
-}
-
-func indexBuilder(taskMap map[string][]string) []string {
-	keys := make([]string, 0, len(taskMap))
-	for key := range taskMap {
-		keys = append(keys, key)
-	}
-
-	sort.Strings(keys)
-	return keys
-}
-
-func pathMaker(path_c []string, taskN int, taskMap map[string][]string, index []string, routes [][]string, route []string) [][]string {
-	if taskN == len(route) {
-		routes = append(routes, append([]string{}, path_c...))
-
-	} else {
-
-		for _, key := range index {
-			if key == route[taskN] { // Match found
-				for _, com := range taskMap[key] {
-					newPath := append([]string{}, path_c...)
-					newPath = append(newPath, com)
-					routes = pathMaker(newPath, taskN+1, taskMap, index, routes, route) // Move to the next in `route`
-				}
-				break // Stop searching once we find the correct key
-			}
-		}
-
-	}
-	return routes
-
 }
 
 func FindCommon(list1, list2 []string) []string {
