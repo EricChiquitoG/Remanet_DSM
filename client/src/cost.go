@@ -7,6 +7,8 @@ import (
 	"sort"
 
 	"github.com/daveroberts0321/distancecalculator"
+	"gonum.org/v1/gonum/graph"
+	"gonum.org/v1/gonum/graph/simple"
 )
 
 type Cost struct {
@@ -34,6 +36,13 @@ type OptionCost struct {
 
 type AllCost struct {
 	Options []OptionCost `json:"options"`
+}
+
+type Node struct {
+	ID      int64
+	Company string
+	Step    int    // step associated with the process, same company can be in different or all steps
+	Process string //?
 }
 
 // TransportCosts holds predefined values for different transport mechanisms
@@ -75,6 +84,7 @@ func logistics(locations map[string]distancecalculator.Coord, compA, compB strin
 func costCalculator(dir *Directory, possibleRoutes map[string][][]string, cost *CostData, allCost *AllCost, request *RouteRequest) *AllCost {
 	var co2, energy, cost_eur float64
 	companyLocations := locationMapper(dir, request)
+	fmt.Println(companyLocations)
 	for routeID, route := range possibleRoutes {
 		co2, energy, cost_eur = 0, 0, 0
 		//Iterate over the different tasks associated with that route
@@ -163,6 +173,28 @@ func Costs(filename string) (*CostData, error) {
 	return dir, err
 }
 
+func DistanceMatrixConstructor(LocAddresses *LocAdd) (DistanceMatrix map[string]map[string]float64) {
+	n := len(LocAddresses.Contacts)
+	distanceMatrix := make(map[string]map[string]float64)
+	fmt.Println(LocAddresses.Contacts)
+	for i := 0; i < n; i++ {
+		from := LocAddresses.Contacts[i].Name
+		distanceMatrix[from] = make(map[string]float64)
+		for j := 0; j < n; j++ {
+			to := LocAddresses.Contacts[j].Name
+			if i == j {
+				distanceMatrix[from][to] = 0
+				continue
+			}
+			p1 := []float64{LocAddresses.Contacts[i].Location[0], LocAddresses.Contacts[i].Location[1]}
+			p2 := []float64{LocAddresses.Contacts[j].Location[0], LocAddresses.Contacts[j].Location[1]}
+			d := Haversine(p1, p2)
+			distanceMatrix[from][to] = d
+		}
+	}
+	return distanceMatrix
+}
+
 // haversine calculates the distance between two points (lat1, lon1) and (lat2, lon2) in kilometers
 func Haversine(Point1, Point2 []float64) float64 {
 	const R = 6371 // Earth radius in km
@@ -186,4 +218,116 @@ func Haversine(Point1, Point2 []float64) float64 {
 
 	// Distance in km
 	return R * c
+}
+
+func layerMap(dir *Directory, capMap map[string][]string, processList []string, originNode Node, endNode Node) (map[int][]Node, []string) {
+	// map[step][]Node
+	layers := make(map[int][]Node)
+	processList = append([]string{"P0"}, processList...) // prepend
+	processList = append(processList, "PN")
+	idCounter := int64(0)
+	for stepIdx, process := range processList { // e.g., ["P1", "P2", "P3"]
+		if stepIdx == 0 {
+			layers[stepIdx] = append(layers[stepIdx], originNode)
+			idCounter++
+		}
+
+		for _, company := range dir.Contacts {
+
+			if hasProcess(process, company.Name, capMap) {
+				node := Node{
+					ID:      idCounter,
+					Company: company.Name,
+					Step:    stepIdx,
+					Process: process,
+				}
+				layers[stepIdx] = append(layers[stepIdx], node)
+				idCounter++
+			}
+		}
+		//fmt.Println(stepIdx, len(processList))
+		if stepIdx == len(processList)-1 {
+			layers[stepIdx] = append(layers[stepIdx], endNode)
+			return layers, processList
+		}
+	}
+	return layers, processList
+}
+func hasProcess(process string, company string, klMap map[string][]string) bool {
+	if companies, ok := klMap[process]; ok {
+		for _, c := range companies {
+			if c == company {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func graphConstructor(layerMap map[int][]Node, costMatrix map[string]map[string]float64, routeSteps []string) graph.WeightedDirected {
+	g := simple.NewWeightedDirectedGraph(0, 0)
+
+	for _, nodes := range layerMap {
+		for _, node := range nodes {
+			g.AddNode(simple.Node(node.ID))
+		}
+	}
+
+	// Assume distanceMatrix[companyA][companyB] is precomputed
+	for i := 0; i < len(routeSteps)-1; i++ {
+		for _, from := range layerMap[i] {
+			for _, to := range layerMap[i+1] {
+				if from.Company != to.Company {
+					cost := costMatrix[from.Company][to.Company]
+					g.SetWeightedEdge(g.NewWeightedEdge(
+						simple.Node(from.ID),
+						simple.Node(to.ID),
+						cost,
+					))
+				} else {
+					// same company does two steps, no transport needed
+					g.SetWeightedEdge(g.NewWeightedEdge(
+						simple.Node(from.ID),
+						simple.Node(to.ID),
+						0,
+					))
+				}
+			}
+		}
+	}
+	return g
+}
+
+func CreateCostMatrixFromResults(rc ResultCollection, costs *CostData) (map[string]map[string]float64, error) {
+
+	// Initialize the cost matrix
+	matrix := make(map[string]map[string]float64)
+	// Create a lookup for ProcessID -> Cost
+	costLookup := make(map[string]float64)
+	for _, p := range costs.Processes {
+		costLookup[p.ProcessID] = p.Cost
+	}
+	for _, res := range rc.Results {
+		company := res.ContactName
+		matrix[company] = make(map[string]float64)
+
+		for _, p := range costs.Processes {
+			if contains(res.Matches, p.ProcessID) {
+				matrix[company][p.ProcessID] = costLookup[p.ProcessID]
+			} else {
+				matrix[company][p.ProcessID] = 0
+			}
+		}
+	}
+
+	return matrix, nil
+}
+
+func contains(list []string, val string) bool {
+	for _, v := range list {
+		if v == val {
+			return true
+		}
+	}
+	return false
 }

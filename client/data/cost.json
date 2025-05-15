@@ -35,6 +35,13 @@
         "Co2_em": 5.0,
         "Energy": 50.0,
         "Cost": 400
+      },
+      {
+        "ProcessID": "end",
+        "ProcessName": "EndCustomer Search",
+        "Co2_em": 0,
+        "Energy": 0,
+        "Cost": 1
       }
     ]
 }

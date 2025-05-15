@@ -35,7 +35,25 @@
                 "Stock":110
             }
         ]
-      }
+      },
+      {
+        "ProcessID": "KL03",
+        "ProcessName": "Component_change",
+        "Products": [
+            {
+                "Product_name": "IE4",
+                "Stock":100
+            },
+            {
+                "Product_name":"IE5",
+                "Stock":150
+            },
+            {
+                "Product_name":"IE3",
+                "Stock":110
+            }
+        ]
+        }
     ]
   }
 

@@ -22,6 +22,7 @@ const (
 	SubmissionService_CheckAvailabilty_FullMethodName = "/DSM.SubmissionService/CheckAvailabilty"
 	SubmissionService_CheckInterest_FullMethodName    = "/DSM.SubmissionService/CheckInterest"
 	SubmissionService_EnrollServer_FullMethodName     = "/DSM.SubmissionService/EnrollServer"
+	SubmissionService_Optimize_FullMethodName         = "/DSM.SubmissionService/Optimize"
 )
 
 // SubmissionServiceClient is the client API for SubmissionService service.
@@ -31,6 +32,7 @@ type SubmissionServiceClient interface {
 	CheckAvailabilty(ctx context.Context, in *Process, opts ...grpc.CallOption) (*ProcessResponse, error)
 	CheckInterest(ctx context.Context, in *Purchase, opts ...grpc.CallOption) (*PurchaseResponse, error)
 	EnrollServer(ctx context.Context, in *Enroll, opts ...grpc.CallOption) (*EnrollResponse, error)
+	Optimize(ctx context.Context, in *OptimizationRequest, opts ...grpc.CallOption) (*OptimizationResponse, error)
 }
 
 type submissionServiceClient struct {
@@ -71,6 +73,16 @@ func (c *submissionServiceClient) EnrollServer(ctx context.Context, in *Enroll, 
 	return out, nil
 }
 
+func (c *submissionServiceClient) Optimize(ctx context.Context, in *OptimizationRequest, opts ...grpc.CallOption) (*OptimizationResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(OptimizationResponse)
+	err := c.cc.Invoke(ctx, SubmissionService_Optimize_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SubmissionServiceServer is the server API for SubmissionService service.
 // All implementations must embed UnimplementedSubmissionServiceServer
 // for forward compatibility.
@@ -78,6 +90,7 @@ type SubmissionServiceServer interface {
 	CheckAvailabilty(context.Context, *Process) (*ProcessResponse, error)
 	CheckInterest(context.Context, *Purchase) (*PurchaseResponse, error)
 	EnrollServer(context.Context, *Enroll) (*EnrollResponse, error)
+	Optimize(context.Context, *OptimizationRequest) (*OptimizationResponse, error)
 	mustEmbedUnimplementedSubmissionServiceServer()
 }
 
@@ -96,6 +109,9 @@ func (UnimplementedSubmissionServiceServer) CheckInterest(context.Context, *Purc
 }
 func (UnimplementedSubmissionServiceServer) EnrollServer(context.Context, *Enroll) (*EnrollResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method EnrollServer not implemented")
+}
+func (UnimplementedSubmissionServiceServer) Optimize(context.Context, *OptimizationRequest) (*OptimizationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Optimize not implemented")
 }
 func (UnimplementedSubmissionServiceServer) mustEmbedUnimplementedSubmissionServiceServer() {}
 func (UnimplementedSubmissionServiceServer) testEmbeddedByValue()                           {}
@@ -172,6 +188,24 @@ func _SubmissionService_EnrollServer_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SubmissionService_Optimize_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OptimizationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SubmissionServiceServer).Optimize(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SubmissionService_Optimize_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SubmissionServiceServer).Optimize(ctx, req.(*OptimizationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SubmissionService_ServiceDesc is the grpc.ServiceDesc for SubmissionService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -190,6 +224,10 @@ var SubmissionService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "EnrollServer",
 			Handler:    _SubmissionService_EnrollServer_Handler,
+		},
+		{
+			MethodName: "Optimize",
+			Handler:    _SubmissionService_Optimize_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

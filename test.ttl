@@ -1,0 +1,177 @@
+@prefix ex: <https://example.org/steel#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix cros: <http://www.semanticweb.org/cao/ontologies/CROS#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.w3.org/2002/07/owl#> .
+
+[ rdf:type owl:Ontology ;
+   owl:imports <http://www.semanticweb.org/cao/ontologies/CROS>
+ ] .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#hasCapacity
+cros:hasCapacity rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#hasCertificateId
+cros:hasCertificateId rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#hasCoolingMethod
+cros:hasCoolingMethod rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#hasCountryOfOrigin
+cros:hasCountryOfOrigin rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#hasEnergyConsumption
+cros:hasEnergyConsumption rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#hasGWP
+cros:hasGWP rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#hasLength
+cros:hasLength rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#hasLocation
+cros:hasLocation rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#hasManufacturingDate
+cros:hasManufacturingDate rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#hasName
+cros:hasName rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#hasProcess
+cros:hasProcess rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#hasProducer
+cros:hasProducer rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#hasProductName
+cros:hasProductName rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#hasTemperature
+cros:hasTemperature rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#hasThickness
+cros:hasThickness rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#hasVATId
+cros:hasVATId rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#hasWeight
+cros:hasWeight rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#hasWidth
+cros:hasWidth rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#producedIn
+cros:producedIn rdf:type owl:AnnotationProperty .
+
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#usesMachine
+cros:usesMachine rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Datatypes
+#################################################################
+
+###  http://www.w3.org/2001/XMLSchema#date
+xsd:date rdf:type rdfs:Datatype .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#Facility
+cros:Facility rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#Machine
+cros:Machine rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#Manufacturer
+cros:Manufacturer rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/cao/ontologies/CROS#Process
+cros:Process rdf:type owl:Class .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  https://example.org/steel#HotRollingProcess
+ex:HotRollingProcess rdf:type owl:NamedIndividual ,
+                              cros:Process ;
+                     cros:hasCoolingMethod "Water Quenching" ;
+                     cros:hasTemperature "1200.0"^^xsd:float .
+
+
+###  https://example.org/steel#RollingFacility001
+ex:RollingFacility001 rdf:type owl:NamedIndividual ,
+                               cros:Facility ;
+                      cros:hasLocation "Duisburg, Germany" ;
+                      cros:hasName "XYZ Steel Rolling Mill" ;
+                      cros:usesMachine ex:RollingMillMachine001 .
+
+
+###  https://example.org/steel#RollingMillMachine001
+ex:RollingMillMachine001 rdf:type owl:NamedIndividual ,
+                                  cros:Machine ;
+                         cros:hasCapacity "10000.0"^^xsd:float ;
+                         cros:hasEnergyConsumption "500.0"^^xsd:float ;
+                         cros:hasProcess ex:HotRollingProcess .
+
+
+###  https://example.org/steel#SteelCoil001
+ex:SteelCoil001 rdf:type owl:NamedIndividual ,
+                         cros:SteelCoil ;
+                cros:hasCertificateId "CERT-2024-STEEL-XYZ" ;
+                cros:hasCountryOfOrigin "Germany" ;
+                cros:hasGWP "2.1"^^xsd:float ;
+                cros:hasLength "5000.0"^^xsd:float ;
+                cros:hasManufacturingDate "2024-03-10"^^xsd:date ;
+                cros:hasProducer ex:SteelManufacturerXYZ ;
+                cros:hasProductName "Premium Structural Steel Coil" ;
+                cros:hasThickness "6.0"^^xsd:float ;
+                cros:hasVATId "DE123456789" ;
+                cros:hasWeight "5000.0"^^xsd:float ;
+                cros:hasWidth "1500.0"^^xsd:float ;
+                cros:producedIn ex:RollingFacility001 .
+
+
+###  https://example.org/steel#SteelManufacturerXYZ
+ex:SteelManufacturerXYZ rdf:type owl:NamedIndividual ,
+                                 cros:Manufacturer ;
+                        cros:hasLocation "Duisburg, Germany" ;
+                        cros:hasName "XYZ Steel Corp" .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi

@@ -11,6 +11,7 @@ service SubmissionService {
     rpc CheckAvailabilty(Process) returns (ProcessResponse) {}
     rpc CheckInterest(Purchase) returns (PurchaseResponse) {}
     rpc EnrollServer(Enroll) returns (EnrollResponse) {}
+    rpc Optimize (OptimizationRequest) returns (OptimizationResponse) {}
 }
 
 message Process {
@@ -57,3 +58,29 @@ message EnrollResponse {
     string status = 1;
     string message = 2;
 }
+
+message OptimizationRequest {
+    // Structure should match the data needed by your Python optimization code
+    // Based on your previous discussion, this might include:
+    // Or you could structure it more granularly:
+    string json_problem_data = 1; // Send the entire problem JSON as a string
+}
+  
+  
+  // Message for the response (data sent from Python back to Go)
+  message OptimizationResponse {
+    // Structure should match the results you want to send back
+    // This could be the Pareto front solutions and objectives
+    repeated Solution solutions = 1;
+    string error_message = 2; // Optional field for error handling
+  }
+  
+  // Message to represent a single solution from the optimization
+  message Solution {
+      repeated int32 user_indices = 1; // The sequence of user indices
+      repeated string user_ids = 2; // The sequence of user IDs
+      double transport_cost = 3;
+      double manufacturing_cost = 4;
+      // Add other relevant solution details if needed
+  }
+  

@@ -46,6 +46,10 @@
         "ProcessName": "Dissasembly",
         "Products": [
             {
+                "Product_name": "IE3",
+                "Stock":100
+            },
+            {
                 "Product_name": "IE4",
                 "Stock":100
             },

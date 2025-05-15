@@ -11,6 +11,8 @@ services:
       - "50050:50050"
     environment:
       - GRPC_PORT=50050
+    networks:
+      - optNetwork
 
   server1:
     build:
@@ -24,6 +26,8 @@ services:
       - ServiceName = server1
       - GRPC_PORT=50051
       - Company=CleanIO
+    networks:
+        - optNetwork
 
   server2:
     build:
@@ -37,6 +41,8 @@ services:
       - ServiceName = server2
       - GRPC_PORT=50052
       - Company=toothW
+    networks:
+      - optNetwork
 
 
   server3:
@@ -51,6 +57,8 @@ services:
       - ServiceName = server3
       - GRPC_PORT=50053
       - Company=Workshoppen
+    networks:
+      - optNetwork
 
   server4:
     build:
@@ -64,6 +72,8 @@ services:
       - ServiceName = server4
       - GRPC_PORT=50054
       - Company=CustA
+    networks:
+      - optNetwork
 
   server5:
     build:
@@ -77,6 +87,8 @@ services:
       - ServiceName = server5
       - GRPC_PORT=50055
       - Company=CustB
+    networks:
+      - optNetwork
 
 
   server6:
@@ -91,4 +103,9 @@ services:
       - ServiceName = server6
       - GRPC_PORT=50056
       - Company=Custc
+    networks:
+      - optNetwork
 
+networks:
+  optNetwork:
+    external: true

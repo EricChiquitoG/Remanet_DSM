@@ -17,9 +17,19 @@ type Contact struct {
 	Offerings []string  `json:"Offerings"`
 }
 
+type LocationsAddresses struct {
+	Name     string    `json:"Name"`
+	Address  string    `json:"Address"`
+	Location []float64 `json:"Location"`
+}
+
 // Define the Directory struct
 type Directory struct {
 	Contacts []Contact `json:"Contacts"`
+}
+
+type LocAdd struct {
+	Contacts []LocationsAddresses `json:"Contacts"`
 }
 
 type Customer struct {
@@ -88,6 +98,15 @@ func DataToDir(json_data []byte) (*Directory, error) {
 
 	return &directory, nil
 }
+func DataToLoc(json_data []byte) (*LocAdd, error) {
+	var directory LocAdd
+	err := json.Unmarshal(json_data, &directory)
+	if err != nil {
+		return nil, fmt.Errorf("error unmarshalling JSON: %v", err)
+	}
+
+	return &directory, nil
+}
 
 func MyDir(filename string) (*Directory, error) {
 	jsonbytes, err := ReadJSONFile(filename)
@@ -101,6 +120,19 @@ func MyDir(filename string) (*Directory, error) {
 	return dir, err
 }
 
+func MyLocs(filename string) (*LocAdd, error) {
+	jsonbytes, err := ReadJSONFile(filename)
+	if err != nil {
+		return nil, fmt.Errorf("error opening file: %v", err)
+	}
+	dir, err := DataToLoc(jsonbytes)
+	if err != nil {
+		return nil, fmt.Errorf("error opening file: %v", err)
+	}
+	fmt.Println(dir)
+	return dir, err
+}
+
 func UpdateJson(newContact Contact) error {
 	dir, err := MyDir("./data/directory.json")
 	if err != nil {
@@ -108,14 +140,14 @@ func UpdateJson(newContact Contact) error {
 	}
 	dir.Contacts = append(dir.Contacts, newContact)
 	// Step 4: Marshal back to JSON
-	updatedJSON, err := json.MarshalIndent(dir, "", "  ")
-	if err != nil {
-		return fmt.Errorf("error marshaling updated data: %v", err)
-	}
+	//updatedJSON, err := json.MarshalIndent(dir, "", "  ")
+	//if err != nil {
+	//	return fmt.Errorf("error marshaling updated data: %v", err)
+	//}
 
 	// Step 5: Write back to the file
-	if err := os.WriteFile("./data/directory.json", updatedJSON, 0644); err != nil {
-		return fmt.Errorf("error writing updated JSON to file: %v", err)
-	}
+	//if err := os.WriteFile("./data/directory.json", updatedJSON, 0644); err != nil {
+	//	return fmt.Errorf("error writing updated JSON to file: %v", err)
+	//}
 	return nil
 }

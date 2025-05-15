@@ -1,0 +1,50 @@
+{
+    "CostMatrix": {
+      "CleanIO": {
+        "KL01": 100,
+        "KL02": 200,
+        "KL03": 300,
+        "KL04": 0,
+        "KL05": 0
+      },
+      "Workshoppen": {
+        "KL01": 0,
+        "KL02": 200,
+        "KL03": 300,
+        "KL04": 320,
+        "KL05": 400
+      },
+      "toothW": {
+        "KL01": 0,
+        "KL02": 0,
+        "KL03": 300,
+        "KL04": 320,
+        "KL05": 500
+      }
+    },
+    "matrix": {
+      "CleanIO": {
+        "CleanIO": 0,
+        "Workshoppen": 1497.236141461616,
+        "toothW": 2370.412397774286
+      },
+      "Workshoppen": {
+        "CleanIO": 1497.2361414616153,
+        "Workshoppen": 0,
+        "toothW": 901.0304630958917
+      },
+      "toothW": {
+        "CleanIO": 2370.4123977742847,
+        "Workshoppen": 901.030463095891,
+        "toothW": 0
+      }
+    },
+    "processes": [
+      "KL01",
+      "KL02",
+      "KL03",
+      "KL04",
+      "KL05"
+    ]
+  }
+  

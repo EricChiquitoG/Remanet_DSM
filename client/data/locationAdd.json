@@ -1,0 +1,34 @@
+{
+    "Contacts": [
+      {
+        "Name": "CleanIO",
+        "Address": "server1:50051",
+        "Location": [65.584816, 22.156704]      
+        },
+      {
+        "Name": "toothW",
+        "Address": "server2:50052",
+        "Location":[45.464664, 9.188540]
+      },
+      {
+        "Name": "Workshoppen",
+        "Address": "server3:50053",
+        "Location": [53.551086, 9.993682]
+      },
+      {
+        "Name": "Act2",
+        "Address": "server4:50054",
+        "Location": [99.83864389320978, 46.93859406038372]
+      },
+      {
+        "Name": "Act17",
+        "Address": "server5:50055",
+        "Location": [40.09404873835969, 75.1153244924268]
+      },
+      {
+        "Name": "Act22",
+        "Address": "server6:50056",
+        "Location": [82.39108694057353, 40.932125675422726]
+      }
+    ]
+  }
