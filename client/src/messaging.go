@@ -55,111 +55,179 @@ func ProcessDirectory(c *gin.Context) {
 
 	// Bind JSON to the struct
 	if err := c.ShouldBindJSON(&request); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Invalid JSON format: %v", err)})
 		return
 	}
+
 	product_match := request.ProductMatch
+	processToFetch := GetDistinct(request.Routes) // Assuming request.Routes is the source
+
+	// --- Load Data from Files ---
+	// Replace log.Fatalf with error checking and JSON responses
 
 	dir, err := MyDir("./data/directory.json")
 	if err != nil {
-		log.Fatalf("Error: %v", err)
+		log.Printf("Error loading directory.json: %v", err) // Log the error on the server side
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to load directory data: %v", err)})
+		return // Stop processing and return error response
 	}
+
 	addLoc, err := MyLocs("./data/locationAdd.json")
 	if err != nil {
-		log.Fatalf("Error: %v", err)
+		log.Printf("Error loading locationAdd.json: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to load location data: %v", err)})
+		return
 	}
+
 	PClasses, err := getInterests("./data/interests.json")
 	if err != nil {
-		log.Fatalf("Error: %v", err)
+		log.Printf("Error loading interests.json: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to load interests data: %v", err)})
+		return
 	}
 
 	costs, err := Costs("./data/cost.json")
 	if err != nil {
-		log.Fatalf("Error: %v", err)
-
+		log.Printf("Error loading cost.json: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to load cost data: %v", err)})
+		return
 	}
-	results := make(chan Result) // Channel to collect results
 
-	processToFetch := GetDistinct(request.Routes)
+	// --- Process Contacts using Goroutines ---
+	// Correctly collect results from goroutines
 
-	resultCollection := ResultCollection{}
-
-	defer close(results)
+	// Use a buffered channel if you know the number of contacts, or unbuffered is fine too.
+	// The size should be at least the number of goroutines launched.
+	resultsChan := make(chan Result, len(dir.Contacts))
 
 	// Launch a goroutine for each contact
 	for _, contact := range dir.Contacts {
 		go func(contact Contact) {
+
 			address := contact.Address
 			prList := FindCommon(processToFetch, contact.Offerings)
 
-			// Establish a gRPC connection to the contact's server
+			// Add a timeout context for the gRPC dial and call
+			// Establish a gRPC connection to the contact's server with context
 			conn, err := grpc.NewClient(address, grpc.WithTransportCredentials(insecure.NewCredentials()))
 			if err != nil {
-				results <- Result{
+				log.Printf("Failed to connect to %s (%s): %v", contact.Name, address, err) // Log the specific failure
+				resultsChan <- Result{
 					ContactName: contact.Name,
-					//Response:    fmt.Sprintf("Failed to connect: %v", err),
+					Response:    fmt.Sprintf("Failed to connect to %s: %v", address, err), // Send error message in Response field
 				}
-				return
+				return // Exit this goroutine
 			}
-			defer conn.Close()
+			defer conn.Close() // Ensure connection is closed
 
 			// Create a client
-			client := pb.NewSubmissionServiceClient(conn)
+			client := pb.NewSubmissionServiceClient(conn) // Assuming this is the correct client type for Ping
 
-			// Ping the server, need to change later when we add different messages
-			response := Ping(client, prList, product_match)
-			results <- Result{
-				ContactName: contact.Name,
-				Matches:     response.Capability,
+			// Ping the server with context
+			response, err := Ping(client, prList, product_match)
+			if err != nil {
+				log.Printf("gRPC Ping failed for %s (%s): %v", contact.Name, address, err) // Log the specific failure
+				resultsChan <- Result{
+					ContactName: contact.Name,
+					Response:    fmt.Sprintf("gRPC Ping failed: %v", err), // Send error message
+				}
+				return // Exit this goroutine
 			}
-		}(contact)
-		resultCollection.Results = append(resultCollection.Results, <-results)
-	}
-	/* 	originNode := Node{
-	   		ID:      0,
-	   		Company: "origin",
-	   		Step:    0,
-	   		Process: "Alpha",
-	   	}
-	   	endNode := Node{
-	   		ID:      100,
-	   		Company: "end",
-	   		Step:    100,
-	   		Process: "Omega",
-	   	} */
-	resultMap := CreateMap(processToFetch, resultCollection)
-	resCollectionCustomer, custResponses := customerSearch(product_match, PClasses, dir)
-	// Append elements from both customer and TechProvider responses
-	for key, val := range custResponses {
-		resultMap[key] = val
-	}
-	resultCollection.Results = append(resultCollection.Results, resCollectionCustomer.Results...)
 
+			// If successful, send the result to the channel
+			resultsChan <- Result{
+				ContactName: contact.Name,
+				Matches:     response.Capability, // Assuming response has a Capability field
+				Response:    "Success",           // Indicate success
+			}
+		}(contact) // Pass the contact variable to the goroutine
+	}
+
+	// Collect results from the channel
+	resultCollection := ResultCollection{}
+
+	// If not using WaitGroup (simpler for fixed number of goroutines), collect exactly len(dir.Contacts) results:
+	for i := 0; i < len(dir.Contacts); i++ {
+		resultCollection.Results = append(resultCollection.Results, <-resultsChan)
+	}
+
+	// --- Process Customer Search ---
+	resCollectionCustomer, custResponses := customerSearch(product_match, PClasses)
+
+	originProcess := ResultCollection{}
+	originProcess.Results = append(originProcess.Results, Result{ContactName: "origin",
+		Matches:    []string{"origin"},
+		Capability: true})
+
+	// --- Combine Results ---
+	resultMap := CreateMap(processToFetch, resultCollection) // Create map from contact results
+	for key, val := range custResponses {
+		resultMap[key] = val // Append customer results to the map
+	}
+	resultCollection.Results = append(resultCollection.Results, resCollectionCustomer.Results...) // Append customer results to the collection
+
+	resultCollection.Results = append(resultCollection.Results, originProcess.Results...)
+	// --- Create Cost Matrix and Distance Matrix ---
 	CostMatrix, err := CreateCostMatrixFromResults(resultCollection, costs)
 	if err != nil {
-		log.Fatalf("Error: %v", err)
+		log.Printf("Error creating CostMatrix: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to create cost matrix: %v", err)})
+		return
 	}
-	distMatrix := DistanceMatrixConstructor(addLoc)
-	processToFetch = append(processToFetch, "end")
-	jsonData := exportToJson(processToFetch, CostMatrix, distMatrix)
+
+	origin := request.StartingPoint                         // Assuming StartingPoint is in RouteRequest
+	distMatrix := DistanceMatrixConstructor(origin, addLoc) // Assuming this function exists and works
+
+	// --- Prepare and Send Optimization Request to Pymoo Runner ---
+	// Replace log.Fatalf with error checking and JSON responses
+
+	// Prepare JSON data for the optimization service
+	// Ensure processToFetch includes all necessary processes for the optimization service
+	optimizationProcesses := make([]string, 0, len(processToFetch)+2)
+	optimizationProcesses = append(optimizationProcesses, "origin")
+	optimizationProcesses = append(optimizationProcesses, processToFetch...)
+	optimizationProcesses = append(optimizationProcesses, "end")
+	fmt.Println(optimizationProcesses)
+	jsonData := exportToJson(optimizationProcesses, CostMatrix, distMatrix)
+
+	// Connect to the pymoo-runner gRPC server with context
+	// Replace "pymoo-runner:50060" with the correct address (e.g., service name in Docker Compose)
 	conn, err := connectToServer("pymoo-runner:50060")
 	if err != nil {
-		log.Fatalf("failed to connect to server: %v", err)
+		log.Printf("Failed to connect to pymoo-runner: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to connect to optimization service: %v", err)})
+		return
 	}
 	defer conn.Close()
-	client := pb.NewSubmissionServiceClient(conn)
-	fmt.Println("sending", jsonData)
-	res, err := sendOptimize(jsonData, client)
-	if err != nil {
-		log.Fatalf("failed to send optimization request: %v", err)
-	}
-	// Process the response
-	optResults := processOptimizationResponse(res)
-	c.JSON(http.StatusOK, gin.H{
-		"message": "Data received successfully",
-		"Options": optResults,
-	})
 
+	// Create the optimization client
+	clientOpt := pb.NewSubmissionServiceClient(conn) // Assuming OptimizationService is defined in your proto
+
+	// Send the optimization request with context
+	fmt.Println("sending", jsonData)              // Keep for debugging if needed
+	res, err := sendOptimize(jsonData, clientOpt) // Pass context and clientOpt
+	if err != nil {
+		log.Printf("Failed to send optimization request to pymoo-runner: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Optimization request failed: %v", err)})
+		return
+	}
+
+	// --- Process Optimization Response and Return to Client ---
+	// processOptimizationResponse now returns JSON string and error
+	optResultsJSON, err := processOptimizationResponse(res)
+	if err != nil {
+		log.Printf("Error processing optimization response: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to process optimization results: %v", err)})
+		return
+	}
+
+	// Return success response with optimization results JSON
+	// Use c.Data or c.String if you want to return raw JSON string directly
+	// Or if you want to wrap it in another JSON object:
+	c.JSON(http.StatusOK, gin.H{
+		"message":             "Optimization completed successfully",
+		"optimizationResults": optResultsJSON, // Embed the JSON string as raw JSON
+	})
 }
 
 func exportToJson(processes []string, CostMatrix map[string]map[string]float64, distM map[string]map[string]float64) map[string]interface{} {
@@ -236,7 +304,7 @@ func GetDistinct(routes map[string][]string) []string {
 
 }
 
-func Ping(c pb.SubmissionServiceClient, tasks []string, product string) *pb.ProcessResponse {
+func Ping(c pb.SubmissionServiceClient, tasks []string, product string) (*pb.ProcessResponse, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	now := time.Now()
@@ -255,11 +323,11 @@ func Ping(c pb.SubmissionServiceClient, tasks []string, product string) *pb.Proc
 		return &pb.ProcessResponse{
 			Status:  "Error",
 			Message: fmt.Sprintf("Failed to check availability: %v", err),
-		}
+		}, err
 	}
 
 	// Return the successful server response
-	return serverResponse
+	return serverResponse, nil
 }
 
 func CheckCustomer(c pb.SubmissionServiceClient, product string) *pb.PurchaseResponse {
@@ -308,13 +376,14 @@ func sendOptimize(jsonData map[string]interface{}, c pb.SubmissionServiceClient)
 }
 
 // processOptimizationResponse handles printing the results or error message from the response.
-func processOptimizationResponse(res *pb.OptimizationResponse) OptimizationResults {
+func processOptimizationResponse(res *pb.OptimizationResponse) (OptimizationResults, error) {
 	results := OptimizationResults{} // Initialize the results struct
 
 	if res.ErrorMessage != "" {
 		// If there's an error message from the server
 
 		log.Printf("Optimization returned an error message from the server: %s", res.ErrorMessage) // Log the server-side error
+		return results, fmt.Errorf(res.ErrorMessage)
 	} else if len(res.Solutions) > 0 {
 		// If solutions were returned
 
@@ -336,7 +405,7 @@ func processOptimizationResponse(res *pb.OptimizationResponse) OptimizationResul
 		log.Println("Optimization finished but returned no solutions (might be infeasible).") // Log this case
 	}
 
-	return results // Return the populated struct
+	return results, nil // Return the populated struct
 }
 
 // connectToServer establishes a gRPC connection to the specified address.
@@ -350,7 +419,7 @@ func connectToServer(address string) (*grpc.ClientConn, error) {
 	return conn, nil
 }
 
-func customerSearch(product_match string, PClasses *PClasses, dir *Directory) (ResultCollection, map[string][]string) {
+func customerSearch(product_match string, PClasses *PClasses) (ResultCollection, map[string][]string) {
 	var wg sync.WaitGroup
 	endMap := make(map[string][]string)
 	resultCollectionLog := ResultCollection{}
@@ -362,10 +431,6 @@ func customerSearch(product_match string, PClasses *PClasses, dir *Directory) (R
 				go func(customer Customer) {
 					defer wg.Done() // Ensure goroutine is marked as done
 
-					distanceMap := make(map[string]float64)
-					for _, contact := range dir.Contacts {
-						distanceMap[contact.Name] = Haversine(contact.Location, customer.Location)
-					}
 					// Establish a gRPC connection to the contact's server
 					conn, err := grpc.NewClient(customer.Address, grpc.WithTransportCredentials(insecure.NewCredentials()))
 					if err != nil {

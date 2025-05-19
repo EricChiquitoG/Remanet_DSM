@@ -87,9 +87,10 @@ func Costs(filename string) (*CostData, error) {
 	return dir, err
 }
 
-func DistanceMatrixConstructor(LocAddresses *LocAdd) (DistanceMatrix map[string]map[string]float64) {
-	n := len(LocAddresses.Contacts)
+func DistanceMatrixConstructor(origin []float64, LocAddresses *LocAdd) (DistanceMatrix map[string]map[string]float64) {
+	n := len(LocAddresses.Contacts) + 1
 	distanceMatrix := make(map[string]map[string]float64)
+	LocAddresses.Contacts = append(LocAddresses.Contacts, LocationsAddresses{Name: "origin", Location: origin})
 	for i := 0; i < n; i++ {
 		from := LocAddresses.Contacts[i].Name
 		distanceMatrix[from] = make(map[string]float64)

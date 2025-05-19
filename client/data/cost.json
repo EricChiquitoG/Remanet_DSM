@@ -42,6 +42,13 @@
         "Co2_em": 0,
         "Energy": 0,
         "Cost": 1
+      },
+      {
+        "ProcessID": "origin",
+        "ProcessName": "BeginCustomer Search",
+        "Co2_em": 0,
+        "Energy": 0,
+        "Cost": 1
       }
     ]
 }

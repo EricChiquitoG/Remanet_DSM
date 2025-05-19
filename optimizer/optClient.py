@@ -32,10 +32,10 @@ class SubmissionServicer(DSM_pb2_grpc.SubmissionServiceServicer):
 
             # 3. Define the algorithm (can be configured via request if needed)
             algorithm = NSGA2(
-                pop_size=200,
+                pop_size=300,
                 sampling=opt.CapableUserSampling(),
-                crossover=UniformCrossover(prob=0.9),
-                mutation=PolynomialMutation(prob=1.0/problem.n_var, eta=20, vtype=int),
+                crossover=UniformCrossover(prob=0.7),
+                mutation=PolynomialMutation(prob=1.0/problem.n_var, eta=40, vtype=int),
                 eliminate_duplicates=True
             )
 
