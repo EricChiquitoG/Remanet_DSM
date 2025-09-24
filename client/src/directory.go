@@ -3,9 +3,17 @@ package src
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"log"
 	"os"
+)
+
+var (
+	directory    *Directory
+	providers    *ProviderData
+	providersDir *ProviderDirectory
+	locations    *LocAdd
+	pclasses     *CustomerInterests
+	costs        *CostData
 )
 
 // Define the Process struct
@@ -44,93 +52,105 @@ type PClassEntry struct {
 	Users  []Customer `json:"users"`
 }
 
-// Root structure that holds all PClass entries
-type PClasses struct {
-	PClasses []PClassEntry `json:"PClasses"`
+// Structs for interests
+type CustomerInterests struct {
+	Customers []CustomerInterested `json:"Customers"`
 }
+
+type CustomerInterested struct {
+	Name     string    `json:"Name"`
+	Address  string    `json:"Address"`
+	Location []float64 `json:"location"`
+	PClasses []string  `json:"Pclasses"`
+}
+
+// End of structs for interests
+
+// Structs for provider directory
+type ProviderDirectory struct {
+	Providers []CustomerInterested `json:"Providers"`
+}
+
+// Structs for providers - Will change once I get input from partners
+type ProviderData struct {
+	Provider string  `json:"Provider"`
+	Motors   []Motor `json:"Motors"`
+}
+
+type Motor struct {
+	ID                string    `json:"ID"`
+	Model             string    `json:"Model"`
+	Description       string    `json:"Description"`
+	Manufacturer      string    `json:"Manufacturer"`
+	SerialNumber      string    `json:"SerialNumber"`
+	DateOfManufacture string    `json:"DateOfManufacture"`
+	CountryOfOrigin   string    `json:"CountryOfOrigin"`
+	TechnicalData     Technical `json:"TechnicalData"`
+	Materials         Materials `json:"Materials"`
+	Stock             int       `json:"Stock"`
+}
+
+type Technical struct {
+	Phase            int     `json:"Phase"`
+	RatedPower_kW    float64 `json:"RatedPower_kW"`
+	EfficiencyClass  string  `json:"EfficiencyClass"`
+	AxisHeight_mm    int     `json:"AxisHeight_mm"`
+	ShaftDiameter_mm int     `json:"ShaftDiameter_mm"`
+	ShaftLength_mm   int     `json:"ShaftLength_mm"`
+}
+
+type Materials struct {
+	Stator SubMaterial `json:"Stator"`
+	Rotor  SubMaterial `json:"Rotor"`
+}
+
+type SubMaterial struct {
+	Material     string  `json:"Material"`
+	MassFraction float64 `json:"MassFraction"`
+}
+
+// End of provider structs
 
 var Port = os.Getenv("GRPC_PORT")
 
 func ReadJSONFile(filename string) ([]byte, error) {
-	// Open the file
-	file, err := os.Open(filename)
-	if err != nil {
-		return nil, fmt.Errorf("error opening file: %v", err)
-	}
-	defer file.Close()
-
-	// Read the file contents
-	bytes, err := io.ReadAll(file)
-	if err != nil {
-		return nil, fmt.Errorf("error reading file: %v", err)
-	}
-	return bytes, nil
+	return os.ReadFile(filename)
 }
 
-func getInterestBytes(json_data []byte) (*PClasses, error) {
-	var products PClasses
-	err := json.Unmarshal(json_data, &products)
-	if err != nil {
+func ParseJSON[T any](data []byte) (*T, error) {
+	var obj T
+	if err := json.Unmarshal(data, &obj); err != nil {
 		return nil, fmt.Errorf("error unmarshalling JSON: %v", err)
 	}
-
-	return &products, nil
+	return &obj, nil
 }
 
-func getInterests(filename string) (*PClasses, error) {
-	jsonbytes, err := ReadJSONFile(filename)
+func LoadFromFile[T any](filename string) (*T, error) {
+	data, err := ReadJSONFile(filename)
 	if err != nil {
-		return nil, fmt.Errorf("error opening file: %v", err)
+		return nil, fmt.Errorf("error reading file %s: %v", filename, err)
 	}
-	dir, err := getInterestBytes(jsonbytes)
-	if err != nil {
-		return nil, fmt.Errorf("error opening file: %v", err)
-	}
-	return dir, err
+	return ParseJSON[T](data)
 }
 
-func DataToDir(json_data []byte) (*Directory, error) {
-	var directory Directory
-	err := json.Unmarshal(json_data, &directory)
-	if err != nil {
-		return nil, fmt.Errorf("error unmarshalling JSON: %v", err)
-	}
-
-	return &directory, nil
+func getInterests(filename string) (*CustomerInterests, error) {
+	return LoadFromFile[CustomerInterests](filename)
 }
-func DataToLoc(json_data []byte) (*LocAdd, error) {
-	var directory LocAdd
-	err := json.Unmarshal(json_data, &directory)
-	if err != nil {
-		return nil, fmt.Errorf("error unmarshalling JSON: %v", err)
-	}
 
-	return &directory, nil
+func getProvider(filename string) (*ProviderData, error) {
+	return LoadFromFile[ProviderData](filename)
+}
+
+func provDir(filename string) (*ProviderDirectory, error) {
+	return LoadFromFile[ProviderDirectory](filename)
 }
 
 func MyDir(filename string) (*Directory, error) {
-	jsonbytes, err := ReadJSONFile(filename)
-	if err != nil {
-		return nil, fmt.Errorf("error opening file: %v", err)
-	}
-	dir, err := DataToDir(jsonbytes)
-	if err != nil {
-		return nil, fmt.Errorf("error opening file: %v", err)
-	}
-	return dir, err
+	return LoadFromFile[Directory](filename)
 }
 
 func MyLocs(filename string) (*LocAdd, error) {
-	jsonbytes, err := ReadJSONFile(filename)
-	if err != nil {
-		return nil, fmt.Errorf("error opening file: %v", err)
-	}
-	dir, err := DataToLoc(jsonbytes)
-	if err != nil {
-		return nil, fmt.Errorf("error opening file: %v", err)
-	}
-	fmt.Println(dir)
-	return dir, err
+	return LoadFromFile[LocAdd](filename)
 }
 
 func UpdateJson(newContact Contact) error {
@@ -139,15 +159,36 @@ func UpdateJson(newContact Contact) error {
 		log.Fatalf("Error: %v", err)
 	}
 	dir.Contacts = append(dir.Contacts, newContact)
-	// Step 4: Marshal back to JSON
-	//updatedJSON, err := json.MarshalIndent(dir, "", "  ")
-	//if err != nil {
-	//	return fmt.Errorf("error marshaling updated data: %v", err)
-	//}
 
-	// Step 5: Write back to the file
-	//if err := os.WriteFile("./data/directory.json", updatedJSON, 0644); err != nil {
-	//	return fmt.Errorf("error writing updated JSON to file: %v", err)
-	//}
+	return nil
+}
+func InitData() error {
+	var err error
+
+	directory, err = MyDir("./data/directory.json")
+	if err != nil {
+		return fmt.Errorf("failed to load directory.json: %v", err)
+	}
+
+	providersDir, err = provDir("./data/providers.json")
+	if err != nil {
+		return fmt.Errorf("failed to load providers.json: %v", err)
+	}
+
+	locations, err = MyLocs("./data/locationAdd.json")
+	if err != nil {
+		return fmt.Errorf("failed to load locationAdd.json: %v", err)
+	}
+
+	pclasses, err = getInterests("./data/interests.json")
+	if err != nil {
+		return fmt.Errorf("failed to load interests.json: %v", err)
+	}
+
+	costs, err = Costs("./data/cost.json")
+	if err != nil {
+		return fmt.Errorf("failed to load cost.json: %v", err)
+	}
+
 	return nil
 }

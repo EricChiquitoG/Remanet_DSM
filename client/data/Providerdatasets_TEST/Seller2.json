@@ -1,0 +1,89 @@
+{
+    "Provider": "Seller2",
+    "Motors": [
+      {
+        "ID": "urn:remanet:motor:10",
+        "Model": "IM-330090",
+        "Description": "Medium motor for remanufacturing",
+        "Manufacturer": "MotorWorksA",
+        "SerialNumber": "734829",
+        "DateOfManufacture": "2005-11-12",
+        "CountryOfOrigin": "ES",
+        "TechnicalData": {
+          "Phase": 3,
+          "RatedPower_kW": 5.5,
+          "EfficiencyClass": "IE3",
+          "AxisHeight_mm": 112,
+          "ShaftDiameter_mm": 38,
+          "ShaftLength_mm": 160
+        },
+        "Materials": {
+          "Stator": {
+            "Material": "Fe-Si",
+            "MassFraction": 0.26
+          },
+          "Rotor": {
+            "Material": "Aluminium",
+            "MassFraction": 0.14
+          }
+        },
+        "Stock": 28
+      },
+      {
+        "ID": "urn:remanet:motor:11",
+        "Model": "IM-410180",
+        "Description": "Energy-efficient motor for recycling",
+        "Manufacturer": "MotorWorksB",
+        "SerialNumber": "845991",
+        "DateOfManufacture": "2008-07-05",
+        "CountryOfOrigin": "PL",
+        "TechnicalData": {
+          "Phase": 3,
+          "RatedPower_kW": 11.0,
+          "EfficiencyClass": "IE4",
+          "AxisHeight_mm": 160,
+          "ShaftDiameter_mm": 55,
+          "ShaftLength_mm": 230
+        },
+        "Materials": {
+          "Stator": {
+            "Material": "Fe-Si",
+            "MassFraction": 0.30
+          },
+          "Rotor": {
+            "Material": "Copper",
+            "MassFraction": 0.20
+          }
+        },
+        "Stock": 63
+      },
+      {
+        "ID": "urn:remanet:motor:12",
+        "Model": "IM-250060",
+        "Description": "Compact asynchronous motor",
+        "Manufacturer": "MotorWorksC",
+        "SerialNumber": "991276",
+        "DateOfManufacture": "2012-02-18",
+        "CountryOfOrigin": "SE",
+        "TechnicalData": {
+          "Phase": 1,
+          "RatedPower_kW": 2.2,
+          "EfficiencyClass": "IE2",
+          "AxisHeight_mm": 90,
+          "ShaftDiameter_mm": 28,
+          "ShaftLength_mm": 140
+        },
+        "Materials": {
+          "Stator": {
+            "Material": "Fe-Si",
+            "MassFraction": 0.22
+          },
+          "Rotor": {
+            "Material": "Aluminium",
+            "MassFraction": 0.12
+          }
+        },
+        "Stock": 47
+      }
+    ]
+  }

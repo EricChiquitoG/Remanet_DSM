@@ -1,0 +1,117 @@
+{
+    "Provider": "Seller1",
+    "Motors": [
+      {
+        "ID": "urn:remanet:motor:0",
+        "Model": "IM-340100",
+        "Description": "Asynchronous motor to be remanufactured",
+        "Manufacturer": "MotorManufacturer6",
+        "SerialNumber": "585186",
+        "DateOfManufacture": "1994-01-23",
+        "CountryOfOrigin": "GR",
+        "TechnicalData": {
+          "Phase": 3,
+          "RatedPower_kW": 4.0,
+          "EfficiencyClass": "IE4",
+          "AxisHeight_mm": 100,
+          "ShaftDiameter_mm": 40,
+          "ShaftLength_mm": 175
+        },
+        "Materials": {
+          "Stator": {
+            "Material": "Fe-Si",
+            "MassFraction": 0.231385
+          },
+          "Rotor": {
+            "Material": "Fe-Si",
+            "MassFraction": 0.116112
+          }
+        },
+        "Stock": 45
+      },
+      {
+        "ID": "urn:remanet:motor:1",
+        "Model": "IM-450200",
+        "Description": "High-efficiency motor for recycling",
+        "Manufacturer": "MotorManufacturerX",
+        "SerialNumber": "993201",
+        "DateOfManufacture": "2001-05-14",
+        "CountryOfOrigin": "DE",
+        "TechnicalData": {
+          "Phase": 3,
+          "RatedPower_kW": 7.5,
+          "EfficiencyClass": "IE3",
+          "AxisHeight_mm": 132,
+          "ShaftDiameter_mm": 50,
+          "ShaftLength_mm": 200
+        },
+        "Materials": {
+          "Stator": {
+            "Material": "Fe-Si",
+            "MassFraction": 0.25
+          },
+          "Rotor": {
+            "Material": "Aluminium",
+            "MassFraction": 0.12
+          }
+        },
+        "Stock": 72
+      },
+      {
+        "ID": "urn:remanet:motor:2",
+        "Model": "IM-220080",
+        "Description": "Compact motor for remanufacturing trials",
+        "Manufacturer": "MotorManufacturerY",
+        "SerialNumber": "774512",
+        "DateOfManufacture": "2010-03-09",
+        "CountryOfOrigin": "IT",
+        "TechnicalData": {
+          "Phase": 1,
+          "RatedPower_kW": 1.1,
+          "EfficiencyClass": "IE2",
+          "AxisHeight_mm": 80,
+          "ShaftDiameter_mm": 30,
+          "ShaftLength_mm": 120
+        },
+        "Materials": {
+          "Stator": {
+            "Material": "Fe-Si",
+            "MassFraction": 0.28
+          },
+          "Rotor": {
+            "Material": "Copper",
+            "MassFraction": 0.15
+          }
+        },
+        "Stock": 18
+      },
+      {
+        "ID": "urn:remanet:motor:3",
+        "Model": "IM-500315",
+        "Description": "Large industrial motor for dismantling",
+        "Manufacturer": "MotorManufacturerZ",
+        "SerialNumber": "112398",
+        "DateOfManufacture": "2015-08-22",
+        "CountryOfOrigin": "FR",
+        "TechnicalData": {
+          "Phase": 3,
+          "RatedPower_kW": 15.0,
+          "EfficiencyClass": "IE3",
+          "AxisHeight_mm": 180,
+          "ShaftDiameter_mm": 65,
+          "ShaftLength_mm": 280
+        },
+        "Materials": {
+          "Stator": {
+            "Material": "Fe-Si",
+            "MassFraction": 0.35
+          },
+          "Rotor": {
+            "Material": "Aluminium",
+            "MassFraction": 0.18
+          }
+        },
+        "Stock": 96
+      }
+    ]
+  }

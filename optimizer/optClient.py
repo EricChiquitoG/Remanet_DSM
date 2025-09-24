@@ -21,8 +21,6 @@ class SubmissionServicer(DSM_pb2_grpc.SubmissionServiceServicer):
         print("Received optimization request.")
 
         try:
-            # 1. Load data from the request JSON string
-            # Pass the hardcoded users_data_actors list
             manufacturing_route, users_data, transport_costs_matrix_users, loaded_cost_matrix, num_steps, num_users, users = opt.load_problem_data_from_json_string(request.json_problem_data)
 
 
@@ -44,26 +42,41 @@ class SubmissionServicer(DSM_pb2_grpc.SubmissionServiceServicer):
 
             # 5. Run the optimization
             print("Running optimization...")
-            res = minimize(
+            res_minimize = minimize(
                 problem,
                 algorithm,
                 termination,
                 seed=3,
-                save_history=True, # No need to save history for gRPC response
-                verbose=False # Don't print progress to server console
+                save_history=False, # Set to False for gRPC server to save memory
+                verbose=False,
+                # return_least_constrained=True # Remove this if it's causing issues or not recognized
             )
+
             print("Optimization finished.")
 
-            # 6. Format results into the gRPC response message
             response = DSM_pb2.OptimizationResponse()
 
-            if res.F is not None and len(res.F) > 0:
-                # Sort results (optional, but good for consistent output)
-                sorted_indices = np.lexsort((res.F[:, 1], res.F[:, 0])) # Sort by Manufacturing then Transport
+            #Entirety of the pareto population, change if needed to filter just a few or one ---> so far open
+            final_population = res_minimize.pop
 
-                for i in sorted_indices:
-                    user_sequence_indices = res.X[i]
-                    # Ensure indices are valid before looking up IDs
+            # Filter unfeasible solutions
+            feasible_solutions = [
+                ind for ind in final_population
+                if ind.G is None or np.all(ind.G <= 0)
+            ]
+            #Sort solutions
+            # May be a good idea to establish a limit for the ammount of options we return ______TO DO!!
+            sorted_solutions = sorted(
+                feasible_solutions,
+                key=lambda ind: (ind.get("rank"), -ind.get("crowding"))
+            )
+
+            if len(sorted_solutions) > 0:
+                for ind in sorted_solutions:
+                    # Access attributes directly from the Individual object
+                    user_sequence_indices = ind.X
+                    objectives = ind.F
+
                     if np.any(user_sequence_indices < 0) or np.any(user_sequence_indices >= num_users):
                          print(f"Warning: Skipping invalid solution with indices: {user_sequence_indices}")
                          continue # Skip this solution
@@ -71,14 +84,15 @@ class SubmissionServicer(DSM_pb2_grpc.SubmissionServiceServicer):
                     user_sequence_ids = [users_data[user_idx]['id'] for user_idx in user_sequence_indices]
 
                     solution_proto = DSM_pb2.Solution(
-                        user_indices=user_sequence_indices.tolist(), # Convert numpy array to list for proto
+                        user_indices=user_sequence_indices.tolist(), # Convert numpy array to list
                         user_ids=user_sequence_ids,
-                        transport_cost=res.F[i, 0],
-                        manufacturing_cost=res.F[i, 1]
+                        transport_cost=objectives[0], # First objective
+                        manufacturing_cost=objectives[1] # Second objective
+
                     )
                     response.solutions.append(solution_proto)
             else:
-                response.error_message = "Optimization did not find any feasible solutions."
+                response.error_message = "Optimization did not find any feasible solutions in the final population."
                 print(response.error_message)
 
 
@@ -97,13 +111,12 @@ class SubmissionServicer(DSM_pb2_grpc.SubmissionServiceServicer):
 def serve():
     """Starts the gRPC server."""
     print("Loading...") # This prints before server setup
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=50))
     DSM_pb2_grpc.add_SubmissionServiceServicer_to_server(
         SubmissionServicer(), server)
     server.add_insecure_port('[::]:50060')
     print("Starting gRPC server on port 50060...") # This prints before server.start()
     server.start()
-    # Add this line AFTER server.start()
     print("Server is running and waiting for requests on port 500...")
     try:
         while True:

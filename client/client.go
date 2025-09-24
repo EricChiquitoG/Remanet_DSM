@@ -19,6 +19,11 @@ type server struct {
 func main() {
 	// REST API setup
 	r := gin.Default()
+
+	if err := src.InitData(); err != nil {
+		log.Fatalf("Initialization error: %v", err)
+	}
+
 	r.POST("/get_options", src.ProcessDirectory)
 
 	// Start REST API server in a goroutine

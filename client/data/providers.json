@@ -1,0 +1,22 @@
+{
+    "Providers": [
+     {
+       "Name": "Seller1",
+       "Address": "./data/Providerdatasets_TEST/Seller1.json",
+       "Location": [99.83864389320978, 56.93859406038372],
+       "PClasses": ["IE3"]
+     },
+     {
+       "Name": "Seller2",
+       "Address": "./data/Providerdatasets_TEST/Seller2.json",
+       "Location": [23.09404873835969, 77.1153244924268],
+       "PClasses": ["IE3", "IE4", "IE5"]
+     },
+     {
+       "Name": "Seller3",
+       "Address": "./data/Providerdatasets_TEST/Seller3.json",
+       "Location": [82.39108694057353, 43.2125675422726],
+       "PClasses": ["IE5"]
+     }
+   ]
+   }

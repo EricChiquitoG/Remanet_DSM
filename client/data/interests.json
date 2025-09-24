@@ -1,55 +1,22 @@
 {
-    "PClasses": [
-      {
-        "PClass": "IE3",
-        "users": [
-          {
-            "uid": "Act2",
-            "Address": "server4:50054",
-            "location": [0.9983864389320978, 0.4693859406038372]
-          },
-          {
-            "uid": "Act17",
-            "Address": "server5:50055",
-            "location": [0.4009404873835969, 0.751153244924268]
-          }
-        ]
-      },
-      {
-        "PClass": "IE4",
-        "users": [
-          {
-            "uid": "Act2",
-            "Address": "server4:50054",
-            "location": [0.9983864389320978, 0.4693859406038372]
-          },
-          {
-            "uid": "Act17",
-            "Address": "server5:50055",
-            "location": [0.4009404873835969, 0.751153244924268]
-          },
-          {
-            "uid": "Act22",
-            "Address": "server6:50056",
-            "location": [0.8239108694057353, 0.40932125675422726]
-          }
-        ]
-      },
-      {
-        "PClass": "IE5",
-        "users": [
-          {
-            "uid": "Act17",
-            "Address": "server5:50055",
-            "location": [0.4009404873835969, 0.751153244924268]
-          },
-          {
-            "uid": "Act22",
-            "Address": "server6:50056",
-            "location": [0.8239108694057353, 0.40932125675422726]
-          }
-        ]
-      }
-    ]
+ "Customers": [
+  {
+    "Name": "Act2",
+    "Address": "server4:50054",
+    "Location": [99.83864389320978, 46.93859406038372],
+    "PClasses": ["IE3", "IE4"]
+  },
+  {
+    "Name": "Act17",
+    "Address": "server5:50055",
+    "Location": [40.09404873835969, 75.1153244924268],
+    "PClasses": ["IE3", "IE4", "IE5"]
+  },
+  {
+    "Name": "Act22",
+    "Address": "server6:50056",
+    "Location": [82.39108694057353, 40.932125675422726],
+    "PClasses": ["IE4", "IE5"]
   }
-  
+]
+}

@@ -106,6 +106,18 @@ services:
     networks:
       - optNetwork
 
+  optimizer:
+    build:
+      context: ./optimizer
+      dockerfile: Dockerfile
+    depends_on:
+      - client
+    ports:
+      - "50060:50060"
+    networks:
+      - optNetwork
+
+
 networks:
   optNetwork:
     external: true

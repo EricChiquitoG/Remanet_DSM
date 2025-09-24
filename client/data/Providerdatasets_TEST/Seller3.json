@@ -1,0 +1,89 @@
+{
+    "Provider": "Seller3",
+    "Motors": [
+      {
+        "ID": "urn:remanet:motor:20",
+        "Model": "IM-370150",
+        "Description": "Industrial motor for dismantling",
+        "Manufacturer": "EcoMotors1",
+        "SerialNumber": "552134",
+        "DateOfManufacture": "1999-09-21",
+        "CountryOfOrigin": "NL",
+        "TechnicalData": {
+          "Phase": 3,
+          "RatedPower_kW": 18.5,
+          "EfficiencyClass": "IE2",
+          "AxisHeight_mm": 200,
+          "ShaftDiameter_mm": 70,
+          "ShaftLength_mm": 310
+        },
+        "Materials": {
+          "Stator": {
+            "Material": "Fe-Si",
+            "MassFraction": 0.36
+          },
+          "Rotor": {
+            "Material": "Copper",
+            "MassFraction": 0.22
+          }
+        },
+        "Stock": 90
+      },
+      {
+        "ID": "urn:remanet:motor:21",
+        "Model": "IM-150040",
+        "Description": "Small motor for recycling line",
+        "Manufacturer": "EcoMotors2",
+        "SerialNumber": "661743",
+        "DateOfManufacture": "2018-06-02",
+        "CountryOfOrigin": "FI",
+        "TechnicalData": {
+          "Phase": 1,
+          "RatedPower_kW": 0.75,
+          "EfficiencyClass": "IE1",
+          "AxisHeight_mm": 63,
+          "ShaftDiameter_mm": 19,
+          "ShaftLength_mm": 95
+        },
+        "Materials": {
+          "Stator": {
+            "Material": "Fe-Si",
+            "MassFraction": 0.20
+          },
+          "Rotor": {
+            "Material": "Aluminium",
+            "MassFraction": 0.10
+          }
+        },
+        "Stock": 34
+      },
+      {
+        "ID": "urn:remanet:motor:22",
+        "Model": "IM-480220",
+        "Description": "Heavy-duty asynchronous motor",
+        "Manufacturer": "EcoMotors3",
+        "SerialNumber": "882356",
+        "DateOfManufacture": "2013-10-11",
+        "CountryOfOrigin": "AT",
+        "TechnicalData": {
+          "Phase": 3,
+          "RatedPower_kW": 22.0,
+          "EfficiencyClass": "IE4",
+          "AxisHeight_mm": 225,
+          "ShaftDiameter_mm": 80,
+          "ShaftLength_mm": 350
+        },
+        "Materials": {
+          "Stator": {
+            "Material": "Fe-Si",
+            "MassFraction": 0.38
+          },
+          "Rotor": {
+            "Material": "Aluminium",
+            "MassFraction": 0.25
+          }
+        },
+        "Stock": 58
+      }
+    ]
+  }
