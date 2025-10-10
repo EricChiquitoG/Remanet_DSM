@@ -85,7 +85,7 @@ func Costs(filename string) (*CostData, error) {
 	return dir, err
 }
 
-func DistanceMatrixConstructor(resultCollection ResultCollection) (DistanceMatrix map[string]map[string]float64) {
+func DistanceMatrixConstructor(resultCollection ResultCollection, dir *Directory) (DistanceMatrix map[string]map[string]float64) {
 	n := len(resultCollection.Results)
 	distanceMatrix := make(map[string]map[string]float64)
 
@@ -94,6 +94,10 @@ func DistanceMatrixConstructor(resultCollection ResultCollection) (DistanceMatri
 		distanceMatrix[from] = make(map[string]float64)
 		for j := 0; j < n; j++ {
 			to := resultCollection.Results[j].ContactName
+			if to == "SPIN_REDESIGN" || from == "SPIN_REDESIGN" {
+				distanceMatrix[from][to] = 0
+				continue
+			}
 			if i == j {
 				distanceMatrix[from][to] = 0
 				continue
@@ -128,23 +132,34 @@ func Haversine(Point1, Point2 []float64) float64 {
 	return R * c
 }
 
-func CreateCostMatrixFromResults(rc ResultCollection, costs *CostData) (map[string]map[string]float64, error) {
+func CreateCostMatrixFromResults(rc ResultCollection, costs *CostData, techProv *responsesTP) (map[string]map[string]float64, error) {
 
 	// Initialize the cost matrix
 	matrix := make(map[string]map[string]float64)
 	costLookup := make(map[string]float64)
+	baseCosts := []string{"origin", "end"}
 	for _, p := range costs.Processes {
 		costLookup[p.ProcessID] = p.Cost
 	}
 	for _, res := range rc.Results {
 		company := res.ContactName
 		matrix[company] = make(map[string]float64)
-
-		for _, p := range costs.Processes {
-			if contains(res.Matches, p.ProcessID) {
-				matrix[company][p.ProcessID] = costLookup[p.ProcessID]
-			} else {
-				matrix[company][p.ProcessID] = 0
+		if contains(baseCosts, res.Matches[0]) {
+			matrix[res.ContactName][res.Matches[0]] = 1
+		}
+		// Hardcoded Cost for redesign
+		if res.Matches[0] == "Redesign" {
+			matrix[res.ContactName][res.Matches[0]] = 100
+		}
+		for _, tp := range techProv.Responses {
+			if tp.uid == company {
+				for _, process := range tp.Processes {
+					if contains(res.Matches, process.ProcessName) {
+						matrix[company][process.ProcessName] = process.Cost
+					} else {
+						matrix[company][process.ProcessName] = 0
+					}
+				}
 			}
 		}
 	}

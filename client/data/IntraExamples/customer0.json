@@ -1,0 +1,403 @@
+{
+    "status": "success",
+    "data": {
+        "modelType": {
+            "name": "AssetAdministrationShell"
+        },
+        "idShort": "IM-340100",
+        "identification": {
+            "idType": "Custom",
+            "id": "urn:remanet:motor:0"
+        },
+        "dataSpecification": [],
+        "embeddedDataSpecifications": [],
+        "submodels": [
+            {
+                "idShort": "DigitalNameplate",
+                "identification": {
+                    "idType": "Custom",
+                    "id": "urn:remanet:motor:0:nameplate"
+                },
+                "dataSpecification": [],
+                "embeddedDataSpecifications": [],
+                "modelType": {
+                    "name": "Submodel"
+                },
+                "kind": "Instance",
+                "submodelElements": [
+                    {
+                        "idShort": "ManufacturerName",
+                        "modelType": {
+                            "name": "MultiLanguageProperty"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/Nameplate/3/0/ManufacturerName"
+                        },
+                        "value": {
+                            "langString": {
+                                "0": {
+                                    "language": "en",
+                                    "text": "MotorManufacturer6"
+                                }
+                            }
+                        },
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:motor:0:nameplate",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "SerialNumber",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/Nameplate/3/0/SerialNumber"
+                        },
+                        "valueType": "string",
+                        "value": "585186",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:motor:0:nameplate",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "ManufacturerProductDesignation",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/Nameplate/3/0/ManufacturerProductDesignation"
+                        },
+                        "valueType": "string",
+                        "value": "IM-340100",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:motor:0:nameplate",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "CountryOfOrigin",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/Nameplate/3/0/CountryOfOrigin"
+                        },
+                        "valueType": "string",
+                        "value": "GR",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:motor:0:nameplate",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "DateOfManufacture",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/Nameplate/3/0/DateOfManufacture"
+                        },
+                        "valueType": "date",
+                        "value": "1994-01-23",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:motor:0:nameplate",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "idShort": "TechnicalData",
+                "identification": {
+                    "idType": "Custom",
+                    "id": "urn:remanet:motor:0:technical-data"
+                },
+                "dataSpecification": [],
+                "embeddedDataSpecifications": [],
+                "modelType": {
+                    "name": "Submodel"
+                },
+                "kind": "Instance",
+                "submodelElements": [
+                    {
+                        "idShort": "axis_height",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "valueType": "int",
+                        "value": "100 mm",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:motor:0:technical-data",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "shaft_diameter",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "valueType": "int",
+                        "value": "40 mm",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:motor:0:technical-data",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "phase_n",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "valueType": "int",
+                        "value": "3",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:motor:0:technical-data",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "rated_power",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "valueType": "double",
+                        "value": "4.0 kW",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:motor:0:technical-data",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "rotor_lamination_material",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "valueType": "string",
+                        "value": "Fe-Si",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:motor:0:technical-data",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "ProductDesignation",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "valueType": "string",
+                        "value": "IM-340100",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:motor:0:technical-data",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "GeneralInformation",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "value": "IM-340100",
+                        "valueType": "string",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:motor:0:technical-data",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "efficiency_class",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "valueType": "string",
+                        "value": "IE4",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:motor:0:technical-data",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "stator_lamination_material",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "valueType": "string",
+                        "value": "Fe-Si",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:motor:0:technical-data",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "rotor_lamination_mass_fraction",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "valueType": "double",
+                        "value": "0.116112",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:motor:0:technical-data",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "shaft_length",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "valueType": "int",
+                        "value": "175 mm",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:motor:0:technical-data",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "stator_lamination_mass_fraction",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "valueType": "double",
+                        "value": "0.231385",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:motor:0:technical-data",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        ],
+        "asset": {
+            "keys": [
+                {
+                    "type": "Asset",
+                    "local": true,
+                    "value": "urn:remanet:motor:0",
+                    "idType": "Custom"
+                }
+            ],
+            "identification": {
+                "idType": "Custom",
+                "id": "urn:remanet:motor:0"
+            },
+            "idShort": "IM-340100",
+            "kind": "Instance",
+            "dataSpecification": [],
+            "modelType": {
+                "name": "Asset"
+            },
+            "category": "motor",
+            "embeddedDataSpecifications": []
+        },
+        "views": [],
+        "conceptDictionary": []
+    }
+}

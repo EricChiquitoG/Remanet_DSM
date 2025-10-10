@@ -1,0 +1,348 @@
+{
+    "status": "success",
+    "data": {
+        "modelType": {
+            "name": "AssetAdministrationShell"
+        },
+        "idShort": "Disassembler-0",
+        "identification": {
+            "idType": "Custom",
+            "id": "urn:remanet:org:disassembler:0"
+        },
+        "dataSpecification": [],
+        "embeddedDataSpecifications": [],
+        "submodels": [
+            {
+                "idShort": "CapabilityDescription",
+                "identification": {
+                    "idType": "Custom",
+                    "id": "urn:remanet:disassembler:0:capabilities:motor-remanufacturing"
+                },
+                "dataSpecification": [],
+                "embeddedDataSpecifications": [],
+                "modelType": {
+                    "name": "Submodel"
+                },
+                "kind": "Instance",
+                "submodelElements": [
+                    {
+                        "idShort": "cost_per_hour",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                        },
+                        "value": "58.61",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:disassembler:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        },
+                        "valueType": "double"
+                    },
+                    {
+                        "idShort": "co2_static_per_hour",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                        },
+                        "value": "64.03",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:disassembler:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        },
+                        "valueType": "double"
+                    },
+                    {
+                        "idShort": "PropertyComment",
+                        "modelType": {
+                            "name": "MultiLanguageProperty"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                        },
+                        "value": {
+                            "langString": {
+                                "0": {
+                                    "language": "en",
+                                    "text": "from dataset capability_2"
+                                }
+                            }
+                        },
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:disassembler:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "supports_axis_height_up_to",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                        },
+                        "value": "100",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:disassembler:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        },
+                        "valueType": "int"
+                    },
+                    {
+                        "idShort": "co2_dynamic_per_hour",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                        },
+                        "value": "46.21",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:disassembler:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        },
+                        "valueType": "double"
+                    },
+                    {
+                        "idShort": "CapabilityComment",
+                        "modelType": {
+                            "name": "MultiLanguageProperty"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/CapabilityComment/1/0"
+                        },
+                        "value": {
+                            "langString": {
+                                "0": {
+                                    "language": "en",
+                                    "text": "Disassembly capability for asynchronous motors incl. inspection and cleaning"
+                                }
+                            }
+                        },
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:disassembler:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "latitude",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityPropertyEnumType/Property/1/0"
+                        },
+                        "valueType": "double",
+                        "value": "0.22289895904981005",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:disassembler:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "throughput_per_hour",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                        },
+                        "value": "28",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:disassembler:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        },
+                        "valueType": "int"
+                    },
+                    {
+                        "idShort": "automated_cleaning",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                        },
+                        "value": "True",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:disassembler:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        },
+                        "valueType": "boolean"
+                    },
+                    {
+                        "idShort": "DisassemblyOfInductionMotor",
+                        "modelType": {
+                            "name": "Capability"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/Capability/1/0"
+                        },
+                        "qualifiers": [
+                            {
+                                "type": "https://admin-shell.io/idta/CapabilityDescription/CapabilityRoleQualifier/Offered/1/0",
+                                "valueType": "xs:boolean",
+                                "value": "true"
+                            },
+                            {
+                                "type": "https://admin-shell.io/idta/CapabilityDescription/CapabilityRoleQualifier/Required/1/0",
+                                "valueType": "xs:boolean",
+                                "value": "false"
+                            },
+                            {
+                                "type": "https://admin-shell.io/idta/CapabilityDescription/CapabilityRoleQualifier/NotAssigned/1/0",
+                                "valueType": "xs:boolean",
+                                "value": "false"
+                            }
+                        ],
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:disassembler:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "Property",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityPropertyEnumType/Property/1/0"
+                        },
+                        "valueType": "boolean",
+                        "value": "True",
+                        "qualifiers": [],
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:disassembler:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "longitude",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityPropertyEnumType/Property/1/0"
+                        },
+                        "valueType": "double",
+                        "value": "0.6823222267886113",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:disassembler:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        ],
+        "asset": {
+            "keys": [
+                {
+                    "type": "Asset",
+                    "local": true,
+                    "value": "urn:remanet:org:disassembler:0",
+                    "idType": "Custom"
+                }
+            ],
+            "identification": {
+                "idType": "Custom",
+                "id": "urn:remanet:org:disassembler:0"
+            },
+            "idShort": "Disassembler-0",
+            "kind": "Instance",
+            "dataSpecification": [],
+            "modelType": {
+                "name": "Asset"
+            },
+            "category": "motor",
+            "embeddedDataSpecifications": []
+        },
+        "views": [],
+        "conceptDictionary": []
+    }
+}

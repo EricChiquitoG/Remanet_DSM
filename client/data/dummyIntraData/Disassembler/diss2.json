@@ -1,0 +1,34 @@
+{
+    "ActorType": "Disassembler",
+    "ActorID" : "Diss2",
+    "ActorClass": "A",
+    "Location": [0.07, 34.26],
+    "ProcessingCapability": 10,
+    "AvailableProcesses": {
+      "Cleaning": {
+        "Co2Static": 6.2,
+        "CostEUR": 80.0
+      },
+      "Inspection": {
+        "Co2Static": 7.0,
+        "CostEUR": 120.0
+      },
+      "Disassembly": {
+        "Co2Static": 15.0,
+        "CostEUR": 200.0
+      },
+      "Reassembly": {
+        "Co2Static": 18.5,
+        "CostEUR": 220.0
+      },
+      "Certification": {
+        "Co2Static": 2.1,
+        "CostEUR": 50.5
+      }
+    },
+    "Requirements": {
+      "MaximumPower": 4.0,
+      "MaximumAxisHeight": 100,
+      "KnowHowFormalizationTool": false
+    }
+  }

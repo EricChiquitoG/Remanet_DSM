@@ -1,22 +1,49 @@
 {
     "Providers": [
-     {
-       "Name": "Seller1",
-       "Address": "./data/Providerdatasets_TEST/Seller1.json",
-       "Location": [99.83864389320978, 56.93859406038372],
-       "PClasses": ["IE3"]
-     },
-     {
-       "Name": "Seller2",
-       "Address": "./data/Providerdatasets_TEST/Seller2.json",
-       "Location": [23.09404873835969, 77.1153244924268],
-       "PClasses": ["IE3", "IE4", "IE5"]
-     },
-     {
-       "Name": "Seller3",
-       "Address": "./data/Providerdatasets_TEST/Seller3.json",
-       "Location": [82.39108694057353, 43.2125675422726],
-       "PClasses": ["IE5"]
-     }
-   ]
-   }
+      {
+        "Customers": [
+        {
+          "Name": "Customer1",
+          "Address": "./data/dummyIntraData/CustomerData/customer1.json",
+          "efficiency_class": "IE4",
+          "Location": [65.584816, 22.156704]
+        },
+        {
+          "Name": "Customer2",
+          "Address": "./data/dummyIntraData/CustomerData/customer2.json",
+          "efficiency_class": "IE2",
+          "Location": [65.584816, 22.156704] 
+        },
+        {
+          "Name": "Customer3",
+          "Address": "./data/dummyIntraData/CustomerData/customer3.json",
+          "efficiency_class": "IE2",
+          "Location": [65.584816, 22.156704]
+        }
+      ]
+      },
+      {
+        "Providers": [
+        {
+          "Name": "Provider1",
+          "Address": "./data/dummyIntraData/ProviderData/provider1.json",
+          "efficiency_class": "IE4",
+          "Location": [65.584816, 22.156704]
+        },
+        {
+          "Name": "Provider2",
+          "Address": "./data/dummyIntraData/ProviderData/provider2.json",
+          "efficiency_class": "IE4",
+          "Location": [65.584816, 22.156704] 
+        },
+        {
+          "Name": "Provider3",
+          "Address": "./data/dummyIntraData/ProviderData/provider3.json",
+          "efficiency_class": "IE3",
+          "Location": [65.584816, 22.156704]
+        }
+      ]
+      }
+      
+      ]
+    }

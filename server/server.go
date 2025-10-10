@@ -47,12 +47,12 @@ func (s *server) CheckAvailabilty(context context.Context, pr *pb.Process) (*pb.
 func main() {
 
 	port := os.Getenv("GRPC_PORT")
-	name := os.Getenv("Company")
-	servername := os.Getenv("ServiceName")
-	address := servername + ":" + port
-	Offerings := []string{"KL01", "KL02", "KL03"}
-	Location := []float64{65.584816, 22.156704}
-	CostH := 101.22
+	//name := os.Getenv("Company")
+	//servername := os.Getenv("ServiceName")
+	//address := servername + ":" + port
+	//Offerings := []string{"KL01", "KL02", "KL03"}
+	//Location := []float64{65.584816, 22.156704}
+	//CostH := 101.22
 
 	conn, err := grpc.NewClient("client:50050", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -61,11 +61,11 @@ func main() {
 	defer conn.Close()
 
 	// Create a client
-	client := pb.NewSubmissionServiceClient(conn)
+	//client := pb.NewSubmissionServiceClient(conn)
 
-	response := EnrollService(client, name, address, Location, CostH, Offerings)
+	//response := EnrollService(client, name, address, Location, CostH, Offerings)
 
-	fmt.Println(response)
+	//fmt.Println(response)
 	// setup a listener on port 9001
 	lis, err := net.Listen("tcp", ":"+port)
 	if err != nil {

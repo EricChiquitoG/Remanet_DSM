@@ -71,8 +71,10 @@ class SubmissionServicer(DSM_pb2_grpc.SubmissionServiceServicer):
                 key=lambda ind: (ind.get("rank"), -ind.get("crowding"))
             )
 
+            maxSol = 2
+
             if len(sorted_solutions) > 0:
-                for ind in sorted_solutions:
+                for ind in sorted_solutions[:maxSol]:
                     # Access attributes directly from the Individual object
                     user_sequence_indices = ind.X
                     objectives = ind.F

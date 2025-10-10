@@ -1,0 +1,22 @@
+{
+    "ActorType": "Shaft Manufacturer",
+    "ActorID" : "shaft2",
+    "ActorClass": "C",
+    "Location": [97.65, 50.46],
+    "ProcessingCapability": 23,
+    "AvailableProcesses": {
+      "Grinding": {
+        "Co2Static": 12.5,
+        "CostEUR": 54.34
+      },
+      "Turning": {
+        "Co2Static": 9.8,
+        "CostEUR": 32.66
+      }
+    },
+    "Requirements": {
+      "Tolerance": "good",
+      "MaximumLength": 275,
+      "MaximumDiameter": 60
+    }
+  }

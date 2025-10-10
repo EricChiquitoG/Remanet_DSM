@@ -1,0 +1,90 @@
+{
+    "Batch": 14,
+    "process_requirements": {
+      "product_match": "IE2",
+      "quantity": 4
+    },
+    "routes": {
+      "S1": {
+        "Cleaning": {
+          "Requirements": {
+            "axis_height": 77,
+            "power": 5.5,
+            "Redesign_tool": true
+          }
+        },
+        "Disassembly": {
+          "Requirements": {
+            "axis_height": 77,
+            "power": 5.5,
+            "Redesign_tool": true
+          }
+        },
+        "Punching": {
+          "Requirements": {
+            "axis_height": 77
+          }
+        },
+        "Turning": {
+          "Requirements": {
+            "tolerance": "high",
+            "length": 150,
+            "diameter": 70
+          }
+        },
+        "Grinding": {
+          "Requirements": {
+            "tolerance": "high",
+            "length": 150,
+            "diameter": 70
+          }
+        },
+        "Reassembly": {
+          "Requirements": {
+            "axis_height": 77,
+            "power": 5.5,
+            "Redesign_tool": true
+          }
+        },
+        "Certification": {
+          "Requirements": {
+            "axis_height": 77,
+            "power": 5.5,
+            "Redesign_tool": true
+          }
+        }
+      },
+      "S2": {
+        "Cleaning": {
+          "Requirements": {
+            "axis_height": 77,
+            "power": 5.5,
+            "Redesign_tool": true
+          }
+        },
+        "Disassembly": {
+          "Requirements": {
+            "axis_height": 77,
+            "power": 5.5,
+            "Redesign_tool": true
+          }
+        },
+        "Reassembly": {
+          "Requirements": {
+            "axis_height": 77,
+            "power": 5.5,
+            "Redesign_tool": true
+          }
+        },
+        "Certification": {
+          "Requirements": {
+            "axis_height": 77,
+            "power": 5.5,
+            "Redesign_tool": true
+          }
+        }
+      }
+    },
+    "starting_point": [49.464664, 9.18854],
+    "optimization_mode": "reverse"
+  }

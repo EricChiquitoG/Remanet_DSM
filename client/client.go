@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"log"
 	"net"
 	"os"
@@ -50,7 +49,7 @@ func main() {
 	}
 }
 
-func (s *server) EnrollServer(context context.Context, pr *pb.Enroll) (*pb.EnrollResponse, error) {
+/* func (s *server) EnrollServer(context context.Context, pr *pb.Enroll) (*pb.EnrollResponse, error) {
 
 	newContact := src.Contact{
 		Name:      pr.Name,
@@ -70,3 +69,4 @@ func (s *server) EnrollServer(context context.Context, pr *pb.Enroll) (*pb.Enrol
 		Message: "Ok",
 	}, nil
 }
+*/

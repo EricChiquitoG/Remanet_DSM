@@ -1,25 +1,55 @@
 {
-    "Contacts": [
+  "Contacts": {
+    "A": [
       {
-        "Name": "CleanIO",
-        "Address": "server1:50051",
-        "Location": [65.584816, 22.156704],
-        "cost_EURH": 92,
-        "Offerings": ["KL01","KL02","KL03"]
+        "Name": "Dissasembler0",
+        "Address": "urn:remanet:org:disassembler:0",
+        "Location": [65.584816, 22.156704]
       },
       {
-        "Name": "toothW",
-        "Address": "server2:50052",
-        "Location":[45.464664, 9.188540],
-        "cost_EURH": 110,
-        "Offerings": ["KL03","KL04","KL05"]
+        "Name": "Dissasembler1",
+        "Address": "urn:remanet:org:disassembler:1",
+        "Location": [21.584816, 2.156704]
       },
       {
-        "Name": "Workshoppen",
-        "Address": "server3:50053",
-        "Location": [53.551086, 9.993682],
-        "cost_EURH": 95,
-        "Offerings": ["KL01","KL04","KL05"]
+        "Name": "Dissasembler2",
+        "Address": "urn:remanet:org:disassembler:2",
+        "Location": [65.584816, 13.22]
+      }
+    ],
+    "C": [
+      {
+        "Name": "Shaft0",
+        "Address": "urn:remanet:org:shaft:0",
+        "Location": [41.22, 22.154]
+      },
+      {
+        "Name": "Shaft1",
+        "Address": "urn:remanet:org:shaft:1",
+        "Location": [42.584816, 21.156704]
+      },
+      {
+        "Name": "Shaft2",
+        "Address": "urn:remanet:org:shaft:2",
+        "Location": [69.584816, 22.156704]
+      }
+    ],
+    "D": [
+      {
+        "Name": "Lamination0",
+        "Address": "urn:remanet:org:lamination:0",
+        "Location": [55.584816, 9.10]
+      },
+      {
+        "Name": "Lamination1",
+        "Address": "urn:remanet:org:lamination:1",
+        "Location": [60.1, 19.10]
+      },
+      {
+        "Name": "Lamination2",
+        "Address": "urn:remanet:org:lamination:2",
+        "Location": [40.22, 29.10]
       }
     ]
   }
+}

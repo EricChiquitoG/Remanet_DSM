@@ -1,0 +1,326 @@
+{
+    "status": "success",
+    "data": {
+        "modelType": {
+            "name": "AssetAdministrationShell"
+        },
+        "idShort": "Lamination-0",
+        "identification": {
+            "idType": "Custom",
+            "id": "urn:remanet:org:lamination:0"
+        },
+        "dataSpecification": [],
+        "embeddedDataSpecifications": [],
+        "submodels": [
+            {
+                "idShort": "CapabilityDescription",
+                "identification": {
+                    "idType": "Custom",
+                    "id": "urn:remanet:lamination:0:capabilities:motor-remanufacturing"
+                },
+                "dataSpecification": [],
+                "embeddedDataSpecifications": [],
+                "modelType": {
+                    "name": "Submodel"
+                },
+                "kind": "Instance",
+                "submodelElements": [
+                    {
+                        "idShort": "cost_per_hour",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                        },
+                        "value": "54.1",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:lamination:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        },
+                        "valueType": "double"
+                    },
+                    {
+                        "idShort": "co2_static_per_hour",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                        },
+                        "value": "37.49",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:lamination:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        },
+                        "valueType": "double"
+                    },
+                    {
+                        "idShort": "PropertyComment",
+                        "modelType": {
+                            "name": "MultiLanguageProperty"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                        },
+                        "value": {
+                            "langString": {
+                                "0": {
+                                    "language": "en",
+                                    "text": "from dataset capability_1"
+                                }
+                            }
+                        },
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:lamination:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "material_supported",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                        },
+                        "value": "Fe-Si",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:lamination:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        },
+                        "valueType": "string"
+                    },
+                    {
+                        "idShort": "co2_dynamic_per_hour",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                        },
+                        "value": "26.01",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:lamination:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        },
+                        "valueType": "double"
+                    },
+                    {
+                        "idShort": "CapabilityComment",
+                        "modelType": {
+                            "name": "MultiLanguageProperty"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/CapabilityComment/1/0"
+                        },
+                        "value": {
+                            "langString": {
+                                "0": {
+                                    "language": "en",
+                                    "text": "Lamination stack production for Fe-Si stator/rotor cores"
+                                }
+                            }
+                        },
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:lamination:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "latitude",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityPropertyEnumType/Property/1/0"
+                        },
+                        "valueType": "double",
+                        "value": "0.8544306158951959",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:lamination:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "LaminationStackProduction",
+                        "modelType": {
+                            "name": "Capability"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/Capability/1/0"
+                        },
+                        "qualifiers": [
+                            {
+                                "type": "https://admin-shell.io/idta/CapabilityDescription/CapabilityRoleQualifier/Offered/1/0",
+                                "valueType": "xs:boolean",
+                                "value": "true"
+                            },
+                            {
+                                "type": "https://admin-shell.io/idta/CapabilityDescription/CapabilityRoleQualifier/Required/1/0",
+                                "valueType": "xs:boolean",
+                                "value": "false"
+                            },
+                            {
+                                "type": "https://admin-shell.io/idta/CapabilityDescription/CapabilityRoleQualifier/NotAssigned/1/0",
+                                "valueType": "xs:boolean",
+                                "value": "false"
+                            }
+                        ],
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:lamination:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "throughput_per_hour",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                        },
+                        "value": "22",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:lamination:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        },
+                        "valueType": "int"
+                    },
+                    {
+                        "idShort": "Property",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityPropertyEnumType/Property/1/0"
+                        },
+                        "valueType": "string",
+                        "value": "Fe-Si",
+                        "qualifiers": [],
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:lamination:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "longitude",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityPropertyEnumType/Property/1/0"
+                        },
+                        "valueType": "double",
+                        "value": "0.38496869289031355",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:lamination:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        ],
+        "asset": {
+            "keys": [
+                {
+                    "type": "Asset",
+                    "local": true,
+                    "value": "urn:remanet:org:lamination:0",
+                    "idType": "Custom"
+                }
+            ],
+            "identification": {
+                "idType": "Custom",
+                "id": "urn:remanet:org:lamination:0"
+            },
+            "idShort": "Lamination-0",
+            "kind": "Instance",
+            "dataSpecification": [],
+            "modelType": {
+                "name": "Asset"
+            },
+            "category": "motor",
+            "embeddedDataSpecifications": []
+        },
+        "views": [],
+        "conceptDictionary": []
+    }
+}

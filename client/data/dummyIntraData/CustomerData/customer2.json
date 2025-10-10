@@ -1,0 +1,13 @@
+{
+    "ActorType": "Customer",
+    "ActorID" : "customer2",
+    "ActorClass": "Customer",
+    "Location": [67.65, 22.47],
+    "ProcessingCapability": 16,
+    "Requirements": {
+        "Power": 5.5,
+        "AxisHeight": 100,
+        "phase_n" : 3,
+        "efficiency_class": "IE2"
+    }
+  }

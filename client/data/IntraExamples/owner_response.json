@@ -1,0 +1,254 @@
+{
+    "status": "success",
+    "data": {
+        "modelType": {
+            "name": "AssetAdministrationShell"
+        },
+        "idShort": "Owner-0",
+        "identification": {
+            "idType": "Custom",
+            "id": "urn:remanet:org:owner:0"
+        },
+        "dataSpecification": [],
+        "embeddedDataSpecifications": [],
+        "submodels": [
+            {
+                "idShort": "CapabilityDescription",
+                "identification": {
+                    "idType": "Custom",
+                    "id": "urn:remanet:owner:0:capabilities:motor-remanufacturing"
+                },
+                "dataSpecification": [],
+                "embeddedDataSpecifications": [],
+                "modelType": {
+                    "name": "Submodel"
+                },
+                "kind": "Instance",
+                "submodelElements": [
+                    {
+                        "idShort": "usage_duty_cycle",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                        },
+                        "value": "16",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:owner:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        },
+                        "valueType": "int"
+                    },
+                    {
+                        "idShort": "ProvideUsedMotorBatch",
+                        "modelType": {
+                            "name": "Capability"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/Capability/1/0"
+                        },
+                        "qualifiers": [
+                            {
+                                "type": "https://admin-shell.io/idta/CapabilityDescription/CapabilityRoleQualifier/Offered/1/0",
+                                "valueType": "xs:boolean",
+                                "value": "true"
+                            },
+                            {
+                                "type": "https://admin-shell.io/idta/CapabilityDescription/CapabilityRoleQualifier/Required/1/0",
+                                "valueType": "xs:boolean",
+                                "value": "false"
+                            },
+                            {
+                                "type": "https://admin-shell.io/idta/CapabilityDescription/CapabilityRoleQualifier/NotAssigned/1/0",
+                                "valueType": "xs:boolean",
+                                "value": "false"
+                            }
+                        ],
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:owner:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "batch_owner_id",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                        },
+                        "value": "0",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:owner:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        },
+                        "valueType": "int"
+                    },
+                    {
+                        "idShort": "CapabilityComment",
+                        "modelType": {
+                            "name": "MultiLanguageProperty"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/CapabilityComment/1/0"
+                        },
+                        "value": {
+                            "langString": {
+                                "0": {
+                                    "language": "en",
+                                    "text": "Owner provides used motors with usage category for remanufacture"
+                                }
+                            }
+                        },
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:owner:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "latitude",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityPropertyEnumType/Property/1/0"
+                        },
+                        "valueType": "double",
+                        "value": "0.2125320782201131",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:owner:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "Property",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityPropertyEnumType/Property/1/0"
+                        },
+                        "valueType": "int",
+                        "value": "0",
+                        "qualifiers": [],
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:owner:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "idShort": "contains_motor_id",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                        },
+                        "value": "0",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:owner:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        },
+                        "valueType": "int"
+                    },
+                    {
+                        "idShort": "longitude",
+                        "modelType": {
+                            "name": "Property"
+                        },
+                        "semanticId": {
+                            "type": "IRI",
+                            "value": "https://admin-shell.io/idta/CapabilityPropertyEnumType/Property/1/0"
+                        },
+                        "valueType": "double",
+                        "value": "0.09842595917753394",
+                        "parent": {
+                            "keys": [
+                                {
+                                    "type": "Submodel",
+                                    "local": true,
+                                    "value": "urn:remanet:owner:0:capabilities:motor-remanufacturing",
+                                    "idType": "Custom"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        ],
+        "asset": {
+            "keys": [
+                {
+                    "type": "Asset",
+                    "local": true,
+                    "value": "urn:remanet:org:owner:0",
+                    "idType": "Custom"
+                }
+            ],
+            "identification": {
+                "idType": "Custom",
+                "id": "urn:remanet:org:owner:0"
+            },
+            "idShort": "Owner-0",
+            "kind": "Instance",
+            "dataSpecification": [],
+            "modelType": {
+                "name": "Asset"
+            },
+            "category": "motor",
+            "embeddedDataSpecifications": []
+        },
+        "views": [],
+        "conceptDictionary": []
+    }
+}

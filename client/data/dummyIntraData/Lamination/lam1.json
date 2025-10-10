@@ -1,0 +1,16 @@
+{
+    "ActorType": "Lamination",
+    "ActorID" : "Lam1",
+    "ActorClass": "D",
+    "Location": [38.49, 85.44],
+    "ProcessingCapability": 22,
+    "AvailableProcesses": {
+      "Punching": {
+        "Co2Static": 37.49,
+        "CostEUR": 54.12
+      }
+    },
+    "Requirements": {
+      "MaximumAxisHeight": 75
+    }
+  }

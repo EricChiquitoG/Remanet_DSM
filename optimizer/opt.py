@@ -43,10 +43,10 @@ def load_problem_data_from_json_string(filestr):
     # Create the users_data list where each user's ID and location is the location name
     users_data = [{"id": loc, "location": loc} for loc in user_location_names]
     users = [user for user in user_location_names]
-    print(users)
-    print(matrix_data)
-    print(manufacturing_route)
-    print(cost_matrix_data)
+    #print(users)
+    #print(matrix_data)
+    #print(manufacturing_route)
+    #print(cost_matrix_data)
 
     # Create the location map (Location Name -> User Index)
     # Since users are locations, and we order them consistently, location index = user index
