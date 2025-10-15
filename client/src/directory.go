@@ -8,10 +8,11 @@ import (
 
 var (
 	directory      *Directory
-	pclasses       *CustomerInterests
 	costs          *CostData
 	ActorProcesses map[string][]string
 	ProcessMap     map[string]int
+	HoloFiles      map[string]string
+	HoloLocations  map[string][]float64
 )
 
 type Contact struct {
@@ -184,6 +185,21 @@ type Lamination struct {
 
 // End of dummy intrasoft data
 
+// Holonix Files:
+type BatchData struct {
+	FeasibleSolutions []FeasibleSolution `json:"feasibleSolutions"`
+}
+
+type FeasibleSolution struct {
+	Strategy       string          `json:"strategy"`
+	OutputProducts []OutputProduct `json:"outputProducts"`
+}
+
+type OutputProduct struct {
+	ProductType     string `json:"productType"`
+	EfficiencyClass string `json:"efficiencyClass"`
+}
+
 var Port = os.Getenv("GRPC_PORT")
 
 func ReadJSONFile(filename string) ([]byte, error) {
@@ -218,6 +234,10 @@ func MyLocs(filename string) (*LocAdd, error) {
 	return LoadFromFile[LocAdd](filename)
 }
 
+func getBatch(filename string) (*BatchData, error) {
+	return LoadFromFile[BatchData](filename)
+}
+
 // Process of AAS data function
 
 func ProcessAAS(filename string) (*AASData, error) {
@@ -230,11 +250,6 @@ func InitData() error {
 	directory, err = MyDir("./data/directory.json")
 	if err != nil {
 		return fmt.Errorf("failed to load directory.json: %v", err)
-	}
-
-	pclasses, err = getInterests("./data/interests.json")
-	if err != nil {
-		return fmt.Errorf("failed to load interests.json: %v", err)
 	}
 
 	costs, err = Costs("./data/cost.json")
@@ -253,6 +268,19 @@ func InitData() error {
 		"high": 3,
 		"mid":  2,
 		"low":  1,
+	}
+
+	HoloFiles = map[string]string{
+		"batch_14_owner": "./data/Holo_Files/output_batch14.json",
+		"batch_26_owner": "./data/Holo_Files/output_batch26.json",
+		"batch_64_owner": "./data/Holo_Files/output_batch64.json",
+		"batch_85_owner": "./data/Holo_Files/output_batch85.json",
+	}
+	HoloLocations = map[string][]float64{
+		"batch_14_owner": {12.12, 9.55},
+		"batch_26_owner": {13.12, 39.55},
+		"batch_64_owner": {22.12, 16.55},
+		"batch_85_owner": {34.12, 66.55},
 	}
 
 	return nil

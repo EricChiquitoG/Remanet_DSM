@@ -160,8 +160,10 @@ func ProcessDirectory(c *gin.Context) {
 	resultCollection := ResultCollection{}
 	resultCollection.Results = append(resultCollection.Results, resultTP.Results...)
 	// Changes for the different optimization modes
+	purchaseRequirements := request.ProcessRequirements
+
 	if request.OptimizationMode == "forward" {
-		resCollectionCustomer, _ := customerSearch(request.ProcessRequirements.ProductMatch, pclasses)
+		resCollectionCustomer, _, _ := customerSearch(purchaseRequirements)
 
 		originProcess := ResultCollection{}
 		originProcess.Results = append(originProcess.Results, Result{ContactName: "origin",
@@ -172,7 +174,6 @@ func ProcessDirectory(c *gin.Context) {
 		resultCollection.Results = append(resultCollection.Results, originProcess.Results...)
 
 	} else if request.OptimizationMode == "reverse" {
-		purchaseRequirements := request.ProcessRequirements
 		resCollectionSeller, _, _ := providerSearch(purchaseRequirements)
 		endProcess := ResultCollection{}
 		endProcess.Results = append(endProcess.Results, Result{ContactName: "end_customer_placeholder",
@@ -320,58 +321,7 @@ func connectToServer(address string) (*grpc.ClientConn, error) {
 	return conn, nil
 }
 
-func customerSearch(product_match string, Interests *CustomerInterests) (ResultCollection, map[string][]string) {
-	var wg sync.WaitGroup
-	endMap := make(map[string][]string)
-	resultCollectionLog := ResultCollection{}
-	results_log := make(chan Result)
-
-	for _, cust := range Interests.Customers {
-		if !slices.Contains(cust.PClasses, product_match) {
-			continue
-		}
-		c := cust
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-
-			conn, err := grpc.NewClient(c.Address, grpc.WithTransportCredentials(insecure.NewCredentials()))
-			if err != nil {
-				return
-			}
-			defer conn.Close()
-
-			client := pb.NewSubmissionServiceClient(conn)
-			resp := CheckCustomer(client, product_match)
-			if resp.Capability {
-				results_log <- Result{
-					ContactName: c.Name,
-					Matches:     []string{"end"},
-					Location:    c.Location,
-				}
-			}
-		}()
-	}
-
-	go func() {
-		wg.Wait()
-		close(results_log)
-	}()
-	for res := range results_log {
-		resultCollectionLog.Results = append(resultCollectionLog.Results, res)
-	}
-	if len(resultCollectionLog.Results) == 0 {
-		fmt.Println("No results received.")
-	}
-	for _, item := range resultCollectionLog.Results {
-		endMap["end"] = append(endMap["end"], item.ContactName)
-	}
-
-	return resultCollectionLog, endMap
-}
-
-// Change this function to be able to query the dummy reverse data for DSM (shall extra not provide it)
-func providerSearch(requirements ProcessRequirements) (ResultCollection, map[string][]string, error) {
+func customerSearch(requirements ProcessRequirements) (ResultCollection, map[string][]string, error) {
 	originMap := make(map[string][]string)
 	resultCollectionLog := ResultCollection{}
 	baseURL := "https://platform.remanet.extrared.it/backend/gateway/coordination/purchase-proposal/v1"
@@ -384,6 +334,51 @@ func providerSearch(requirements ProcessRequirements) (ResultCollection, map[str
 	for _, match := range matches {
 		res := Result{ContactName: match.OrganizationID, Matches: []string{"origin"}, Location: []float64{match.Point.Coordinates[0], match.Point.Coordinates[1]}}
 		resultCollectionLog.Results = append(resultCollectionLog.Results, res)
+	}
+	if len(resultCollectionLog.Results) == 0 {
+		fmt.Println("No results received.")
+	}
+	for _, item := range resultCollectionLog.Results {
+		originMap["origin"] = append(originMap["origin"], item.ContactName)
+	}
+
+	return resultCollectionLog, originMap, nil
+}
+
+// Change this function to be able to query the dummy reverse data for DSM (shall extra not provide it)
+func providerSearch(requirements ProcessRequirements) (ResultCollection, map[string][]string, error) {
+	originMap := make(map[string][]string)
+	resultCollectionLog := ResultCollection{}
+	batchEfficiencies := make(map[string][]string)
+
+	for batch, path := range HoloFiles {
+		batchX, err := getBatch(path)
+		if err != nil {
+			fmt.Printf("Error reading %s: %v\n", path, err)
+			continue
+		}
+
+		// Collect efficiency classes for this batch
+		classSet := make(map[string]bool)
+		for _, solution := range batchX.FeasibleSolutions {
+			for _, prod := range solution.OutputProducts {
+				if prod.EfficiencyClass != "" {
+					classSet[prod.EfficiencyClass] = true
+				}
+			}
+		}
+
+		// Convert to slice
+		for class := range classSet {
+			batchEfficiencies[batch] = append(batchEfficiencies[batch], class)
+		}
+	}
+	fmt.Println(batchEfficiencies)
+	for b_Id, batch := range batchEfficiencies {
+		if contains(batch, requirements.ProductMatch) {
+			res := Result{ContactName: b_Id, Matches: []string{"origin"}, Location: HoloLocations[b_Id]}
+			resultCollectionLog.Results = append(resultCollectionLog.Results, res)
+		}
 	}
 	if len(resultCollectionLog.Results) == 0 {
 		fmt.Println("No results received.")

@@ -1,0 +1,431 @@
+{
+    "feasibleSolutions": [
+        {
+            "priority": 1,
+            "strategy": "MotorUpgrade-S2",
+            "outputProducts": [
+                {
+                    "productType": "VRE_MotorMedium",
+                    "efficiencyClass": "IE4"
+                }
+            ],
+            "components": [
+                {
+                    "componentName": "bearing_001",
+                    "routingStrategy": "BearingRouting-S2",
+                    "steps": [
+                        {
+                            "stepName": "BearingCleaning-S2",
+                            "processes": []
+                        },
+                        {
+                            "stepName": "BearingInspection-S2",
+                            "precededBy": "BearingCleaning-S2",
+                            "processes": []
+                        },
+                        {
+                            "stepName": "BearingSubstitution-S2",
+                            "precededBy": "BearingInspection-S2",
+                            "processes": []
+                        }
+                    ]
+                },
+                {
+                    "componentName": "motor_001",
+                    "routingStrategy": "MotorUpgrade-S2",
+                    "steps": [
+                        {
+                            "stepName": "BearingRouting-S2",
+                            "precededBy": "MotorDisassembly-S2",
+                            "processes": []
+                        },
+                        {
+                            "stepName": "MotorCertification-S2",
+                            "precededBy": "MotorReassembly-S2",
+                            "details": {
+                                "actor": "classA-S2",
+                                "equipments": [
+                                    {
+                                        "equipmentName": "classA_equipment",
+                                        "properties": [
+                                            {
+                                                "propertyName": "axis_height1",
+                                                "value": 100,
+                                                "uom": "mm"
+                                            },
+                                            {
+                                                "propertyName": "power1",
+                                                "value": 5.5,
+                                                "uom": "kW"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "equipmentName": "know-how_formalization_tool"
+                                    }
+                                ]
+                            },
+                            "processes": []
+                        },
+                        {
+                            "stepName": "MotorCleaning-S2",
+                            "details": {
+                                "actor": "classA-S2",
+                                "equipments": [
+                                    {
+                                        "equipmentName": "classA_equipment",
+                                        "properties": [
+                                            {
+                                                "propertyName": "axis_height1",
+                                                "value": 100,
+                                                "uom": "mm"
+                                            },
+                                            {
+                                                "propertyName": "power1",
+                                                "value": 5.5,
+                                                "uom": "kW"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "equipmentName": "know-how_formalization_tool"
+                                    }
+                                ]
+                            },
+                            "processes": []
+                        },
+                        {
+                            "stepName": "MotorDisassembly-S2",
+                            "precededBy": "MotorInspection-S2",
+                            "details": {
+                                "actor": "classA-S2",
+                                "equipments": [
+                                    {
+                                        "equipmentName": "classA_equipment",
+                                        "properties": [
+                                            {
+                                                "propertyName": "axis_height1",
+                                                "value": 100,
+                                                "uom": "mm"
+                                            },
+                                            {
+                                                "propertyName": "power1",
+                                                "value": 5.5,
+                                                "uom": "kW"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "equipmentName": "know-how_formalization_tool"
+                                    }
+                                ]
+                            },
+                            "processes": []
+                        },
+                        {
+                            "stepName": "MotorInspection-S2",
+                            "precededBy": "MotorCleaning-S2",
+                            "details": {
+                                "actor": "classA-S2",
+                                "equipments": [
+                                    {
+                                        "equipmentName": "classA_equipment",
+                                        "properties": [
+                                            {
+                                                "propertyName": "axis_height1",
+                                                "value": 100,
+                                                "uom": "mm"
+                                            },
+                                            {
+                                                "propertyName": "power1",
+                                                "value": 5.5,
+                                                "uom": "kW"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "equipmentName": "know-how_formalization_tool"
+                                    }
+                                ]
+                            },
+                            "processes": []
+                        },
+                        {
+                            "stepName": "MotorReassembly-S2",
+                            "precededBy": "BearingRouting-S2",
+                            "details": {
+                                "actor": "classA-S2",
+                                "equipments": [
+                                    {
+                                        "equipmentName": "classA_equipment",
+                                        "properties": [
+                                            {
+                                                "propertyName": "axis_height1",
+                                                "value": 100,
+                                                "uom": "mm"
+                                            },
+                                            {
+                                                "propertyName": "power1",
+                                                "value": 5.5,
+                                                "uom": "kW"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "equipmentName": "know-how_formalization_tool"
+                                    }
+                                ]
+                            },
+                            "processes": []
+                        },
+                        {
+                            "stepName": "RotorUpgrade-S2",
+                            "precededBy": "MotorDisassembly-S2",
+                            "processes": []
+                        },
+                        {
+                            "stepName": "StatorRefurbish-S2",
+                            "precededBy": "MotorDisassembly-S2",
+                            "processes": []
+                        }
+                    ]
+                },
+                {
+                    "componentName": "rotor_002",
+                    "routingStrategy": "RotorUpgrade-S2",
+                    "steps": [
+                        {
+                            "stepName": "RotorAssembly-S2",
+                            "precededBy": "ShaftRouting-S2",
+                            "details": {
+                                "actor": "classA-S2",
+                                "equipments": [
+                                    {
+                                        "equipmentName": "classA_equipment",
+                                        "properties": [
+                                            {
+                                                "propertyName": "axis_height1",
+                                                "value": 100,
+                                                "uom": "mm"
+                                            },
+                                            {
+                                                "propertyName": "power1",
+                                                "value": 5.5,
+                                                "uom": "kW"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "equipmentName": "know-how_formalization_tool"
+                                    }
+                                ]
+                            },
+                            "processes": []
+                        },
+                        {
+                            "stepName": "RotorCertification-S2",
+                            "precededBy": "RotorAssembly-S2",
+                            "processes": []
+                        },
+                        {
+                            "stepName": "RotorLaminationRouting-S2",
+                            "precededBy": "RotorRedesign-S2",
+                            "processes": []
+                        },
+                        {
+                            "stepName": "RotorRedesign-S2",
+                            "details": {
+                                "actor": "SPIN"
+                            },
+                            "processes": []
+                        },
+                        {
+                            "stepName": "ShaftRouting-S2",
+                            "precededBy": "RotorRedesign-S2",
+                            "processes": []
+                        }
+                    ]
+                },
+                {
+                    "componentName": "rotor_lamination_002",
+                    "routingStrategy": "RotorLaminationRouting-S2",
+                    "steps": [
+                        {
+                            "stepName": "RotorLaminationManufacturing-S2",
+                            "processes": [
+                                {
+                                    "processName": "RotorLaminationPunching-S2",
+                                    "details": {
+                                        "actor": "classD-S2",
+                                        "equipments": [
+                                            {
+                                                "equipmentName": "classD_equipment",
+                                                "properties": [
+                                                    {
+                                                        "propertyName": "axis_height1",
+                                                        "value": 100,
+                                                        "uom": "mm"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "componentName": "shaft_002",
+                    "routingStrategy": "ShaftRouting-S2",
+                    "steps": [
+                        {
+                            "stepName": "ShaftManufacturing-S2",
+                            "processes": [
+                                {
+                                    "processName": "ShaftGrinding-S2",
+                                    "precededBy": "ShaftTurning-S2",
+                                    "details": {
+                                        "actor": "classC",
+                                        "equipments": [
+                                            {
+                                                "equipmentName": "classC_equipment",
+                                                "properties": [
+                                                    {
+                                                        "propertyName": "diameter1",
+                                                        "value": 30,
+                                                        "uom": "mm"
+                                                    },
+                                                    {
+                                                        "propertyName": "length1",
+                                                        "value": 250,
+                                                        "uom": "mm"
+                                                    },
+                                                    {
+                                                        "propertyName": "tolerance1",
+                                                        "value": "Mid"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "processName": "ShaftTurning-S2",
+                                    "details": {
+                                        "actor": "classC",
+                                        "equipments": [
+                                            {
+                                                "equipmentName": "classC_equipment",
+                                                "properties": [
+                                                    {
+                                                        "propertyName": "diameter1",
+                                                        "value": 30,
+                                                        "uom": "mm"
+                                                    },
+                                                    {
+                                                        "propertyName": "length1",
+                                                        "value": 250,
+                                                        "uom": "mm"
+                                                    },
+                                                    {
+                                                        "propertyName": "tolerance1",
+                                                        "value": "Mid"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "componentName": "stator_001",
+                    "routingStrategy": "StatorRefurbish-S2",
+                    "steps": [
+                        {
+                            "stepName": "StatorCertification-S2",
+                            "precededBy": "StatorReassembly-S2",
+                            "processes": []
+                        },
+                        {
+                            "stepName": "StatorCleaning-S2",
+                            "processes": []
+                        },
+                        {
+                            "stepName": "StatorDisassembly-S2",
+                            "precededBy": "StatorInspection-S2",
+                            "processes": []
+                        },
+                        {
+                            "stepName": "StatorInspection-S2",
+                            "precededBy": "StatorCleaning-S2",
+                            "processes": []
+                        },
+                        {
+                            "stepName": "StatorLaminationRouting-S2",
+                            "precededBy": "StatorDisassembly-S2",
+                            "processes": []
+                        },
+                        {
+                            "stepName": "StatorReassembly-S2",
+                            "precededBy": "StatorLaminationRouting-S2",
+                            "processes": []
+                        },
+                        {
+                            "stepName": "WindingRouting-S2",
+                            "precededBy": "StatorDisassembly-S2",
+                            "processes": []
+                        }
+                    ]
+                },
+                {
+                    "componentName": "stator_lamination_001",
+                    "routingStrategy": "StatorLaminationRouting-S2",
+                    "steps": [
+                        {
+                            "stepName": "StatorLaminationCleaning-S2",
+                            "processes": []
+                        },
+                        {
+                            "stepName": "StatorLaminationInspection-S2",
+                            "precededBy": "StatorLaminationCleaning-S2",
+                            "processes": []
+                        },
+                        {
+                            "stepName": "StatorLaminationReuse-S2",
+                            "precededBy": "StatorLaminationInspection-S2",
+                            "processes": []
+                        }
+                    ]
+                },
+                {
+                    "componentName": "winding_001",
+                    "routingStrategy": "WindingRouting-S2",
+                    "steps": [
+                        {
+                            "stepName": "WindingCleaning-S2",
+                            "processes": []
+                        },
+                        {
+                            "stepName": "WindingInspection-S2",
+                            "precededBy": "WindingCleaning-S2",
+                            "processes": []
+                        },
+                        {
+                            "stepName": "WindingReuse-S2",
+                            "precededBy": "WindingInspection-S2",
+                            "processes": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "priority": 2,
+            "strategy": "Landfill"
+        }
+    ]
+}
