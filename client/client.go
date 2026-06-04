@@ -7,6 +7,7 @@ import (
 
 	pb "github.com/EricChiquitoG/Remanet_DSM/DSM_protos"
 	"github.com/EricChiquitoG/Remanet_DSM/client/src"
+	database "github.com/EricChiquitoG/Remanet_DSM/client/src/mongo"
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"
 )
@@ -22,8 +23,23 @@ func main() {
 	if err := src.InitData(); err != nil {
 		log.Fatalf("Initialization error: %v", err)
 	}
+	if err := database.InitMongoDB(); err != nil {
+		log.Fatalf("Failed to initialize MongoDB: %v", err)
+	}
+	defer database.Close()
+
+	if err := src.InitRedis(); err != nil {
+		log.Fatalf("Failed to initialize Redis: %v", err)
+	}
+
+	src.StartHealthChecker()
 
 	r.POST("/get_options", src.ProcessDirectory)
+	r.POST("/select_option", src.SelectOption)
+	r.POST("/advance_step", src.AdvanceStepHandler)
+	r.POST("/new_proposal", database.AddProposal)
+	//r.POST("/new_proposal/bulk", src.AddProposalFromCSV)
+	r.GET("/purchase_proposals", database.GetProposals)
 
 	// Start REST API server in a goroutine
 	go func() {

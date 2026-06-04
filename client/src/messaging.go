@@ -14,7 +14,10 @@ import (
 	"sync"
 	"time"
 
+	"github.com/google/uuid"
+
 	pb "github.com/EricChiquitoG/Remanet_DSM/DSM_protos"
+	execdb "github.com/EricChiquitoG/Remanet_DSM/client/src/mongo"
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -23,11 +26,11 @@ import (
 
 // New structs for input to be used for MVP:
 type OptimizationInput struct {
-	Batch               int                 `json:"Batch"`
-	ProcessRequirements ProcessRequirements `json:"process_requirements"`
-	Routes              map[string][]Step   `json:"routes"`
-	StartingPoint       []float64           `json:"starting_point"`
-	OptimizationMode    string              `json:"optimization_mode"`
+	Batch               int                           `json:"Batch"`
+	ProcessRequirements ProcessRequirements           `json:"process_requirements"`
+	Routes              map[string]map[string]DAGNode `json:"routes"`
+	StartingPoint       []float64                     `json:"starting_point"`
+	OptimizationMode    string                        `json:"optimization_mode"`
 }
 
 type ProcessRequirements struct {
@@ -35,9 +38,11 @@ type ProcessRequirements struct {
 	Quantity     int    `json:"quantity"`
 }
 
-type Step struct {
-	Name         string       `json:"name"`
-	Requirements Requirements `json:"Requirements"`
+// DAGNode represents a single process step in the workflow DAG.
+// Prerequisites lists the process names that must complete before this one starts.
+type DAGNode struct {
+	Prerequisites []string     `json:"prerequisites"`
+	Requirements  Requirements `json:"requirements"`
 }
 
 type Requirements struct {
@@ -62,11 +67,17 @@ type Result struct {
 	Response    string
 }
 
+// Assignment pairs a process name with the actor assigned to execute it.
+type Assignment struct {
+	ProcessName string `json:"processName"`
+	ActorID     string `json:"actorID"`
+}
+
 type ProcessedSolution struct {
 	SolNumber         int
-	UserIDs           []string // The sequence of assigned actor IDs
-	TransportCost     float64  // The transport cost for this solution
-	ManufacturingCost float64  // The manufacturing cost for this solution
+	Assignments       []Assignment // in topological execution order, boundary nodes excluded
+	TransportCost     float64
+	ManufacturingCost float64
 }
 
 // OptimizationResults holds the processed results from the gRPC response.
@@ -75,11 +86,13 @@ type OptimizationResults struct {
 	Solutions []ProcessedSolution // A list of the processed solutions found
 }
 
-// OptimizationResultForSequence holds the result for a single optimization run for a specific process sequence.
+// OptimizationResultForSequence holds the result for a single optimization run.
 type OptimizationResultForSequence struct {
-	ProcessSequence  []string            `json:"processSequence"`                   // The sequence of processes for this run
-	OptimizationJSON OptimizationResults `json:"optimizationResultsJson,omitempty"` // The JSON results from the optimization service
-	Error            string              `json:"error,omitempty"`                   // Any error encountered during this specific run<
+	ProcessID        string              `json:"processID"`
+	ProcessSequence  []string            `json:"processSequence"`
+	DAGPrereqs       map[string][]string `json:"dagPrereqs"`
+	OptimizationJSON OptimizationResults `json:"optimizationResultsJson,omitempty"`
+	Error            string              `json:"error,omitempty"`
 }
 
 // CombinedOptimizationResponse holds the results from all concurrent optimization runs.
@@ -113,26 +126,27 @@ type StepEntry struct {
 	Requirements Requirements `json:"requirements"`
 }
 
-// Structs retrieve from extraDB
-type APIResponse struct {
-	Elements []MotorElement `json:"elements"`
-	Count    int            `json:"count"`
-}
-
+// MotorElement maps the fields we need from a Proposal returned by GET /purchase_proposals.
 type MotorElement struct {
-	ID              int      `json:"id"`
-	OrganizationID  string   `json:"organizationId"`
-	UserName        string   `json:"userName"`
-	NumberOfMotors  int      `json:"numberOfMotors"`
-	AxisHeight      float64  `json:"axisHeight"`
-	RatedPower      float64  `json:"ratedPower"`
-	Point           GeoPoint `json:"point"`
-	EfficiencyClass string   `json:"efficiencyClass"`
+	CustomerID         string   `json:"customerId"`
+	CustomerLocation   GeoPoint `json:"customerLocation"`
+	Cardinality        int      `json:"cardinality"`
+	ProductType        string   `json:"productType"`
+	RequiredParameters struct {
+		RatedPower      float64 `json:"ratedPower"`
+		AxisHeight      int     `json:"axisHeight"`
+		EfficiencyClass string  `json:"efficiencyClass"`
+	} `json:"requiredParameters"`
 }
 
 type GeoPoint struct {
 	Type        string    `json:"type"`
 	Coordinates []float64 `json:"coordinates"`
+}
+
+type SolChoice = struct {
+	ProcessID string `json:"processID"`
+	SolNumber int    `json:"solNumber"`
 }
 
 // End of extra structs
@@ -147,12 +161,33 @@ func ProcessDirectory(c *gin.Context) {
 		return
 	}
 
+	// Gate on external service availability before doing any work.
+	if ok, msg := IsServiceAvailable(ServiceAASAPI); !ok {
+		c.JSON(http.StatusServiceUnavailable, gin.H{"error": fmt.Sprintf("AAS API unavailable: %s", msg)})
+		return
+	}
+	if ok, msg := IsServiceAvailable(ServiceOptimizer); !ok {
+		c.JSON(http.StatusServiceUnavailable, gin.H{"error": fmt.Sprintf("optimizer service unavailable: %s", msg)})
+		return
+	}
+	if request.OptimizationMode == "forward" {
+		if ok, msg := IsServiceAvailable(ServiceMongoDB); !ok {
+			c.JSON(http.StatusServiceUnavailable, gin.H{"error": fmt.Sprintf("MongoDB unavailable: %s", msg)})
+			return
+		}
+	}
+
 	processToFetch := GetDistinct(request)
 	fmt.Println("DSM process initialized for processes: ", processToFetch)
 	AClassesToFetch := IdentifyActorClasses(processToFetch, ActorProcesses)
 
 	uniqueSteps := FlattenUniqueStepsWithData(request)
-	TPResponses := techProviderSearch(AClassesToFetch, uniqueSteps, directory)
+	TPResponses, err := techProviderSearch(AClassesToFetch, uniqueSteps, directory)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Unable to connect to the AAS %v", err)})
+		return
+	}
+
 	//fmt.Println("tech providers  ", TPResponses)
 	resultTP := ConvertTPToResultCollection(TPResponses)
 	//fmt.Println("tech providers converted   ", resultTP)
@@ -165,13 +200,23 @@ func ProcessDirectory(c *gin.Context) {
 	if request.OptimizationMode == "forward" {
 		resCollectionCustomer, _, _ := customerSearch(purchaseRequirements)
 
-		originProcess := ResultCollection{}
-		originProcess.Results = append(originProcess.Results, Result{ContactName: "origin",
-			Matches: []string{"origin"}, Location: request.StartingPoint})
+		// If no customer proposals matched, fall back to the starting point as the delivery destination.
+		// This guarantees at least one actor capable of the "end" boundary step.
+		if len(resCollectionCustomer.Results) == 0 {
+			log.Printf("[forward] no customer proposals found — using starting point as end placeholder")
+			resCollectionCustomer.Results = append(resCollectionCustomer.Results, Result{
+				ContactName: "end_destination",
+				Matches:     []string{"end"},
+				Location:    request.StartingPoint,
+			})
+		}
 
-		resultCollection.Results = append(resultCollection.Results, resCollectionCustomer.Results...) // Append customer results to the collection
-
-		resultCollection.Results = append(resultCollection.Results, originProcess.Results...)
+		resultCollection.Results = append(resultCollection.Results, resCollectionCustomer.Results...)
+		resultCollection.Results = append(resultCollection.Results, Result{
+			ContactName: "origin",
+			Matches:     []string{"origin"},
+			Location:    request.StartingPoint,
+		})
 
 	} else if request.OptimizationMode == "reverse" {
 		resCollectionSeller, _, _ := providerSearch(purchaseRequirements)
@@ -217,6 +262,52 @@ func ProcessDirectory(c *gin.Context) {
 		"message":             "Optimization completed successfully",
 		"optimizationResults": optimizationResponse, // Embed the JSON string as raw JSON
 	})
+}
+
+func SelectOption(c *gin.Context) {
+	var request SolChoice
+
+	if err := c.ShouldBindJSON(&request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Invalid JSON format: %v", err)})
+		return
+	}
+	UserChoice, err := GetOptimizationResult(request.ProcessID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to fetch: %v", err)})
+	}
+	for _, match := range UserChoice.OptimizationJSON.Solutions {
+		if match.SolNumber == request.SolNumber {
+			var firstActor string
+			if len(match.Assignments) > 0 {
+				firstActor = match.Assignments[0].ActorID
+			}
+			sample, err := GetTPData("TPRes_" + firstActor)
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to fetch: %v", err)})
+				return
+			}
+
+			graph, err := BuildExecutionGraph(request.ProcessID, UserChoice.ProcessSequence, match, UserChoice.DAGPrereqs)
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to build execution graph: %v", err)})
+				return
+			}
+			if err := execdb.SaveExecutionGraph(graph); err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to save execution graph: %v", err)})
+				return
+			}
+
+			c.JSON(http.StatusOK, gin.H{
+				"message":        "User Selected their choice!",
+				"ProcessID":      UserChoice.ProcessSequence,
+				"sample":         sample,
+				"Choice":         match,
+				"executionGraph": graph,
+			})
+			return
+		}
+	}
+
 }
 
 func Ping(c pb.SubmissionServiceClient, tasks []string, product string) (*pb.ProcessResponse, error) {
@@ -298,9 +389,16 @@ func processOptimizationResponse(res *pb.OptimizationResponse) (OptimizationResu
 
 		results.Solutions = make([]ProcessedSolution, len(res.Solutions))
 		for i, sol := range res.Solutions {
+			assignments := make([]Assignment, 0, len(sol.Assignments))
+			for _, a := range sol.Assignments {
+				assignments = append(assignments, Assignment{
+					ProcessName: a.ProcessName,
+					ActorID:     a.UserId,
+				})
+			}
 			results.Solutions[i] = ProcessedSolution{
 				SolNumber:         i,
-				UserIDs:           sol.UserIds,
+				Assignments:       assignments,
 				TransportCost:     sol.TransportCost,
 				ManufacturingCost: sol.ManufacturingCost,
 			}
@@ -324,22 +422,22 @@ func connectToServer(address string) (*grpc.ClientConn, error) {
 func customerSearch(requirements ProcessRequirements) (ResultCollection, map[string][]string, error) {
 	originMap := make(map[string][]string)
 	resultCollectionLog := ResultCollection{}
-	baseURL := "https://platform.remanet.extrared.it/backend/gateway/coordination/purchase-proposal/v1"
-	matches, err := retrieveExternalAPI(baseURL, requirements.ProductMatch, "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJtN0hWNUMzRTE1WWQzc250QnROc0pqZkVtakxuMkFTc0FJM1FoVmNKSldFIn0.eyJleHAiOjE3NjAwODI4MTcsImlhdCI6MTc2MDA4MjUxNywiYXV0aF90aW1lIjoxNzYwMDgxOTMxLCJqdGkiOiI4MzNhODBjOS1lMWUzLTQ4NzgtYjNhNi0xYWFmODc1MDFjOWMiLCJpc3MiOiJodHRwczovL2tleWNsb2FrLnJlbWFuZXQuZXh0cmFyZWQuaXQvcmVhbG1zL3JlbWFuZXRQbGF0Zm9ybVdlYlVJIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6ImU5NzllNjhiLWUyMDYtNDJmNS1hZmY4LTZmM2JiNjNmN2FlOSIsInR5cCI6IkJlYXJlciIsImF6cCI6InJlbWFuZXQtZmUiLCJzaWQiOiIzMzk0ODMxNC0yM2U2LTQ4NGEtYjdhMi1iODAwNTQwNjgzZjYiLCJhY3IiOiIwIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vcGxhdGZvcm0ucmVtYW5ldC5leHRyYXJlZC5pdCIsImh0dHA6Ly9sb2NhbGhvc3Q6NDIwMCIsImh0dHBzOi8vcmVtYW5ldC1mZSIsImh0dHA6Ly9wbGF0Zm9ybS5yZW1hbmV0LmV4dHJhcmVkLml0Il0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsImRlZmF1bHQtcm9sZXMtcmVtYW5ldHBsYXRmb3Jtd2VidWkiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgb3JnYW5pemF0aW9uIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm9yZ2FuaXphdGlvbiI6WyJleHRyYXJlZCJdLCJuYW1lIjoiRXJpYyBDaGlxdWl0byIsImdyb3VwcyI6WyIvZWxlY3RyaWNhbC1tb3RvcnMiXSwicHJlZmVycmVkX3VzZXJuYW1lIjoiZWNoaXF1aXRvIiwiZ2l2ZW5fbmFtZSI6IkVyaWMiLCJmYW1pbHlfbmFtZSI6IkNoaXF1aXRvIiwiZW1haWwiOiJlcmljLmNoaXF1aXRvQGx0dS5zZSJ9.VB1UFRAAA6vcEN_YWrd0yWtiGWrl3Q_oI0gq04c1EAvt7_eQTDOYCk34hLsXCaivaKlIgTpS5DFk5O8u5r0aNzvO-9qIsgiHYnnDctHjQRFJq7K_sGRXPkgWRMoHmljvWmjUUmZlwYUpN-4qEkS-2rK9ASwBxSvzccIUdmyGOhy2uQwoxjW5dt6ntun4-2O2Ni9UeXfwegO_6iL2q1bvd9j5_OFe2hOL1lzYdowpS4DQn0vPY6RBwnB6VTDhy8BIe99G5ZTo7q-0LPE2Ux8HvWUuk2E9IRjX0CxZxYmpUrkhFg9gm8iMWnvZMXlRGHCI2ggxAf9wowUoZalVAw4uuA")
+	matches, err := retrieveProposals("http://localhost:8080", requirements.ProductMatch)
 	if err != nil {
-		log.Printf("Retrieval from external API did not work: %s", err)
+		log.Printf("Retrieval from local API did not work: %s", err)
 		return resultCollectionLog, originMap, err
 	}
-	fmt.Println("MAtches extra", matches)
+	fmt.Println("Matches local", matches)
 	for _, match := range matches {
-		res := Result{ContactName: match.OrganizationID, Matches: []string{"origin"}, Location: []float64{match.Point.Coordinates[0], match.Point.Coordinates[1]}}
+		// Customers are the delivery destination in forward mode → "end" actors.
+		res := Result{ContactName: match.CustomerID, Matches: []string{"end"}, Location: match.CustomerLocation.Coordinates}
 		resultCollectionLog.Results = append(resultCollectionLog.Results, res)
 	}
 	if len(resultCollectionLog.Results) == 0 {
 		fmt.Println("No results received.")
 	}
 	for _, item := range resultCollectionLog.Results {
-		originMap["origin"] = append(originMap["origin"], item.ContactName)
+		originMap["end"] = append(originMap["end"], item.ContactName)
 	}
 
 	return resultCollectionLog, originMap, nil
@@ -390,21 +488,12 @@ func providerSearch(requirements ProcessRequirements) (ResultCollection, map[str
 	return resultCollectionLog, originMap, nil
 }
 
-// Generalized to call API but hardcoded for extra, TODO, generalize
-func retrieveExternalAPI(baseURL, PClass, jwt string) ([]MotorElement, error) {
+func retrieveProposals(baseURL, efficiencyClass string) ([]MotorElement, error) {
 	params := url.Values{}
-	params.Set("efficiencyClass", PClass)
-	fullURL := fmt.Sprintf("%s?%s", baseURL, params.Encode())
-	req, err := http.NewRequest("GET", fullURL, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create request: %v", err)
-	}
-	req.Header.Set("Authorization", "Bearer "+jwt)
-	req.Header.Set("Accept", "application/json")
+	params.Set("efficiencyClass", efficiencyClass)
+	fullURL := fmt.Sprintf("%s/purchase_proposals?%s", baseURL, params.Encode())
 
-	// Send the request
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	resp, err := http.Get(fullURL)
 	if err != nil {
 		return nil, fmt.Errorf("request failed: %v", err)
 	}
@@ -415,34 +504,25 @@ func retrieveExternalAPI(baseURL, PClass, jwt string) ([]MotorElement, error) {
 		return nil, fmt.Errorf("server error: %s - %s", resp.Status, string(body))
 	}
 
-	// Read and decode the response
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("error reading response: %v", err)
-	}
-
-	var apiResp APIResponse
-	if err := json.Unmarshal(body, &apiResp); err != nil {
+	var proposals []MotorElement
+	if err := json.NewDecoder(resp.Body).Decode(&proposals); err != nil {
 		return nil, fmt.Errorf("error decoding JSON: %v", err)
 	}
 
-	return apiResp.Elements, nil
+	return proposals, nil
 }
 
 func ExtractStepNamesFromRoutes(r OptimizationInput) []string {
 	stepNameSet := make(map[string]struct{})
-
 	for _, route := range r.Routes {
-		for _, stepName := range route {
-			stepNameSet[stepName.Name] = struct{}{}
+		for name := range route {
+			stepNameSet[name] = struct{}{}
 		}
 	}
-
 	stepNames := make([]string, 0, len(stepNameSet))
 	for name := range stepNameSet {
 		stepNames = append(stepNames, name)
 	}
-
 	return stepNames
 }
 
@@ -461,80 +541,81 @@ func OptimizationHandler(r OptimizationInput, distMatrix map[string]map[string]f
 	}
 	defer conn.Close()
 
-	// Create the optimization client
 	clientOpt := pb.NewSubmissionServiceClient(conn)
-	numSequences := len(r.Routes)
-	optimizationResultsChan := make(chan OptimizationResultForSequence, numSequences)
+	optimizationResultsChan := make(chan OptimizationResultForSequence, len(r.Routes))
 	var wgOptimization sync.WaitGroup
-	fmt.Print("rutas ", r.Routes)
-	// Optimization process to be optimized
-	for _, processSequence := range r.Routes {
-		sequence := make([]string, 0, len(processSequence))
-		for _, stepName := range processSequence {
-			sequence = append(sequence, stepName.Name)
+
+	for routeName, dag := range r.Routes {
+		prDAG := DAGToPrerequisites(dag)
+		sequence, err := TopologicalSort(dag)
+		if err != nil {
+			log.Printf("Route %s has an invalid DAG (cycle?): %v", routeName, err)
+			continue
 		}
 
 		wgOptimization.Add(1)
-		go func(sequence []string) {
+		go func(routeName string, sequence []string, prDAG map[string][]string) {
 			defer wgOptimization.Done()
-			var i int // only needed to move the redesign step, will most likely delete later
+
 			optimizationProcesses := make([]string, 0, len(sequence)+2)
 			optimizationProcesses = append(optimizationProcesses, "origin")
 			optimizationProcesses = append(optimizationProcesses, sequence...)
 			optimizationProcesses = append(optimizationProcesses, "end")
-			if contains(optimizationProcesses, "Redesign") {
 
-				optimizationProcesses, i = moveFlagToEnd(optimizationProcesses, "Redesign")
-			}
-			fmt.Println("processes ordered? ", optimizationProcesses)
-			jsonData := exportToJson(optimizationProcesses, costMatrix, distMatrix) // Pass the specific sequence
+			fmt.Println("route:", routeName, "processes ordered:", optimizationProcesses)
+			jsonData := exportToJson(optimizationProcesses, costMatrix, distMatrix, augmentWithBoundaryNodes(prDAG))
+			fmt.Println("data used for opt:", jsonData)
 
 			res, err := sendOptimize(jsonData, clientOpt)
 			if err != nil {
-				log.Printf("Failed to send optimization request for sequence %v: %v", sequence, err)
+				log.Printf("Failed to send optimization request for route %s: %v", routeName, err)
 				optimizationResultsChan <- OptimizationResultForSequence{
 					ProcessSequence: sequence,
+					DAGPrereqs:      prDAG,
 					Error:           fmt.Sprintf("Optimization request failed: %v", err),
 				}
 				return
 			}
 
-			// --- Process Optimization Response for THIS sequence ---
 			optResultsJSON, err := processOptimizationResponse(res)
 			if err != nil {
-				log.Printf("Error processing optimization response for sequence %v: %v", sequence, err)
+				log.Printf("Error processing optimization response for route %s: %v", routeName, err)
 				optimizationResultsChan <- OptimizationResultForSequence{
 					ProcessSequence: sequence,
+					DAGPrereqs:      prDAG,
 					Error:           fmt.Sprintf("Failed to process optimization results: %v", err),
 				}
-				return // Exit this goroutine
-			}
-			if contains(optimizationProcesses, "Redesign") {
-				for _, solution := range optResultsJSON.Solutions {
-					solution.UserIDs = moveEndToIndex(solution.UserIDs, i)
-				}
+				return
 			}
 
-			// --- Send the result for THIS sequence to the channel ---
 			optimizationResultsChan <- OptimizationResultForSequence{
 				ProcessSequence:  sequence,
+				DAGPrereqs:       prDAG,
 				OptimizationJSON: optResultsJSON,
-				Error:            "",
 			}
-
-		}(sequence)
+		}(routeName, sequence, prDAG)
 	}
 	wgOptimization.Wait()
 	close(optimizationResultsChan)
 
 	for result := range optimizationResultsChan {
+		result.ProcessID = uuid.NewString()
+		err := SaveOptimizationResult(result.ProcessID, result, OptimizationTTL)
+		if err != nil {
+			log.Printf("Optimization was not stored in cache")
+		}
 		finalResponse.Results = append(finalResponse.Results, result)
+		resultOpt, err := GetOptimizationResult(result.ProcessID)
+		if err != nil {
+			log.Printf("Optimization was not saved")
+		}
+		fmt.Println("Result for this opt run ", *resultOpt)
 	}
 	return finalResponse, nil
 
 }
 
-func techProviderSearch(AClasses []string, steps []StepEntry, dir *Directory) responsesTP {
+func techProviderSearch(AClasses []string, steps []StepEntry, dir *Directory) (responsesTP, error) {
 	var wg sync.WaitGroup
 	resultsChan := make(chan techProviderResponse)
 	for class, contacts := range dir.Contacts {
@@ -573,22 +654,54 @@ func techProviderSearch(AClasses []string, steps []StepEntry, dir *Directory) re
 	for result := range resultsChan {
 		finalResponse.Responses = append(finalResponse.Responses, result)
 	}
-
+	fmt.Println(finalResponse.Responses)
 	if len(finalResponse.Responses) == 0 {
-		fmt.Println("⚠️ No technology providers matched any processes.")
+		fmt.Println("Error? ")
+		return finalResponse, fmt.Errorf("No technology providers matched any processes.: %v")
 	}
 
-	return finalResponse
+	return finalResponse, nil
 }
 
 // This function is called once per technology provider to retrieve their data
+// defaultCostPerClass holds fallback cost_per_hour values used when the AAS API is unreachable.
+var defaultCostPerClass = map[string]struct{ cost, co2 float64 }{
+	"A": {50.0, 10.0},
+	"C": {80.0, 15.0},
+	"D": {70.0, 12.0},
+}
+
+func buildFallbackResponse(class, name string, loc []float64, steps []StepEntry) techProviderResponse {
+	response := techProviderResponse{uClass: class, uid: name, location: loc}
+	defaults := defaultCostPerClass[class]
+
+	allowed := make(map[string]bool)
+	for _, p := range ActorProcesses[class] {
+		allowed[p] = true
+	}
+	for _, step := range steps {
+		if allowed[step.StepName] {
+			response.Processes = append(response.Processes, process{
+				ProcessID:   fmt.Sprintf("%s-%s", name, step.StepName),
+				ProcessName: step.StepName,
+				Cost:        defaults.cost,
+				Co2:         defaults.co2,
+			})
+		}
+	}
+	return response
+}
+
 func callTechProvider(class string, steps []StepEntry, address string, name string, loc []float64) (techProviderResponse, error) {
 	response := techProviderResponse{uClass: class, uid: name, location: loc}
 	providerData, err := fetchAAS(address)
-
 	if err != nil {
-		log.Printf("Unable to process provider data %v", err)
-		return response, err
+		log.Printf("[fallback] AAS unavailable for %s (%s): %v — using dummy data", name, class, err)
+		response = buildFallbackResponse(class, name, loc, steps)
+		if saveErr := SaveTPResponse("TPRes_"+name, response, OptimizationTTL); saveErr != nil {
+			log.Printf("Fallback response not stored in cache: %v", saveErr)
+		}
+		return response, nil
 	}
 	processLookup := make(map[string]bool)
 	if allowed, ok := ActorProcesses[class]; ok {
@@ -618,7 +731,10 @@ func callTechProvider(class string, steps []StepEntry, address string, name stri
 			response.Processes = append(response.Processes, newProcess)
 		}
 	}
-
+	err = SaveTPResponse("TPRes_"+name, response, OptimizationTTL)
+	if err != nil {
+		log.Printf("Optimization was not stored in cache")
+	}
 	return response, nil
 }
 
@@ -637,9 +753,22 @@ func fetchAAS(id string) (*AASResponse, error) {
 	}
 	defer resp.Body.Close()
 
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("AAS API returned %d for %s", resp.StatusCode, id)
+	}
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read AAS response body: %v", err)
+	}
+	log.Printf("AAS raw response for %s: %s", id, string(body))
+
 	var aas AASResponse
-	if err := json.NewDecoder(resp.Body).Decode(&aas); err != nil {
-		return nil, err
+	if err := json.Unmarshal(body, &aas); err != nil {
+		return nil, fmt.Errorf("failed to decode AAS response: %v", err)
+	}
+	if aas.Data.IDShort == "" {
+		return nil, fmt.Errorf("AAS response decoded but contains no data for %s", id)
 	}
 	return &aas, nil
 }
@@ -664,6 +793,8 @@ func MatchesStepRequirements(actorClass string, aas AASResponse, req Requirement
 
 // ---------- Matching per Class ----------
 
+//HAD TO REMOVE THE RETURN FALSE IN EACH IF AS AAS NOT WORKING
+
 func matchClassA(aas AASResponse, req Requirements) bool {
 	axisHeight := getFloatFromAAS(aas, "axis_height")
 	power := getFloatFromAAS(aas, "power")
@@ -671,15 +802,13 @@ func matchClassA(aas AASResponse, req Requirements) bool {
 	fmt.Println("to match ", "AH: ", *req.AxisHeight, "Power: ", *req.Power, " With: ", "AH: ", axisHeight, "Power: ", power)
 	if req.AxisHeight != nil && axisHeight < *req.AxisHeight {
 		fmt.Println("Axis height too high for class A for actor ", aas.Data.IDShort)
-		return false
+
 	}
 	if req.Power != nil && power < *req.Power {
 		fmt.Println("Power too high for class A for actor ", aas.Data.IDShort)
-		return false
 	}
 	if req.KnowHowFormalizationTool != nil && KHFT != *req.KnowHowFormalizationTool {
 		fmt.Println("Know-how-formalization-tool property not matching for class A")
-		return false
 	}
 	return true
 }
@@ -693,15 +822,15 @@ func matchClassC(aas AASResponse, req Requirements) bool {
 	fmt.Println("to match ", "Tolerance: ", *req.Tolerance, "Length: ", *req.Length, "Diameter: ", *req.Diameter, " With: ", "Tolerance: ", toleranceMapped, "Length: ", length, "Diameter: ", diameter)
 	if req.Tolerance != nil && ProcessMap[tolerance] < ProcessMap[*req.Tolerance] {
 		fmt.Println("Tolerance mismatch for class C for actor ", aas.Data.IDShort)
-		return false
+
 	}
 	if req.Length != nil && length < float64(*req.Length) {
 		fmt.Println("Length too long for class C for actor ", aas.Data.IDShort)
-		return false
+
 	}
 	if req.Diameter != nil && diameter < float64(*req.Diameter) {
 		fmt.Println("Diameter too large for class C for actor ", aas.Data.IDShort)
-		return false
+
 	}
 	return true
 }
@@ -711,7 +840,7 @@ func matchClassD(aas AASResponse, req Requirements) bool {
 	fmt.Println("to match ", "AH: ", *req.AxisHeight, " With: ", "AH: ", axisHeight)
 	if req.AxisHeight != nil && axisHeight < *req.AxisHeight {
 		fmt.Println("Axis height too high for class D for actor ", aas.Data.IDShort)
-		return false
+
 	}
 	return true
 }
@@ -769,22 +898,16 @@ func getBoolFromAAS(aas AASResponse, name string) bool {
 
 func FlattenUniqueStepsWithData(input OptimizationInput) []StepEntry {
 	uniqueSteps := make(map[string]Requirements)
-
 	for _, route := range input.Routes {
-		for _, step := range route {
-			// If step not already seen, store it
-			if _, exists := uniqueSteps[step.Name]; !exists {
-				uniqueSteps[step.Name] = step.Requirements
+		for name, node := range route {
+			if _, exists := uniqueSteps[name]; !exists {
+				uniqueSteps[name] = node.Requirements
 			}
 		}
 	}
-
 	result := make([]StepEntry, 0, len(uniqueSteps))
 	for name, reqs := range uniqueSteps {
-		result = append(result, StepEntry{
-			StepName:     name,
-			Requirements: reqs,
-		})
+		result = append(result, StepEntry{StepName: name, Requirements: reqs})
 	}
 	return result
 }

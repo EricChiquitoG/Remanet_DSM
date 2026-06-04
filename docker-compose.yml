@@ -1,122 +1,93 @@
 version: '3.8'
 
 services:
-
+  db:
+    image: mongo
+    container_name: test-mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=erichi
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+      - MONGO_INITDB_DATABASE= myapp
+    volumes:
+      # Persist database files across container restarts
+      - mongodata:/data/db
+    networks:
+      - optNetwork
+  db-client:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=erichi
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=secret
+      - ME_CONFIG_MONGODB_URL=mongodb://erichi:secret@db:27017/
+      - ME_CONFIG_BASICAUTH_USERNAME=test
+      - ME_CONFIG_BASICAUTH_PASSWORD=webpass
+    depends_on:
+      - db
+    networks:
+      - optNetwork
   client:
     build:
       context: .
       dockerfile: Dockerfile.client
+    depends_on:
+      optimizer:
+        condition: service_healthy
+      db:
+        condition: service_started
     ports:
       - "0.0.0.0:8080:8080"
       - "50050:50050"
     environment:
       - GRPC_PORT=50050
+      - REDIS_ADDR=redis:6379
+      - MONGODB_URL=mongodb://erichi:secret@db:27017/
     networks:
       - optNetwork
 
-  server1:
-    build:
-      context: .
-      dockerfile: Dockerfile.server
-    depends_on:
-      - client
-    ports:
-      - "50051:50051"
-    environment:
-      - ServiceName = server1
-      - GRPC_PORT=50051
-      - Company=CleanIO
-    networks:
-        - optNetwork
-
-  server2:
-    build:
-      context: .
-      dockerfile: Dockerfile.server
-    depends_on:
-      - client
-    ports:
-      - "50052:50052"
-    environment:
-      - ServiceName = server2
-      - GRPC_PORT=50052
-      - Company=toothW
-    networks:
-      - optNetwork
-
-
-  server3:
-    build:
-      context: .
-      dockerfile: Dockerfile.server
-    depends_on:
-      - client
-    ports:
-      - "50053:50053"
-    environment:
-      - ServiceName = server3
-      - GRPC_PORT=50053
-      - Company=Workshoppen
-    networks:
-      - optNetwork
-
-  server4:
-    build:
-      context: .
-      dockerfile: Dockerfile.customer
-    depends_on:
-      - client
-    ports:
-      - "50054:50054"
-    environment:
-      - ServiceName = server4
-      - GRPC_PORT=50054
-      - Company=CustA
-    networks:
-      - optNetwork
-
-  server5:
-    build:
-      context: .
-      dockerfile: Dockerfile.customer
-    depends_on:
-    - client
-    ports:
-      - "50055:50055"
-    environment:
-      - ServiceName = server5
-      - GRPC_PORT=50055
-      - Company=CustB
-    networks:
-      - optNetwork
-
-
-  server6:
-    build:
-      context: .
-      dockerfile: Dockerfile.customer
-    depends_on:
-      - client
-    ports:
-      - "50056:50056"
-    environment:
-      - ServiceName = server6
-      - GRPC_PORT=50056
-      - Company=Custc
-    networks:
-      - optNetwork
 
   optimizer:
     build:
       context: ./optimizer
       dockerfile: Dockerfile
-    depends_on:
-      - client
     ports:
       - "50060:50060"
     networks:
       - optNetwork
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; s=socket.create_connection(('localhost', 50060), timeout=2); s.close()"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 
+  redis:
+    image: redis:7-alpine
+    container_name: dsm-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - optNetwork
+
+  redis-insight:
+    image: redis/redisinsight:latest
+    container_name: redis-insight
+    restart: always
+    ports:
+      - "5540:5540"
+    depends_on:
+      - redis
+    networks:
+      - optNetwork
+
+volumes:
+  mongodata:
 
 networks:
   optNetwork:

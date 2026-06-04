@@ -19,8 +19,8 @@ RUN apk add --no-cache \
 RUN pip install -r requirements.txt
 
 # Copy your script into the container
-COPY opt.py .
-COPY optClient.py .
+COPY opt_DAG.py .
+COPY optClient_DAG.py .
 COPY optimizationData.json .
 COPY DSM_pb2_grpc.py .
 COPY DSM_pb2.py .
@@ -29,4 +29,4 @@ COPY DSM_pb2.py .
 EXPOSE 50060
 
 # Default command to run your script
-CMD ["python", "-u", "optClient.py"]
+CMD ["python", "-u", "optClient_DAG.py"]

@@ -26,12 +26,16 @@ message OptimizationRequest {
     string error_message = 2; // Optional field for error handling
   }
   
+  // Maps a single process step to the actor assigned to execute it.
+  message ProcessAssignment {
+      string process_name = 1;
+      string user_id = 2;
+  }
+
   // Message to represent a single solution from the optimization
   message Solution {
-      repeated int32 user_indices = 1; // The sequence of user indices
-      repeated string user_ids = 2; // The sequence of user IDs
-      double transport_cost = 3;
-      double manufacturing_cost = 4;
-      // Add other relevant solution details if needed
+      repeated ProcessAssignment assignments = 1; // process → assigned actor
+      double transport_cost = 2;
+      double manufacturing_cost = 3;
   }
   

@@ -5,7 +5,7 @@ import warnings
 
 import DSM_pb2 as DSM__pb2
 
-GRPC_GENERATED_VERSION = '1.71.0'
+GRPC_GENERATED_VERSION = '1.75.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -18,15 +18,16 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in DSM_pb2_grpc.py depends on'
+        + ' but the generated code in DSM_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
     )
 
 
-class SubmissionServiceStub(object):
-    """Missing associated documentation comment in .proto file."""
+class SubmissionServiceStub:
+    """Define the service
+    """
 
     def __init__(self, channel):
         """Constructor.
@@ -34,21 +35,6 @@ class SubmissionServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.CheckAvailabilty = channel.unary_unary(
-                '/DSM.SubmissionService/CheckAvailabilty',
-                request_serializer=DSM__pb2.Process.SerializeToString,
-                response_deserializer=DSM__pb2.ProcessResponse.FromString,
-                _registered_method=True)
-        self.CheckInterest = channel.unary_unary(
-                '/DSM.SubmissionService/CheckInterest',
-                request_serializer=DSM__pb2.Purchase.SerializeToString,
-                response_deserializer=DSM__pb2.PurchaseResponse.FromString,
-                _registered_method=True)
-        self.EnrollServer = channel.unary_unary(
-                '/DSM.SubmissionService/EnrollServer',
-                request_serializer=DSM__pb2.Enroll.SerializeToString,
-                response_deserializer=DSM__pb2.EnrollResponse.FromString,
-                _registered_method=True)
         self.Optimize = channel.unary_unary(
                 '/DSM.SubmissionService/Optimize',
                 request_serializer=DSM__pb2.OptimizationRequest.SerializeToString,
@@ -56,29 +42,13 @@ class SubmissionServiceStub(object):
                 _registered_method=True)
 
 
-class SubmissionServiceServicer(object):
-    """Missing associated documentation comment in .proto file."""
-
-    def CheckAvailabilty(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def CheckInterest(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def EnrollServer(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+class SubmissionServiceServicer:
+    """Define the service
+    """
 
     def Optimize(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """A RPC method to send problem data and receive optimization results
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -86,21 +56,6 @@ class SubmissionServiceServicer(object):
 
 def add_SubmissionServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'CheckAvailabilty': grpc.unary_unary_rpc_method_handler(
-                    servicer.CheckAvailabilty,
-                    request_deserializer=DSM__pb2.Process.FromString,
-                    response_serializer=DSM__pb2.ProcessResponse.SerializeToString,
-            ),
-            'CheckInterest': grpc.unary_unary_rpc_method_handler(
-                    servicer.CheckInterest,
-                    request_deserializer=DSM__pb2.Purchase.FromString,
-                    response_serializer=DSM__pb2.PurchaseResponse.SerializeToString,
-            ),
-            'EnrollServer': grpc.unary_unary_rpc_method_handler(
-                    servicer.EnrollServer,
-                    request_deserializer=DSM__pb2.Enroll.FromString,
-                    response_serializer=DSM__pb2.EnrollResponse.SerializeToString,
-            ),
             'Optimize': grpc.unary_unary_rpc_method_handler(
                     servicer.Optimize,
                     request_deserializer=DSM__pb2.OptimizationRequest.FromString,
@@ -114,89 +69,9 @@ def add_SubmissionServiceServicer_to_server(servicer, server):
 
 
  # This class is part of an EXPERIMENTAL API.
-class SubmissionService(object):
-    """Missing associated documentation comment in .proto file."""
-
-    @staticmethod
-    def CheckAvailabilty(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/DSM.SubmissionService/CheckAvailabilty',
-            DSM__pb2.Process.SerializeToString,
-            DSM__pb2.ProcessResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def CheckInterest(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/DSM.SubmissionService/CheckInterest',
-            DSM__pb2.Purchase.SerializeToString,
-            DSM__pb2.PurchaseResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def EnrollServer(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/DSM.SubmissionService/EnrollServer',
-            DSM__pb2.Enroll.SerializeToString,
-            DSM__pb2.EnrollResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
+class SubmissionService:
+    """Define the service
+    """
 
     @staticmethod
     def Optimize(request,
