@@ -144,12 +144,14 @@ func CreateCostMatrixFromResults(rc ResultCollection, costs *CostData, techProv 
 	for _, res := range rc.Results {
 		company := res.ContactName
 		matrix[company] = make(map[string]float64)
-		if contains(baseCosts, res.Matches[0]) {
-			matrix[res.ContactName][res.Matches[0]] = 1
-		}
-		// Hardcoded Cost for redesign
-		if res.Matches[0] == "Redesign" {
-			matrix[res.ContactName][res.Matches[0]] = 100
+		if len(res.Matches) > 0 {
+			if contains(baseCosts, res.Matches[0]) {
+				matrix[res.ContactName][res.Matches[0]] = 1
+			}
+			// Hardcoded Cost for redesign
+			if res.Matches[0] == "Redesign" {
+				matrix[res.ContactName][res.Matches[0]] = 100
+			}
 		}
 		for _, tp := range techProv.Responses {
 			if tp.uid == company {

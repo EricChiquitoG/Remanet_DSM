@@ -114,6 +114,24 @@ func (pc *ProposalCreate) ToProposal() *Proposal {
 		UpdatedAt:          now,
 	}
 }
+func GetBatchData(c *gin.Context) {
+	graphID := c.Query("graphId")
+	if graphID == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "graphId query parameter is required"})
+		return
+	}
+	graph, err := GetExecutionGraph(graphID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	if graph == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("execution graph %s not found", graphID)})
+		return
+	}
+
+	c.JSON(http.StatusOK, graph)
+}
 
 // CreateProposal creates a new purchase proposal
 func AddProposal(c *gin.Context) {

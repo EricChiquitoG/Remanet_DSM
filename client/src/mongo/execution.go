@@ -55,6 +55,26 @@ func GetExecutionGraph(graphID string) (*ExecutionGraph, error) {
 	return &graph, nil
 }
 
+func GetAllExecutionGraphs() ([]ExecutionGraph, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	cursor, err := ExecutionCollection.Find(ctx, bson.M{}, options.Find().SetSort(bson.M{"graphId": 1}))
+	if err != nil {
+		return nil, fmt.Errorf("failed to query execution graphs: %v", err)
+	}
+	defer cursor.Close(ctx)
+
+	var graphs []ExecutionGraph
+	if err := cursor.All(ctx, &graphs); err != nil {
+		return nil, fmt.Errorf("failed to decode execution graphs: %v", err)
+	}
+	if graphs == nil {
+		graphs = []ExecutionGraph{}
+	}
+	return graphs, nil
+}
+
 // AdvanceStep marks the current in-progress steps as completed and activates their successors.
 // Returns the updated graph; CurrentSteps will be empty once the final step completes.
 func AdvanceStep(graphID string) (*ExecutionGraph, error) {

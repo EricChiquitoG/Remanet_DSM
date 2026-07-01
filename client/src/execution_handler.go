@@ -67,6 +67,21 @@ func BuildExecutionGraph(graphID string, processSequence []string, choice Proces
 	}, nil
 }
 
+// These vars default to the real DB implementations and can be replaced in tests.
+var (
+	getAllExecutionGraphsFn = execdb.GetAllExecutionGraphs
+	advanceStepFn          = execdb.AdvanceStep
+)
+
+func GetAllExecutionGraphsHandler(c *gin.Context) {
+	graphs, err := getAllExecutionGraphsFn()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, graphs)
+}
+
 func AdvanceStepHandler(c *gin.Context) {
 	var req struct {
 		GraphID string `json:"graphId" binding:"required"`
@@ -76,7 +91,7 @@ func AdvanceStepHandler(c *gin.Context) {
 		return
 	}
 
-	graph, err := execdb.AdvanceStep(req.GraphID)
+	graph, err := advanceStepFn(req.GraphID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

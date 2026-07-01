@@ -8,6 +8,7 @@ import (
 	pb "github.com/EricChiquitoG/Remanet_DSM/DSM_protos"
 	"github.com/EricChiquitoG/Remanet_DSM/client/src"
 	database "github.com/EricChiquitoG/Remanet_DSM/client/src/mongo"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"
 )
@@ -20,6 +21,11 @@ func main() {
 	// REST API setup
 	r := gin.Default()
 
+	r.Use(cors.New(cors.Config{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{"GET", "POST", "OPTIONS"},
+		AllowHeaders: []string{"Content-Type"},
+	}))
 	if err := src.InitData(); err != nil {
 		log.Fatalf("Initialization error: %v", err)
 	}
@@ -36,10 +42,17 @@ func main() {
 
 	r.POST("/get_options", src.ProcessDirectory)
 	r.POST("/select_option", src.SelectOption)
+	r.GET("/get_batch_data", database.GetBatchData)
 	r.POST("/advance_step", src.AdvanceStepHandler)
+	r.GET("/execution_graphs", src.GetAllExecutionGraphsHandler)
 	r.POST("/new_proposal", database.AddProposal)
 	//r.POST("/new_proposal/bulk", src.AddProposalFromCSV)
 	r.GET("/purchase_proposals", database.GetProposals)
+
+	r.GET("/products", src.GetProductsHandler)
+	r.GET("/products/:id", src.GetProductHandler)
+	r.POST("/products", src.CreateProductHandler)
+	r.GET("/products/:id/history", src.GetProductHistoryHandler)
 
 	// Start REST API server in a goroutine
 	go func() {

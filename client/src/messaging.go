@@ -308,6 +308,7 @@ func SelectOption(c *gin.Context) {
 		}
 	}
 
+	c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("solution %d not found for process %s", request.SolNumber, request.ProcessID)})
 }
 
 func Ping(c pb.SubmissionServiceClient, tasks []string, product string) (*pb.ProcessResponse, error) {
@@ -382,7 +383,7 @@ func processOptimizationResponse(res *pb.OptimizationResponse) (OptimizationResu
 	if res.ErrorMessage != "" {
 
 		log.Printf("Optimization returned an error message from the server: %s", res.ErrorMessage) // Log the server-side error
-		return results, fmt.Errorf(res.ErrorMessage)
+		return results, fmt.Errorf("%s", res.ErrorMessage)
 	} else if len(res.Solutions) > 0 {
 
 		log.Printf("Optimization successful. Received %d solutions.", len(res.Solutions)) // Log success and count
@@ -391,6 +392,9 @@ func processOptimizationResponse(res *pb.OptimizationResponse) (OptimizationResu
 		for i, sol := range res.Solutions {
 			assignments := make([]Assignment, 0, len(sol.Assignments))
 			for _, a := range sol.Assignments {
+				if a.ProcessName == "origin" || a.ProcessName == "end" {
+					continue
+				}
 				assignments = append(assignments, Assignment{
 					ProcessName: a.ProcessName,
 					ActorID:     a.UserId,
@@ -657,7 +661,7 @@ func techProviderSearch(AClasses []string, steps []StepEntry, dir *Directory) (r
 	fmt.Println(finalResponse.Responses)
 	if len(finalResponse.Responses) == 0 {
 		fmt.Println("Error? ")
-		return finalResponse, fmt.Errorf("No technology providers matched any processes.: %v")
+		return finalResponse, fmt.Errorf("no technology providers matched any processes")
 	}
 
 	return finalResponse, nil

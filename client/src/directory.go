@@ -258,7 +258,7 @@ func InitData() error {
 	}
 
 	ActorProcesses = map[string][]string{
-		"C": {"Grinding", "Turning"},
+		"C": {"Grinding", "Turning", "StatorRewind"},
 		"A": {"Cleaning", "Inspection", "Disassembly", "BearingSubstitution", "Reassembly", "Certification"},
 		"D": {"Punching"},
 	}

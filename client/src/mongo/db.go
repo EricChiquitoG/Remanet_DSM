@@ -17,12 +17,16 @@ var (
 	Database            *mongo.Database
 	Collection          *mongo.Collection
 	ExecutionCollection *mongo.Collection
+	ProductCollection   *mongo.Collection
+	HistoryCollection   *mongo.Collection
 )
 
 const (
-	DatabaseName          = "dsm_db"
-	CollectionName        = "proposals"
+	DatabaseName            = "dsm_db"
+	CollectionName          = "proposals"
 	ExecutionCollectionName = "execution_graphs"
+	ProductCollectionName   = "products"
+	HistoryCollectionName   = "product_history"
 )
 
 // InitMongoDB initializes the MongoDB connection and creates indexes
@@ -54,6 +58,8 @@ func InitMongoDB() error {
 	Database = client.Database(DatabaseName)
 	Collection = Database.Collection(CollectionName)
 	ExecutionCollection = Database.Collection(ExecutionCollectionName)
+	ProductCollection = Database.Collection(ProductCollectionName)
+	HistoryCollection = Database.Collection(HistoryCollectionName)
 
 	// Create indexes
 	if err := createIndexes(ctx); err != nil {
@@ -62,7 +68,7 @@ func InitMongoDB() error {
 
 	log.Printf("✓ Connected to MongoDB: %s", mongoURL)
 	log.Printf("✓ Database: %s", DatabaseName)
-	log.Printf("✓ Collections: %s, %s", CollectionName, ExecutionCollectionName)
+	log.Printf("✓ Collections: %s, %s, %s, %s", CollectionName, ExecutionCollectionName, ProductCollectionName, HistoryCollectionName)
 	log.Printf("✓ Indexes created")
 
 	return nil
@@ -84,9 +90,22 @@ func createIndexes(ctx context.Context) error {
 		return err
 	}
 
-	_, err := ExecutionCollection.Indexes().CreateOne(ctx, mongo.IndexModel{
+	if _, err := ExecutionCollection.Indexes().CreateOne(ctx, mongo.IndexModel{
 		Keys:    bson.D{{Key: "graphId", Value: 1}},
 		Options: options.Index().SetUnique(true),
+	}); err != nil {
+		return err
+	}
+
+	if _, err := ProductCollection.Indexes().CreateOne(ctx, mongo.IndexModel{
+		Keys:    bson.D{{Key: "id", Value: 1}},
+		Options: options.Index().SetUnique(true),
+	}); err != nil {
+		return err
+	}
+
+	_, err := HistoryCollection.Indexes().CreateOne(ctx, mongo.IndexModel{
+		Keys: bson.D{{Key: "productId", Value: 1}},
 	})
 	return err
 }
