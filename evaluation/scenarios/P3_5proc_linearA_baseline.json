@@ -1,0 +1,15 @@
+{
+  "Batch": 1,
+  "process_requirements": { "product_match": "IE4", "quantity": 1 },
+  "routes": {
+    "S1": {
+      "Cleaning":            { "prerequisites": [],                        "requirements": { "axis_height": 50, "power": 5.5, "know-how_formalization-tool": false } },
+      "Disassembly":         { "prerequisites": ["Cleaning"],              "requirements": { "axis_height": 50, "power": 5.5, "know-how_formalization-tool": false } },
+      "BearingSubstitution": { "prerequisites": ["Disassembly"],           "requirements": { "axis_height": 50, "power": 5.5, "know-how_formalization-tool": false } },
+      "Reassembly":          { "prerequisites": ["BearingSubstitution"],   "requirements": { "axis_height": 50, "power": 5.5, "know-how_formalization-tool": false } },
+      "Certification":       { "prerequisites": ["Reassembly"],            "requirements": { "axis_height": 50, "power": 5.5, "know-how_formalization-tool": false } }
+    }
+  },
+  "starting_point": [20.464664, 9.18854],
+  "optimization_mode": "forward"
+}

@@ -8,29 +8,31 @@ services:
     ports:
       - 27017:27017
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=erichi
-      - MONGO_INITDB_ROOT_PASSWORD=secret
-      - MONGO_INITDB_DATABASE= myapp
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGODB_DB:-dsm_db}
     volumes:
-      # Persist database files across container restarts
       - mongodata:/data/db
     networks:
       - optNetwork
+
   db-client:
-    image: mongo-express
+    image: mongo-express:1
+    profiles: ["dev"]
     restart: always
     ports:
       - 8081:8081
     environment:
-      - ME_CONFIG_MONGODB_ADMINUSERNAME=erichi
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=secret
-      - ME_CONFIG_MONGODB_URL=mongodb://erichi:secret@db:27017/
-      - ME_CONFIG_BASICAUTH_USERNAME=test
-      - ME_CONFIG_BASICAUTH_PASSWORD=webpass
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_USERNAME}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_PASSWORD}
+      - ME_CONFIG_MONGODB_URL=mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@db:27017/
+      - ME_CONFIG_BASICAUTH_USERNAME=${MONGO_EXPRESS_BASICAUTH_USERNAME}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${MONGO_EXPRESS_BASICAUTH_PASSWORD}
     depends_on:
       - db
     networks:
       - optNetwork
+
   client:
     build:
       context: .
@@ -44,12 +46,18 @@ services:
       - "0.0.0.0:8080:8080"
       - "50050:50050"
     environment:
-      - GRPC_PORT=50050
+      - GRPC_PORT=${GRPC_PORT:-50050}
       - REDIS_ADDR=redis:6379
-      - MONGODB_URL=mongodb://erichi:secret@db:27017/
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - MONGODB_URL=mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@db:27017/
+      - MONGODB_DB=${MONGODB_DB:-dsm_db}
+      - OPTIMIZER_ADDR=${OPTIMIZER_ADDR:-optimizer:50060}
+      - AAS_BASE_URL=${AAS_BASE_URL}
+      - ACTOR_DIRECTORY=${ACTOR_DIRECTORY:-./data/directory.json}
+      - HEALTH_MONGO_ADDR=${HEALTH_MONGO_ADDR:-db:27017}
+      - HEALTH_OPTIMIZER_ADDR=${HEALTH_OPTIMIZER_ADDR:-optimizer:50060}
     networks:
       - optNetwork
-
 
   optimizer:
     build:
@@ -57,6 +65,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "50060:50060"
+    environment:
+      - OPTIMIZER_PORT=50060
     networks:
       - optNetwork
     healthcheck:
@@ -72,12 +82,14 @@ services:
     restart: always
     ports:
       - "6379:6379"
+    command: redis-server --requirepass ${REDIS_PASSWORD}
     networks:
       - optNetwork
 
   redis-insight:
     image: redis/redisinsight:latest
     container_name: redis-insight
+    profiles: ["dev"]
     restart: always
     ports:
       - "5540:5540"

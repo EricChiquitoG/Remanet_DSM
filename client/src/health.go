@@ -15,8 +15,15 @@ const (
 	ServiceAASAPI     = "aas_api"
 	ServiceOptimizer  = "optimizer"
 	healthCheckPeriod = 10 * time.Minute
-	aasCheckURL       = "https://ds.platform.remanet.extrared.it/ds4/retrieve_by_id"
+
+	defaultAASBaseURL = "https://ds.platform.remanet.extrared.it/ds4/retrieve_by_id"
 )
+
+// AASBaseURL returns the AAS API base URL from the AAS_BASE_URL env var,
+// falling back to the platform default.
+func AASBaseURL() string {
+	return getEnvOrDefault("AAS_BASE_URL", defaultAASBaseURL)
+}
 
 type ServiceStatus struct {
 	Available   bool
@@ -76,7 +83,7 @@ func runHealthChecks() {
 	optimizerAddr := getEnvOrDefault("HEALTH_OPTIMIZER_ADDR", "optimizer:50060")
 	results := map[string]ServiceStatus{
 		ServiceMongoDB:   checkTCP(mongoAddr),
-		ServiceAASAPI:    checkHTTP(aasCheckURL),
+		ServiceAASAPI:    checkHTTP(AASBaseURL()),
 		ServiceOptimizer: checkTCP(optimizerAddr),
 	}
 

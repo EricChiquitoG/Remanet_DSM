@@ -1,0 +1,27 @@
+{
+  "Contacts": {
+    "A": [
+      { "Name": "Dissasembler1", "Address": "urn:remanet:org:disassembler:1", "Location": [21.584816, 2.156704] },
+      { "Name": "Dissasembler2", "Address": "urn:remanet:org:disassembler:2", "Location": [65.584816, 13.22] },
+      { "Name": "Dissasembler3", "Address": "urn:remanet:org:disassembler:3", "Location": [59.913869, 10.752245] },
+      { "Name": "Dissasembler4", "Address": "urn:remanet:org:disassembler:4", "Location": [48.137154, 11.576124] },
+      { "Name": "Dissasembler5", "Address": "urn:remanet:org:disassembler:5", "Location": [41.385064, 2.173403] },
+      { "Name": "Dissasembler7", "Address": "urn:remanet:org:disassembler:7", "Location": [45.464664, 9.188540] }
+    ],
+    "C": [
+      { "Name": "Shaft0", "Address": "urn:remanet:org:shaft:0", "Location": [41.22, 22.154] },
+      { "Name": "Shaft1", "Address": "urn:remanet:org:shaft:1", "Location": [42.584816, 21.156704] },
+      { "Name": "Shaft2", "Address": "urn:remanet:org:shaft:2", "Location": [69.584816, 22.156704] },
+      { "Name": "Shaft3", "Address": "urn:remanet:org:shaft:3", "Location": [45.748234, 4.846710] },
+      { "Name": "Shaft4", "Address": "urn:remanet:org:shaft:4", "Location": [50.075538, 14.437800] },
+      { "Name": "Shaft6", "Address": "urn:remanet:org:shaft:6", "Location": [60.169857, 24.938379] }
+    ],
+    "D": [
+      { "Name": "Lamination0", "Address": "urn:remanet:org:lamination:0", "Location": [55.584816, 9.10] },
+      { "Name": "Lamination1", "Address": "urn:remanet:org:lamination:1", "Location": [60.1, 19.10] },
+      { "Name": "Lamination2", "Address": "urn:remanet:org:lamination:2", "Location": [40.22, 29.10] },
+      { "Name": "Lamination3", "Address": "urn:remanet:org:lamination:3", "Location": [55.676097, 12.568337] },
+      { "Name": "Lamination4", "Address": "urn:remanet:org:lamination:4", "Location": [38.722252, -9.139337] }
+    ]
+  }
+}

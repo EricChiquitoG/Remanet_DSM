@@ -114,6 +114,33 @@ func (pc *ProposalCreate) ToProposal() *Proposal {
 		UpdatedAt:          now,
 	}
 }
+// QueryProposalsByEfficiencyClass returns proposals whose requiredParameters.efficiencyClass
+// matches the given value. Pass an empty string to return all proposals.
+func QueryProposalsByEfficiencyClass(efficiencyClass string) ([]Proposal, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	filter := bson.M{}
+	if efficiencyClass != "" {
+		filter["requiredParameters.efficiencyClass"] = efficiencyClass
+	}
+
+	cursor, err := Collection.Find(ctx, filter, options.Find().SetLimit(1000))
+	if err != nil {
+		return nil, fmt.Errorf("failed to query proposals: %v", err)
+	}
+	defer cursor.Close(ctx)
+
+	var proposals []Proposal
+	if err := cursor.All(ctx, &proposals); err != nil {
+		return nil, fmt.Errorf("failed to decode proposals: %v", err)
+	}
+	if proposals == nil {
+		proposals = []Proposal{}
+	}
+	return proposals, nil
+}
+
 func GetBatchData(c *gin.Context) {
 	graphID := c.Query("graphId")
 	if graphID == "" {

@@ -1,0 +1,13 @@
+{
+  "Contacts": {
+    "A": [
+      { "Name": "Dissasembler1", "Address": "urn:remanet:org:disassembler:1", "Location": [21.584816, 2.156704] }
+    ],
+    "C": [
+      { "Name": "Shaft0", "Address": "urn:remanet:org:shaft:0", "Location": [41.22, 22.154] }
+    ],
+    "D": [
+      { "Name": "Lamination0", "Address": "urn:remanet:org:lamination:0", "Location": [55.584816, 9.10] }
+    ]
+  }
+}

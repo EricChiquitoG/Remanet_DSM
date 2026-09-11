@@ -1,0 +1,106 @@
+{
+  "Contacts": {
+    "A": [
+      {
+        "Name": "Dissasembler0",
+        "Address": "urn:remanet:org:disassembler:0",
+        "Location": [
+          65.584816,
+          22.156704
+        ]
+      },
+      {
+        "Name": "Dissasembler1",
+        "Address": "urn:remanet:org:disassembler:1",
+        "Location": [
+          21.584816,
+          2.156704
+        ]
+      },
+      {
+        "Name": "Dissasembler2",
+        "Address": "urn:remanet:org:disassembler:2",
+        "Location": [
+          65.584816,
+          13.22
+        ]
+      },
+      {
+        "Name": "Dissasembler3",
+        "Address": "urn:remanet:org:disassembler:3",
+        "Location": [
+          59.913869,
+          10.752245
+        ]
+      }
+    ],
+    "C": [
+      {
+        "Name": "Shaft0",
+        "Address": "urn:remanet:org:shaft:0",
+        "Location": [
+          41.22,
+          22.154
+        ]
+      },
+      {
+        "Name": "Shaft1",
+        "Address": "urn:remanet:org:shaft:1",
+        "Location": [
+          42.584816,
+          21.156704
+        ]
+      },
+      {
+        "Name": "Shaft2",
+        "Address": "urn:remanet:org:shaft:2",
+        "Location": [
+          69.584816,
+          22.156704
+        ]
+      },
+      {
+        "Name": "Shaft3",
+        "Address": "urn:remanet:org:shaft:3",
+        "Location": [
+          45.748234,
+          4.84671
+        ]
+      }
+    ],
+    "D": [
+      {
+        "Name": "Lamination0",
+        "Address": "urn:remanet:org:lamination:0",
+        "Location": [
+          55.584816,
+          9.1
+        ]
+      },
+      {
+        "Name": "Lamination1",
+        "Address": "urn:remanet:org:lamination:1",
+        "Location": [
+          60.1,
+          19.1
+        ]
+      },
+      {
+        "Name": "Lamination2",
+        "Address": "urn:remanet:org:lamination:2",
+        "Location": [
+          40.22,
+          29.1
+        ]
+      },
+      {
+        "Name": "Lamination3",
+        "Address": "urn:remanet:org:lamination:3",
+        "Location": [
+          55.676097,
+          12.568337
+        ]
+      }
+    ]
+  }
+}

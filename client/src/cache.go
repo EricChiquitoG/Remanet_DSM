@@ -21,7 +21,8 @@ func InitRedis() error {
 	}
 
 	RedisClient = redis.NewClient(&redis.Options{
-		Addr: addr,
+		Addr:     addr,
+		Password: os.Getenv("REDIS_PASSWORD"),
 	})
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

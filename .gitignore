@@ -1,0 +1,19 @@
+# Environment — contains secrets, never commit
+.env
+*.env
+!.env.example
+
+# Debug artifacts
+output.json
+
+# macOS
+.DS_Store
+
+# Go build output
+*.exe
+*.out
+
+# Python
+__pycache__/
+*.pyc
+*.pyo

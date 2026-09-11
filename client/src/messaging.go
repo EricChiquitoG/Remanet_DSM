@@ -109,7 +109,6 @@ type responsesTP struct {
 
 type techProviderResponse struct {
 	uid       string
-	uClass    string
 	location  []float64
 	Processes []process
 }
@@ -124,24 +123,6 @@ type process struct {
 type StepEntry struct {
 	StepName     string       `json:"step_name"`
 	Requirements Requirements `json:"requirements"`
-}
-
-// MotorElement maps the fields we need from a Proposal returned by GET /purchase_proposals.
-type MotorElement struct {
-	CustomerID         string   `json:"customerId"`
-	CustomerLocation   GeoPoint `json:"customerLocation"`
-	Cardinality        int      `json:"cardinality"`
-	ProductType        string   `json:"productType"`
-	RequiredParameters struct {
-		RatedPower      float64 `json:"ratedPower"`
-		AxisHeight      int     `json:"axisHeight"`
-		EfficiencyClass string  `json:"efficiencyClass"`
-	} `json:"requiredParameters"`
-}
-
-type GeoPoint struct {
-	Type        string    `json:"type"`
-	Coordinates []float64 `json:"coordinates"`
 }
 
 type SolChoice = struct {
@@ -162,9 +143,9 @@ func ProcessDirectory(c *gin.Context) {
 	}
 
 	// Gate on external service availability before doing any work.
+	// AAS being unavailable is not fatal — callTechProvider falls back to the DB proxy.
 	if ok, msg := IsServiceAvailable(ServiceAASAPI); !ok {
-		c.JSON(http.StatusServiceUnavailable, gin.H{"error": fmt.Sprintf("AAS API unavailable: %s", msg)})
-		return
+		log.Printf("[warn] AAS API unavailable: %s — DB proxy will be used for actor data", msg)
 	}
 	if ok, msg := IsServiceAvailable(ServiceOptimizer); !ok {
 		c.JSON(http.StatusServiceUnavailable, gin.H{"error": fmt.Sprintf("optimizer service unavailable: %s", msg)})
@@ -179,10 +160,9 @@ func ProcessDirectory(c *gin.Context) {
 
 	processToFetch := GetDistinct(request)
 	fmt.Println("DSM process initialized for processes: ", processToFetch)
-	AClassesToFetch := IdentifyActorClasses(processToFetch, ActorProcesses)
 
 	uniqueSteps := FlattenUniqueStepsWithData(request)
-	TPResponses, err := techProviderSearch(AClassesToFetch, uniqueSteps, directory)
+	TPResponses, err := techProviderSearch(uniqueSteps, directory)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Unable to connect to the AAS %v", err)})
 		return
@@ -426,13 +406,14 @@ func connectToServer(address string) (*grpc.ClientConn, error) {
 func customerSearch(requirements ProcessRequirements) (ResultCollection, map[string][]string, error) {
 	originMap := make(map[string][]string)
 	resultCollectionLog := ResultCollection{}
-	matches, err := retrieveProposals("http://localhost:8080", requirements.ProductMatch)
+
+	proposals, err := execdb.QueryProposalsByEfficiencyClass(requirements.ProductMatch)
 	if err != nil {
-		log.Printf("Retrieval from local API did not work: %s", err)
+		log.Printf("Proposal DB query failed: %s", err)
 		return resultCollectionLog, originMap, err
 	}
-	fmt.Println("Matches local", matches)
-	for _, match := range matches {
+	fmt.Println("Matches local", proposals)
+	for _, match := range proposals {
 		// Customers are the delivery destination in forward mode → "end" actors.
 		res := Result{ContactName: match.CustomerID, Matches: []string{"end"}, Location: match.CustomerLocation.Coordinates}
 		resultCollectionLog.Results = append(resultCollectionLog.Results, res)
@@ -447,7 +428,6 @@ func customerSearch(requirements ProcessRequirements) (ResultCollection, map[str
 	return resultCollectionLog, originMap, nil
 }
 
-// Change this function to be able to query the dummy reverse data for DSM (shall extra not provide it)
 func providerSearch(requirements ProcessRequirements) (ResultCollection, map[string][]string, error) {
 	originMap := make(map[string][]string)
 	resultCollectionLog := ResultCollection{}
@@ -492,29 +472,6 @@ func providerSearch(requirements ProcessRequirements) (ResultCollection, map[str
 	return resultCollectionLog, originMap, nil
 }
 
-func retrieveProposals(baseURL, efficiencyClass string) ([]MotorElement, error) {
-	params := url.Values{}
-	params.Set("efficiencyClass", efficiencyClass)
-	fullURL := fmt.Sprintf("%s/purchase_proposals?%s", baseURL, params.Encode())
-
-	resp, err := http.Get(fullURL)
-	if err != nil {
-		return nil, fmt.Errorf("request failed: %v", err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		body, _ := io.ReadAll(resp.Body)
-		return nil, fmt.Errorf("server error: %s - %s", resp.Status, string(body))
-	}
-
-	var proposals []MotorElement
-	if err := json.NewDecoder(resp.Body).Decode(&proposals); err != nil {
-		return nil, fmt.Errorf("error decoding JSON: %v", err)
-	}
-
-	return proposals, nil
-}
 
 func ExtractStepNamesFromRoutes(r OptimizationInput) []string {
 	stepNameSet := make(map[string]struct{})
@@ -538,7 +495,8 @@ func OptimizationHandler(r OptimizationInput, distMatrix map[string]map[string]f
 		Message: "Optimization process initiated for multiple sequences.",
 		Results: []OptimizationResultForSequence{},
 	}
-	conn, err := connectToServer("optimizer:50060")
+	optimizerAddr := getEnvOrDefault("OPTIMIZER_ADDR", "optimizer:50060")
+	conn, err := connectToServer(optimizerAddr)
 	if err != nil {
 		log.Printf("Failed to connect to pymoo-runner: %v", err)
 		return finalResponse, err
@@ -619,68 +577,68 @@ func OptimizationHandler(r OptimizationInput, distMatrix map[string]map[string]f
 
 }
 
-func techProviderSearch(AClasses []string, steps []StepEntry, dir *Directory) (responsesTP, error) {
+func techProviderSearch(steps []StepEntry, dir *Directory) (responsesTP, error) {
+	stepSet := make(map[string]bool)
+	for _, s := range steps {
+		stepSet[s.StepName] = true
+	}
+
 	var wg sync.WaitGroup
 	resultsChan := make(chan techProviderResponse)
-	for class, contacts := range dir.Contacts {
-		if !slices.Contains(AClasses, class) {
+	for _, contact := range dir.Contacts {
+		relevant := false
+		for _, p := range contact.Processes {
+			if stepSet[p] {
+				relevant = true
+				break
+			}
+		}
+		if !relevant {
 			continue
 		}
 
-		for _, contact := range contacts {
-			class := class     // shadow variable to avoid closure capture
-			contact := contact // same here
+		contact := contact
+		wg.Add(1)
+		go func(contact Contact) {
+			defer wg.Done()
 
-			wg.Add(1)
-			go func(class string, contact Contact) {
-				defer wg.Done()
+			resp, err := callTechProvider(contact.Processes, steps, contact.Address, contact.Name, contact.Location)
+			if err != nil {
+				log.Printf("Error calling tech provider %s: %v", contact.Name, err)
+				return
+			}
 
-				resp, err := callTechProvider(class, steps, contact.Address, contact.Name, contact.Location)
-				if err != nil {
-					log.Printf("Error calling tech provider %s (%s): %v", contact.Name, class, err)
-					return
-				}
-
-				if len(resp.Processes) > 0 {
-					resultsChan <- resp
-				}
-			}(class, contact) // pass variables here explicitly
-		}
+			if len(resp.Processes) > 0 {
+				resultsChan <- resp
+			}
+		}(contact)
 	}
 	go func() {
 		wg.Wait()
 		close(resultsChan)
 	}()
 
-	// Collect results
 	finalResponse := responsesTP{}
-
 	for result := range resultsChan {
 		finalResponse.Responses = append(finalResponse.Responses, result)
 	}
 	fmt.Println(finalResponse.Responses)
 	if len(finalResponse.Responses) == 0 {
-		fmt.Println("Error? ")
 		return finalResponse, fmt.Errorf("no technology providers matched any processes")
 	}
 
 	return finalResponse, nil
 }
 
-// This function is called once per technology provider to retrieve their data
-// defaultCostPerClass holds fallback cost_per_hour values used when the AAS API is unreachable.
-var defaultCostPerClass = map[string]struct{ cost, co2 float64 }{
-	"A": {50.0, 10.0},
-	"C": {80.0, 15.0},
-	"D": {70.0, 12.0},
-}
+const (
+	defaultCost = 50.0
+	defaultCo2  = 10.0
+)
 
-func buildFallbackResponse(class, name string, loc []float64, steps []StepEntry) techProviderResponse {
-	response := techProviderResponse{uClass: class, uid: name, location: loc}
-	defaults := defaultCostPerClass[class]
-
+func buildFallbackResponse(actorProcesses []string, name string, loc []float64, steps []StepEntry) techProviderResponse {
+	response := techProviderResponse{uid: name, location: loc}
 	allowed := make(map[string]bool)
-	for _, p := range ActorProcesses[class] {
+	for _, p := range actorProcesses {
 		allowed[p] = true
 	}
 	for _, step := range steps {
@@ -688,52 +646,47 @@ func buildFallbackResponse(class, name string, loc []float64, steps []StepEntry)
 			response.Processes = append(response.Processes, process{
 				ProcessID:   fmt.Sprintf("%s-%s", name, step.StepName),
 				ProcessName: step.StepName,
-				Cost:        defaults.cost,
-				Co2:         defaults.co2,
+				Cost:        defaultCost,
+				Co2:         defaultCo2,
 			})
 		}
 	}
 	return response
 }
 
-func callTechProvider(class string, steps []StepEntry, address string, name string, loc []float64) (techProviderResponse, error) {
-	response := techProviderResponse{uClass: class, uid: name, location: loc}
+func callTechProvider(actorProcesses []string, steps []StepEntry, address string, name string, loc []float64) (techProviderResponse, error) {
+	response := techProviderResponse{uid: name, location: loc}
 	providerData, err := fetchAAS(address)
 	if err != nil {
-		log.Printf("[fallback] AAS unavailable for %s (%s): %v — using dummy data", name, class, err)
-		response = buildFallbackResponse(class, name, loc, steps)
-		if saveErr := SaveTPResponse("TPRes_"+name, response, OptimizationTTL); saveErr != nil {
-			log.Printf("Fallback response not stored in cache: %v", saveErr)
+		log.Printf("[proxy] AAS unavailable for %s: %v — trying DB proxy", name, err)
+		providerData, err = fetchAASFromProxy(address)
+		if err != nil {
+			log.Printf("[fallback] DB proxy miss for %s: %v — using defaults", name, err)
+			response = buildFallbackResponse(actorProcesses, name, loc, steps)
+			if saveErr := SaveTPResponse("TPRes_"+name, response, OptimizationTTL); saveErr != nil {
+				log.Printf("Fallback response not stored in cache: %v", saveErr)
+			}
+			return response, nil
 		}
-		return response, nil
+		log.Printf("[proxy] Using mock AAS data for %s", name)
 	}
 	processLookup := make(map[string]bool)
-	if allowed, ok := ActorProcesses[class]; ok {
-		for _, p := range allowed {
-			processLookup[p] = true
-		}
+	for _, p := range actorProcesses {
+		processLookup[p] = true
 	}
 	for _, step := range steps {
 		stepName := step.StepName
 		if !processLookup[stepName] {
 			continue
 		}
-		reqMatched := MatchesStepRequirements(class, *providerData, step.Requirements)
-		if reqMatched {
-			cost := getFloatFromAAS(*providerData, "cost_per_hour")
-			co2 := getFloatFromAAS(*providerData, "co2_static_per_hour")
-			//loc1 := getFloatFromAAS(*providerData, "longitude") * 100
-			//loc2 := getFloatFromAAS(*providerData, "latitude") * 100
-
-			newProcess := process{
-				ProcessID:   fmt.Sprintf("%s-%s", name, stepName),
-				ProcessName: stepName,
-				Cost:        cost,
-				Co2:         co2,
-			}
-			//response.location = append(response.location, loc1, loc2)
-			response.Processes = append(response.Processes, newProcess)
-		}
+		cost := getFloatFromAAS(*providerData, "cost_per_hour")
+		co2 := getFloatFromAAS(*providerData, "co2_static_per_hour")
+		response.Processes = append(response.Processes, process{
+			ProcessID:   fmt.Sprintf("%s-%s", name, stepName),
+			ProcessName: stepName,
+			Cost:        cost,
+			Co2:         co2,
+		})
 	}
 	err = SaveTPResponse("TPRes_"+name, response, OptimizationTTL)
 	if err != nil {
@@ -743,7 +696,7 @@ func callTechProvider(class string, steps []StepEntry, address string, name stri
 }
 
 func fetchAAS(id string) (*AASResponse, error) {
-	baseURL := "https://ds.platform.remanet.extrared.it/ds4/retrieve_by_id"
+	baseURL := AASBaseURL()
 
 	// Encode the path variable in case it has special characters like ":" or "/"
 	encodedID := url.PathEscape(id)
@@ -777,76 +730,19 @@ func fetchAAS(id string) (*AASResponse, error) {
 	return &aas, nil
 }
 
-func MatchesStepRequirements(actorClass string, aas AASResponse, req Requirements) bool {
-	switch actorClass {
-	case "A":
-		fmt.Println("Class A Matching:")
-		return matchClassA(aas, req)
-	case "C":
-		fmt.Println("Class C Matching:")
-		return matchClassC(aas, req)
-	case "D":
-		fmt.Println("Class D Matching:")
-
-		return matchClassD(aas, req)
-	default:
-		fmt.Println("Unknown actor class:", actorClass)
-		return false
+func fetchAASFromProxy(actorID string) (*AASResponse, error) {
+	rawJSON, err := execdb.GetMockAASJSON(actorID)
+	if err != nil {
+		return nil, err
 	}
-}
-
-// ---------- Matching per Class ----------
-
-//HAD TO REMOVE THE RETURN FALSE IN EACH IF AS AAS NOT WORKING
-
-func matchClassA(aas AASResponse, req Requirements) bool {
-	axisHeight := getFloatFromAAS(aas, "axis_height")
-	power := getFloatFromAAS(aas, "power")
-	KHFT := getBoolFromAAS(aas, "know-how_formalization-tool")
-	fmt.Println("to match ", "AH: ", *req.AxisHeight, "Power: ", *req.Power, " With: ", "AH: ", axisHeight, "Power: ", power)
-	if req.AxisHeight != nil && axisHeight < *req.AxisHeight {
-		fmt.Println("Axis height too high for class A for actor ", aas.Data.IDShort)
-
+	var aas AASResponse
+	if err := json.Unmarshal([]byte(rawJSON), &aas); err != nil {
+		return nil, fmt.Errorf("failed to parse proxy data for %s: %v", actorID, err)
 	}
-	if req.Power != nil && power < *req.Power {
-		fmt.Println("Power too high for class A for actor ", aas.Data.IDShort)
+	if aas.Data.IDShort == "" {
+		return nil, fmt.Errorf("proxy data for %s has no idShort", actorID)
 	}
-	if req.KnowHowFormalizationTool != nil && KHFT != *req.KnowHowFormalizationTool {
-		fmt.Println("Know-how-formalization-tool property not matching for class A")
-	}
-	return true
-}
-
-func matchClassC(aas AASResponse, req Requirements) bool {
-	tolerance := getStringFromAAS(aas, "tolerance")
-	length := getFloatFromAAS(aas, "length")
-	diameter := getFloatFromAAS(aas, "diameter")
-
-	toleranceMapped := ProcessMap[tolerance]
-	fmt.Println("to match ", "Tolerance: ", *req.Tolerance, "Length: ", *req.Length, "Diameter: ", *req.Diameter, " With: ", "Tolerance: ", toleranceMapped, "Length: ", length, "Diameter: ", diameter)
-	if req.Tolerance != nil && ProcessMap[tolerance] < ProcessMap[*req.Tolerance] {
-		fmt.Println("Tolerance mismatch for class C for actor ", aas.Data.IDShort)
-
-	}
-	if req.Length != nil && length < float64(*req.Length) {
-		fmt.Println("Length too long for class C for actor ", aas.Data.IDShort)
-
-	}
-	if req.Diameter != nil && diameter < float64(*req.Diameter) {
-		fmt.Println("Diameter too large for class C for actor ", aas.Data.IDShort)
-
-	}
-	return true
-}
-
-func matchClassD(aas AASResponse, req Requirements) bool {
-	axisHeight := getFloatFromAAS(aas, "axis_height")
-	fmt.Println("to match ", "AH: ", *req.AxisHeight, " With: ", "AH: ", axisHeight)
-	if req.AxisHeight != nil && axisHeight < *req.AxisHeight {
-		fmt.Println("Axis height too high for class D for actor ", aas.Data.IDShort)
-
-	}
-	return true
+	return &aas, nil
 }
 
 // Finds and parses a float64 property directly from AAS by name
@@ -928,8 +824,7 @@ func ConvertTPToResultCollection(tp responsesTP) ResultCollection {
 		newResult := Result{
 			ContactName: resp.uid,
 			Matches:     matches,
-			Location:    resp.location, // you can fill this later if needed
-			Response:    resp.uClass,   // optional, using class as response label
+			Location:    resp.location,
 		}
 
 		resultCollection.Results = append(resultCollection.Results, newResult)

@@ -7,23 +7,23 @@ import (
 )
 
 var (
-	directory      *Directory
-	costs          *CostData
-	ActorProcesses map[string][]string
-	ProcessMap     map[string]int
-	HoloFiles      map[string]string
-	HoloLocations  map[string][]float64
+	directory     *Directory
+	costs         *CostData
+	ProcessMap    map[string]int
+	HoloFiles     map[string]string
+	HoloLocations map[string][]float64
 )
 
 type Contact struct {
-	Name     string    `json:"Name"`
-	Address  string    `json:"Address"`
-	Location []float64 `json:"Location"`
+	Name      string    `json:"Name"`
+	Address   string    `json:"Address"`
+	Location  []float64 `json:"Location"`
+	Processes []string  `json:"Processes"`
 }
 
 // Root JSON
 type Directory struct {
-	Contacts map[string][]Contact `json:"Contacts"`
+	Contacts []Contact `json:"Contacts"`
 }
 
 type LocationsAddresses struct {
@@ -247,7 +247,8 @@ func ProcessAAS(filename string) (*AASData, error) {
 func InitData() error {
 	var err error
 
-	directory, err = MyDir("./data/directory.json")
+	directoryPath := getEnvOrDefault("ACTOR_DIRECTORY", "./data/directory.json")
+	directory, err = MyDir(directoryPath)
 	if err != nil {
 		return fmt.Errorf("failed to load directory.json: %v", err)
 	}
@@ -255,12 +256,6 @@ func InitData() error {
 	costs, err = Costs("./data/cost.json")
 	if err != nil {
 		return fmt.Errorf("failed to load cost.json: %v", err)
-	}
-
-	ActorProcesses = map[string][]string{
-		"C": {"Grinding", "Turning", "StatorRewind"},
-		"A": {"Cleaning", "Inspection", "Disassembly", "BearingSubstitution", "Reassembly", "Certification"},
-		"D": {"Punching"},
 	}
 
 	ProcessMap = map[string]int{

@@ -1,9 +1,7 @@
 package src
 
 import (
-	"encoding/json"
 	"fmt"
-	"os"
 	"slices"
 	"sort"
 )
@@ -140,27 +138,11 @@ func augmentWithBoundaryNodes(prDAG map[string][]string) map[string][]string {
 }
 
 func exportToJson(processes []string, CostMatrix map[string]map[string]float64, distM map[string]map[string]float64, prDAG map[string][]string) map[string]interface{} {
-	data := map[string]interface{}{
+	return map[string]interface{}{
 		"processes":  prDAG,
 		"CostMatrix": CostMatrix,
 		"matrix":     distM,
 	}
-
-	file, err := os.Create("output.json")
-	if err != nil {
-		fmt.Println("Error creating file:", err)
-		return nil
-	}
-	defer file.Close()
-
-	encoder := json.NewEncoder(file)
-	encoder.SetIndent("", "  ")
-	if err := encoder.Encode(data); err != nil {
-		fmt.Println("Error writing JSON:", err)
-	} else {
-		fmt.Println("Data written to output.json")
-	}
-	return data
 }
 func IdentifyActorClasses(processes []string, actorProcesses map[string][]string) []string {
 	requiredClasses := make(map[string]bool)

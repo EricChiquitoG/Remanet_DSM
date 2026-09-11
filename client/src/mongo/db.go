@@ -19,15 +19,23 @@ var (
 	ExecutionCollection *mongo.Collection
 	ProductCollection   *mongo.Collection
 	HistoryCollection   *mongo.Collection
+	AASActorCollection  *mongo.Collection
 )
 
 const (
-	DatabaseName            = "dsm_db"
 	CollectionName          = "proposals"
 	ExecutionCollectionName = "execution_graphs"
 	ProductCollectionName   = "products"
 	HistoryCollectionName   = "product_history"
+	AASActorCollectionName  = "aas_actors"
 )
+
+func databaseName() string {
+	if v := os.Getenv("MONGODB_DB"); v != "" {
+		return v
+	}
+	return "dsm_db"
+}
 
 // InitMongoDB initializes the MongoDB connection and creates indexes
 func InitMongoDB() error {
@@ -55,11 +63,12 @@ func InitMongoDB() error {
 	}
 
 	Client = client
-	Database = client.Database(DatabaseName)
+	Database = client.Database(databaseName())
 	Collection = Database.Collection(CollectionName)
 	ExecutionCollection = Database.Collection(ExecutionCollectionName)
 	ProductCollection = Database.Collection(ProductCollectionName)
 	HistoryCollection = Database.Collection(HistoryCollectionName)
+	AASActorCollection = Database.Collection(AASActorCollectionName)
 
 	// Create indexes
 	if err := createIndexes(ctx); err != nil {
@@ -67,8 +76,8 @@ func InitMongoDB() error {
 	}
 
 	log.Printf("✓ Connected to MongoDB: %s", mongoURL)
-	log.Printf("✓ Database: %s", DatabaseName)
-	log.Printf("✓ Collections: %s, %s, %s, %s", CollectionName, ExecutionCollectionName, ProductCollectionName, HistoryCollectionName)
+	log.Printf("✓ Database: %s", databaseName())
+	log.Printf("✓ Collections: %s, %s, %s, %s, %s", CollectionName, ExecutionCollectionName, ProductCollectionName, HistoryCollectionName, AASActorCollectionName)
 	log.Printf("✓ Indexes created")
 
 	return nil
@@ -104,8 +113,15 @@ func createIndexes(ctx context.Context) error {
 		return err
 	}
 
-	_, err := HistoryCollection.Indexes().CreateOne(ctx, mongo.IndexModel{
+	if _, err := HistoryCollection.Indexes().CreateOne(ctx, mongo.IndexModel{
 		Keys: bson.D{{Key: "productId", Value: 1}},
+	}); err != nil {
+		return err
+	}
+
+	_, err := AASActorCollection.Indexes().CreateOne(ctx, mongo.IndexModel{
+		Keys:    bson.D{{Key: "actorId", Value: 1}},
+		Options: options.Index().SetUnique(true),
 	})
 	return err
 }
