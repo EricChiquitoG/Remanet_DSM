@@ -4,7 +4,7 @@ services:
   db:
     image: mongo
     container_name: test-mongo
-    restart: always
+    restart: unless-stopped
     ports:
       - 27017:27017
     environment:
@@ -19,7 +19,7 @@ services:
   db-client:
     image: mongo-express:1
     profiles: ["dev"]
-    restart: always
+    restart: unless-stopped
     ports:
       - 8081:8081
     environment:
@@ -79,7 +79,7 @@ services:
   redis:
     image: redis:7-alpine
     container_name: dsm-redis
-    restart: always
+    restart: unless-stopped
     ports:
       - "6379:6379"
     command: redis-server --requirepass ${REDIS_PASSWORD}
@@ -90,7 +90,7 @@ services:
     image: redis/redisinsight:latest
     container_name: redis-insight
     profiles: ["dev"]
-    restart: always
+    restart: unless-stopped
     ports:
       - "5540:5540"
     depends_on:

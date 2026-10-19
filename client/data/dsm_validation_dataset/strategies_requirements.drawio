@@ -1,0 +1,521 @@
+<mxfile host="Electron">
+  <diagram name="Pagina-1" id="0cAcsMA6BCJGEnRdyMdn">
+    <mxGraphModel dx="3544" dy="1515" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;assemblyDisassemblyService&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- ratedPower: 5.5 kW&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="320" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1" value="Recondition Strategy" vertex="1">
+          <mxGeometry height="30" width="120" x="340" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;assemblyDisassemblyService&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- ratedPower: 5.5 kW&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="320" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;0. bearing001-inspection&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="340" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;no service required&lt;/span&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="320" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;1. bearing001-replace&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="340" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;2. motor001-assemblyInspection&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="340" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-9" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-3" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-5" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="340" y="450" as="sourcePoint" />
+            <mxPoint x="390" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;assemblyDisassemblyService&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- ratedPower: 5.5 kW&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="320" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-11" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;3. motor001-disassembly&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="340" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-12" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-10" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="aSjenuaF0K4AmpfIZOvN-2" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="340" y="340" as="sourcePoint" />
+            <mxPoint x="400" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-13" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;assemblyDisassemblyService&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- ratedPower: 5.5 kW&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="320" y="1060" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-14" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;5. motor001-reassembly&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="340" y="1030" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-15" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-4" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-14" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="410" y="430" as="sourcePoint" />
+            <mxPoint x="410" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-16" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-8" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-11" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="410" y="320" as="sourcePoint" />
+            <mxPoint x="410" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-17" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;assemblyDisassemblyService&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- ratedPower: 5.5 kW&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="90" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-18" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;6. rotor001-assemblyInspection&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="110" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-19" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;assemblyDisassemblyService&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- ratedPower: 5.5 kW&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="570" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-20" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;16. stator001-assemblyInspection&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="590" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-21" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-10" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-18" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="410" y="320" as="sourcePoint" />
+            <mxPoint x="410" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-22" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-10" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-20" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="410" y="320" as="sourcePoint" />
+            <mxPoint x="180" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-25" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;motorStandardTestingIEC60034&lt;/span&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="320" y="1180" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-26" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;4. motor001-assemblyTesting&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="340" y="1150" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-27" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-13" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-26" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="410" y="1010" as="sourcePoint" />
+            <mxPoint x="410" y="1040" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-28" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;assemblyDisassemblyService&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- ratedPower: 5.5 kW&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="90" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-29" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;7. rotor001-disassembly&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="110" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-30" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-17" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-29" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="410" y="430" as="sourcePoint" />
+            <mxPoint x="410" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-31" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;assemblyDisassemblyService&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- ratedPower: 5.5 kW&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="-120" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-32" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;10. rotorLamination001-inspection&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="130" x="-105" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-33" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-28" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="aSjenuaF0K4AmpfIZOvN-32" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="-40" y="530" as="sourcePoint" />
+            <mxPoint x="-50" y="570" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-34" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;assemblyDisassemblyService&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- ratedPower: 5.5 kW&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- shaftDiameter: 30 mm&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="90" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-35" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;12. shaft001-inspection&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="110" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-36" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-28" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-35" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="-100" y="590" as="sourcePoint" />
+            <mxPoint x="-320" y="630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-37" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;assemblyDisassemblyService&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- ratedPower: 5.5 kW&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="-330" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-38" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;14. squirrelCage001-inspection&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="-310" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-39" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-28" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-38" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="180" y="540" as="sourcePoint" />
+            <mxPoint x="-30" y="570" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-40" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;assemblyDisassemblyService&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- ratedPower: 5.5 kW&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="90" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-41" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;9. rotor001-reassembly&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="110" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-42" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-41" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="170" y="760" as="sourcePoint" />
+            <mxPoint x="180" y="690" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-43" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;no service required&lt;/span&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="90" y="940" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-44" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;8. rotor001-assemblyTesting&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="110" y="910" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-45" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-40" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-44" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="180" y="770" as="sourcePoint" />
+            <mxPoint x="180" y="800" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-46" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;no service required&lt;/span&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="-120" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-47" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;11. rotorLamination001-replace&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="130" x="-105" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-48" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;no service required&lt;/span&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="90" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-49" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;13. shaft001-replace&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="110" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-50" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;no service required&lt;/span&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="-330" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-51" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;15. squirrelCage001-reuse&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="-310" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-53" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-31" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-47" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="180" y="540" as="sourcePoint" />
+            <mxPoint x="-30" y="570" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-54" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-46" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="aSjenuaF0K4AmpfIZOvN-41" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="-30" y="610" as="sourcePoint" />
+            <mxPoint x="140" y="780" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-55" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-50" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-41" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="-30" y="770" as="sourcePoint" />
+            <mxPoint x="180" y="800" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-56" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-34" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-49" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="-30" y="650" as="sourcePoint" />
+            <mxPoint x="-30" y="730" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-58" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-37" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-51" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="-30" y="650" as="sourcePoint" />
+            <mxPoint x="-30" y="730" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-59" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;assemblyDisassemblyService&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- ratedPower: 5.5 kW&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="570" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-60" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;17. stator001-disassembly&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="590" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-61" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-19" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="aSjenuaF0K4AmpfIZOvN-60" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="180" y="430" as="sourcePoint" />
+            <mxPoint x="180" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-62" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;assemblyDisassemblyService&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- ratedPower: 5.5 kW&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="570" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-63" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;20. statorLamination001-inspection&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="145" x="577.5" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-64" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-59" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-63" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="860" y="530" as="sourcePoint" />
+            <mxPoint x="650" y="560" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-65" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;assemblyDisassemblyService&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- ratedPower: 5.5 kW&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="780" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-66" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;22. winding001-inspection&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="800" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-67" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-59" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-66" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="860" y="530" as="sourcePoint" />
+            <mxPoint x="370" y="630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-68" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;assemblyDisassemblyService&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- ratedPower: 5.5 kW&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="570" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-69" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;19. stator001-reassembly&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="590" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-70" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;no service required&lt;/span&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="570" y="940" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-71" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;18. stator001-assemblyTesting&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="590" y="910" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-72" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-68" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-71" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="660" y="770" as="sourcePoint" />
+            <mxPoint x="660" y="800" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-74" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-70" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-14" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="410" y="500" as="sourcePoint" />
+            <mxPoint x="410" y="1040" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-75" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-43" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-14" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="660" y="1000" as="sourcePoint" />
+            <mxPoint x="410" y="1040" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-76" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;no service required&lt;/span&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="570" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-77" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;21. statorLamination001-reuse&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="145" x="577.5" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-78" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;no service required&lt;/span&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="780" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-79" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;23. winding001-reuse&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="800" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-81" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-76" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-69" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="770" y="810" as="sourcePoint" />
+            <mxPoint x="770" y="840" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-82" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-78" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-69" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="770" y="810" as="sourcePoint" />
+            <mxPoint x="980" y="840" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-83" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-62" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-77" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="660" y="540" as="sourcePoint" />
+            <mxPoint x="660" y="570" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSjenuaF0K4AmpfIZOvN-84" edge="1" parent="1" source="aSjenuaF0K4AmpfIZOvN-65" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="aSjenuaF0K4AmpfIZOvN-79" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="660" y="540" as="sourcePoint" />
+            <mxPoint x="660" y="570" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1" value="Upgrade Strategy" vertex="1">
+          <mxGeometry height="30" width="120" x="1670" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;0. bearing_001-visualInspection&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="145" x="1292.5" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;no service required&lt;/span&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="1285" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;1. bearing_001-replace&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="1305" y="1060" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;no service required&lt;/span&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="1285" y="1090" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;2. motor_001-disassembly&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="1670" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;assemblyDisassemblyService&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- ratedPower: 5.5 kW&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- shaftDiameter: 30 mm&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;operatorGuidingTool&lt;/span&gt;" vertex="1">
+          <mxGeometry height="75" width="160" x="1650" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;3. motor_001-assemblyInspection&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="1670" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-65" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-9" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-6" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-9" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;assemblyDisassemblyService&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- ratedPower: 5.5 kW&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- shaftDiameter: 30 mm&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;operatorGuidingTool&lt;/span&gt;" vertex="1">
+          <mxGeometry height="75" width="160" x="1650" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;4. reluctanceMotorRotor&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;LaminationType-punching&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="145" x="1452.5" y="518" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-11" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;punchingService&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;asyMotorRedesignTool&lt;/span&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="1445" y="548" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-12" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;5. reluctanceMotorRotorPart-assemblyForManufacturingStep&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="170" x="1648" y="1060" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-13" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;no service required&lt;/span&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="1653" y="1090" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-14" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;6. reluctanceMotorRotorPart-design&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="160" x="1650" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-15" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;asyMotorRedesignTool&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- ratedPower: 5.5 kW&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;" vertex="1">
+          <mxGeometry height="44" width="160" x="1650" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-16" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;7. reluctanceMotorType-assemblyForManufacturingStep&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="170" x="1645" y="1165" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-17" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;no service required&lt;/span&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="1650" y="1195" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-18" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;8. rotor_001-disassembly&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="1670" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-19" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;assemblyDisassemblyService&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- ratedPower: 5.5 kW&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- shaftDiameter: 30 mm&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;operatorGuidingTool&lt;/span&gt;" vertex="1">
+          <mxGeometry height="88" width="160" x="1650" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-20" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;9. rotor_001-visualInspection&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="145" x="1657.5" y="518" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-21" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;no service required&lt;/span&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="1650" y="548" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-22" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;10. shaft_001-visualInspection&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="145" x="1657.5" y="800" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-23" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;no service required&lt;/span&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="1650" y="830" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-24" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;11. shaft_001-replace&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="1670" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-25" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;no service required&lt;/span&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="1650" y="950" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-26" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;12. statorLamination_001-visualInspection&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="170" x="1910" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-27" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;no service required&lt;/span&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="1915" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-28" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;13. statorLamination_001-reuse&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="145" x="1922.5" y="800" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-29" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;no service required&lt;/span&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="1915" y="830" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-30" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;14. stator_001-reassembly&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="1935" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-31" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;assemblyDisassemblyService&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- ratedPower: 5.5 kW&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- shaftDiameter: 30 mm&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;operatorGuidingTool&lt;/span&gt;" vertex="1">
+          <mxGeometry height="75" width="160" x="1915" y="950" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-32" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;15. stator_001-disassembly&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="1935" y="535" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-33" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;assemblyDisassemblyService&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- ratedPower: 5.5 kW&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- shaftDiameter: 30 mm&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;operatorGuidingTool&lt;/span&gt;" vertex="1">
+          <mxGeometry height="88" width="160" x="1915" y="565" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-34" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;16. stator_001-assemblyInspection&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="145" x="1922.5" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-35" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;assemblyDisassemblyService&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- ratedPower: 5.5 kW&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- shaftDiameter: 30 mm&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;- axisHeight: 100 mm&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;operatorGuidingTool&lt;/span&gt;" vertex="1">
+          <mxGeometry height="75" width="160" x="1915" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-36" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;17. stator_001-assemblyTesting&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="145" x="1922.5" y="1060" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-37" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;no service required&lt;/span&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="1915" y="1090" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-38" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;18. winding_001-visualInspection&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="145" x="2162.5" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-39" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;no service required&lt;/span&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="2155" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-40" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;19. winding_001-reuse&lt;/span&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="2175" y="800" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-41" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="&lt;span style=&quot;font-weight: 400;&quot;&gt;no service required&lt;/span&gt;" vertex="1">
+          <mxGeometry height="50" width="160" x="2155" y="830" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-42" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-3" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-43" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-5" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-16" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-48" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-11" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-12" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1525" y="980" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-49" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-13" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-16" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-50" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-15" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-20" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-51" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-15" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-10" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-52" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-19" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-22" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-53" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-21" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-18" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-54" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-23" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-24" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-55" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-25" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-12" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-56" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-27" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-28" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-57" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-29" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-30" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-58" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-31" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-36" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-59" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-33" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-38" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-60" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-33" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-26" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-61" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-35" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-32" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-62" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-37" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-16" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-63" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-39" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-40" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-64" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-41" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-30" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-67" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-7" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-14" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-68" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-7" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="nMPEpzC7a-bPsYerpbMN-69" edge="1" parent="1" source="nMPEpzC7a-bPsYerpbMN-7" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="nMPEpzC7a-bPsYerpbMN-34" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

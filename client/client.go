@@ -41,6 +41,7 @@ func main() {
 	src.StartHealthChecker()
 
 	r.POST("/get_options", src.ProcessDirectory)
+	r.POST("/get_options_validate", src.ProcessDirectoryValidate)
 	r.POST("/select_option", src.SelectOption)
 	r.GET("/get_batch_data", database.GetBatchData)
 	r.POST("/advance_step", src.AdvanceStepHandler)

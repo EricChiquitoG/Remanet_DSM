@@ -274,7 +274,7 @@ type evalScenario struct {
 	id          string
 	dim         string
 	dagKey      string
-	maxActors   int  // 0 = use all eligible actors
+	maxActors   int // 0 = use all eligible actors
 	nRoutes     int
 	hasRedesign bool
 }
@@ -379,8 +379,8 @@ func buildActorPool(dag dagDef, maxActors int, hasRedesign bool, startingPoint [
 			})
 		}
 		tp.Responses = append(tp.Responses, techProviderResponse{
-			uid:      actor.name,
-			location: []float64{actor.lat, actor.lon},
+			uid:       actor.name,
+			location:  []float64{actor.lat, actor.lon},
 			Processes: procs,
 		})
 	}
@@ -398,14 +398,17 @@ func buildActorPool(dag dagDef, maxActors int, hasRedesign bool, startingPoint [
 
 // buildProblemJSON constructs the JSON payload for the optimizer's gRPC Optimize call.
 func buildProblemJSON(dag dagDef, rc ResultCollection, tp responsesTP) (map[string]interface{}, error) {
-	emptyCD := &CostData{}
-	costMatrix, err := CreateCostMatrixFromResults(rc, emptyCD, &tp)
+	costMatrix, err := CreateCostMatrixFromResults(rc, &tp)
+	if err != nil {
+		return nil, err
+	}
+	energyMatrix, err := CreateEnergyMatrixFromResults(rc, &tp)
 	if err != nil {
 		return nil, err
 	}
 	distMatrix := DistanceMatrixConstructor(rc, nil)
 	augmented := augmentWithBoundaryNodes(dag)
-	return exportToJson(nil, costMatrix, distMatrix, augmented), nil
+	return exportToJson(nil, costMatrix, energyMatrix, distMatrix, augmented), nil
 }
 
 // ── gRPC call (own timeout, no Redis) ────────────────────────────────────────

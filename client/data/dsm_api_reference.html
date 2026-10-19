@@ -1,0 +1,583 @@
+<title>DSM API Reference</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#F6F7F9; --surface:#FFFFFF; --surface-2:#FBFBFC;
+    --text:#1A2230; --muted:#64707C; --border:#E1E5EA;
+    --accent:#0F766E; --accent-contrast:#FFFFFF; --accent-soft:#E6F4F2;
+    --warn-bg:#FEF3E2; --warn-text:#92400E; --warn-border:#F3D9A8;
+    --code-bg:#F1F3F5; --code-text:#1A2230;
+    --get:#0F766E; --post:#B45309;
+    --shadow: 0 1px 2px rgba(20,30,40,0.06), 0 1px 1px rgba(20,30,40,0.04);
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#11151B; --surface:#1A202A; --surface-2:#161B23;
+      --text:#E7EAEE; --muted:#8D98A6; --border:#262E39;
+      --accent:#2DD4BF; --accent-contrast:#0A1512; --accent-soft:#143431;
+      --warn-bg:#3A2A12; --warn-text:#FBBF66; --warn-border:#5A4420;
+      --code-bg:#0F141B; --code-text:#E7EAEE;
+      --get:#2DD4BF; --post:#FBBF66;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 1px 1px rgba(0,0,0,0.3);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#11151B; --surface:#1A202A; --surface-2:#161B23;
+    --text:#E7EAEE; --muted:#8D98A6; --border:#262E39;
+    --accent:#2DD4BF; --accent-contrast:#0A1512; --accent-soft:#143431;
+    --warn-bg:#3A2A12; --warn-text:#FBBF66; --warn-border:#5A4420;
+    --code-bg:#0F141B; --code-text:#E7EAEE;
+    --get:#2DD4BF; --post:#FBBF66;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 1px 1px rgba(0,0,0,0.3);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+    font-size:15px; line-height:1.6;
+  }
+  code,pre,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;}
+  h1,h2,h3{text-wrap:balance; font-weight:600; letter-spacing:-0.01em;}
+  a{color:var(--accent);}
+
+  .shell{display:flex; max-width:1180px; margin:0 auto; padding-inline:20px;}
+  .sidebar{
+    width:230px; flex:none; position:sticky;
+    top: calc(24px + env(safe-area-inset-top, 0px));
+    align-self:flex-start; padding-block:40px 24px; padding-right:20px;
+  }
+  .sidebar-title{font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin:0 0 10px;}
+  .sidebar nav{display:flex; flex-direction:column; gap:2px; margin-bottom:22px;}
+  .sidebar a{
+    color:var(--text); text-decoration:none; font-size:13.5px; padding:5px 8px;
+    border-radius:6px; display:flex; align-items:center; gap:8px;
+  }
+  .sidebar a:hover{background:var(--surface-2);}
+  .sidebar .pill{
+    font-size:10px; font-weight:600; padding:1px 6px; border-radius:4px;
+    font-family:"IBM Plex Mono",monospace; flex:none;
+  }
+  .pill.get{background:var(--accent-soft); color:var(--get);}
+  .pill.post{background:var(--warn-bg); color:var(--post);}
+
+  main{flex:1; min-width:0; padding-block:40px 80px;}
+  .intro{max-width:700px;}
+  .eyebrow{font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin:0 0 10px;}
+  h1{font-size:30px; margin:0 0 10px;}
+  .lede{color:var(--muted); font-size:16px; margin:0 0 28px; max-width:620px;}
+
+  .meta-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:1px; background:var(--border); border:1px solid var(--border);
+    border-radius:10px; overflow:hidden; margin-bottom:40px;
+  }
+  .meta-cell{background:var(--surface); padding:14px 16px;}
+  .meta-cell .k{font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;}
+  .meta-cell .v{font-family:"IBM Plex Mono",monospace; font-size:13.5px;}
+
+  section.endpoint{margin-bottom:48px; padding-top:8px;}
+  section.endpoint h2{font-size:20px; margin:0 0 4px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .pill-lg{
+    font-family:"IBM Plex Mono",monospace; font-size:12.5px; font-weight:600;
+    padding:3px 9px; border-radius:6px; letter-spacing:0.02em;
+  }
+  .pill-lg.get{background:var(--accent-soft); color:var(--get);}
+  .pill-lg.post{background:var(--warn-bg); color:var(--post);}
+  .path{font-family:"IBM Plex Mono",monospace; font-size:16px; color:var(--text);}
+  .desc{color:var(--muted); margin:6px 0 18px; font-size:14.5px; max-width:640px;}
+
+  .block-label{font-size:12px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; margin:18px 0 8px;}
+  pre{
+    background:var(--code-bg); color:var(--code-text); border:1px solid var(--border);
+    border-radius:8px; padding:14px 16px; font-size:12.8px; line-height:1.55;
+    overflow-x:auto; margin:0;
+  }
+  details{border:1px solid var(--border); border-radius:8px; margin-top:10px; background:var(--surface);}
+  details>summary{
+    cursor:pointer; padding:9px 14px; font-size:13px; font-weight:500;
+    color:var(--muted); list-style:none; display:flex; align-items:center; gap:6px;
+  }
+  details>summary::-webkit-details-marker{display:none;}
+  details>summary::before{content:"▸"; font-size:11px; transition:transform .15s;}
+  details[open]>summary::before{transform:rotate(90deg);}
+  details>summary:hover{color:var(--text);}
+  details .inner{padding:0 14px 14px;}
+
+  .status-row{display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;}
+  .status{
+    font-family:"IBM Plex Mono",monospace; font-size:11.5px; padding:3px 8px;
+    border-radius:5px; background:var(--surface-2); border:1px solid var(--border); color:var(--muted);
+  }
+  .status.ok{color:var(--get); border-color:var(--accent-soft);}
+
+  .note{
+    display:flex; gap:10px; background:var(--warn-bg); border:1px solid var(--warn-border);
+    color:var(--warn-text); border-radius:8px; padding:10px 14px; font-size:13px;
+    margin-top:12px; align-items:flex-start;
+  }
+  .note svg{flex:none; margin-top:2px;}
+
+  hr.divider{border:none; border-top:1px solid var(--border); margin:44px 0;}
+
+  .gaps h2{font-size:22px;}
+  .gap-item{
+    background:var(--surface); border:1px solid var(--border); border-radius:10px;
+    padding:16px 18px; margin-bottom:12px; box-shadow:var(--shadow);
+  }
+  .gap-item h3{font-size:14.5px; margin:0 0 6px; display:flex; align-items:center; gap:8px;}
+  .gap-item h3 .n{
+    font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--accent-contrast);
+    background:var(--accent); width:20px; height:20px; border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center; flex:none;
+  }
+  .gap-item p{margin:0; font-size:13.5px; color:var(--muted);}
+  .gap-item code{background:var(--code-bg); padding:1px 5px; border-radius:4px; font-size:12.5px;}
+
+  @media (max-width:860px){
+    .shell{flex-direction:column; padding-inline:16px;}
+    .sidebar{display:none;}
+    main{padding-top:28px;}
+  }
+</style>
+
+<div class="shell">
+  <aside class="sidebar">
+    <p class="sidebar-title">Optimization</p>
+    <nav>
+      <a href="#get_options"><span class="pill post">POST</span>get_options</a>
+      <a href="#select_option"><span class="pill post">POST</span>select_option</a>
+    </nav>
+    <p class="sidebar-title">Execution tracking</p>
+    <nav>
+      <a href="#get_batch_data"><span class="pill get">GET</span>get_batch_data</a>
+      <a href="#advance_step"><span class="pill post">POST</span>advance_step</a>
+      <a href="#execution_graphs"><span class="pill get">GET</span>execution_graphs</a>
+    </nav>
+    <p class="sidebar-title">Proposals</p>
+    <nav>
+      <a href="#new_proposal"><span class="pill post">POST</span>new_proposal</a>
+      <a href="#purchase_proposals"><span class="pill get">GET</span>purchase_proposals</a>
+    </nav>
+    <p class="sidebar-title">Products</p>
+    <nav>
+      <a href="#products_get"><span class="pill get">GET</span>products</a>
+      <a href="#products_id"><span class="pill get">GET</span>products/:id</a>
+      <a href="#products_post"><span class="pill post">POST</span>products</a>
+      <a href="#products_history"><span class="pill get">GET</span>products/:id/history</a>
+    </nav>
+    <p class="sidebar-title">—</p>
+    <nav>
+      <a href="#gaps">⚠ Before you integrate</a>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="intro">
+      <p class="eyebrow">RemaNet · DSM</p>
+      <h1>DSM API Reference</h1>
+      <p class="lede">Every HTTP endpoint the DSM's REST service exposes, with the exact response shape it produces — read directly from the current Go handlers and verified by marshaling real sample values, not reconstructed from memory.</p>
+    </div>
+
+    <div class="meta-grid">
+      <div class="meta-cell"><div class="k">Base URL</div><div class="v">http://&lt;host&gt;:8080</div></div>
+      <div class="meta-cell"><div class="k">Content type</div><div class="v">application/json</div></div>
+      <div class="meta-cell"><div class="k">Auth</div><div class="v">none</div></div>
+      <div class="meta-cell"><div class="k">Error shape (all 4xx/5xx)</div><div class="v">{ "error": string }</div></div>
+    </div>
+
+    <!-- ===================== get_options ===================== -->
+    <section class="endpoint" id="get_options">
+      <h2><span class="pill-lg post">POST</span><span class="path">/get_options</span></h2>
+      <p class="desc">Runs provider matchmaking for a set of process-step routes and submits them to the optimizer. This is the DSM's main entry point.</p>
+
+      <p class="block-label">Request body</p>
+      <pre>{
+  "Batch": 0,                           // legacy, not used by matching
+  "use_case": "electric-motor",         // must exist in the use_cases collection
+  "process_requirements": {
+    "product_match": "IE4",
+    "quantity": 22
+  },
+  "routes": {
+    "&lt;routeName&gt;": {
+      "&lt;stepName&gt;": {
+        "prerequisites": ["&lt;stepName&gt;", "..."],
+        "requirements": {
+          "&lt;attributeName&gt;": ["&lt;value&gt;", "..."]   // [] or omitted = "must exist, any value"
+        }
+      }
+    }
+  },
+  "starting_point": [53.0677, -8.0660], // [lat, lon]
+  "optimization_mode": "forward"        // "forward" | "reverse"
+}</pre>
+
+      <p class="block-label">Response schema <span style="color:var(--muted); font-weight:400;">· 200 OK</span></p>
+      <pre>{
+  "type": "object",
+  "properties": {
+    "message": { "type": "string" },
+    "optimizationResults": {
+      "type": "object",
+      "properties": {
+        "message": { "type": "string" },
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "processID":        { "type": "string", "format": "uuid" },
+              "processSequence":  { "type": "array", "items": { "type": "string" } },
+              "dagPrereqs":       { "type": "object", "additionalProperties":
+                                    { "type": "array", "items": { "type": "string" } } },
+              "optimizationResultsJson": {
+                "type": "object",
+                "properties": {
+                  "Solutions": {                      /* ⚠ capital S — see gap #1 */
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "SolNumber":         { "type": "integer" },   /* ⚠ PascalCase */
+                        "Assignments": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "processName": { "type": "string" },
+                              "actorID":     { "type": "string" }
+                            }
+                          }
+                        },
+                        "TransportCost":     { "type": "number" },    /* ⚠ PascalCase */
+                        "ManufacturingCost": { "type": "number" },    /* ⚠ PascalCase */
+                        "Energy":            { "type": "number" }    /* ⚠ PascalCase */
+                      }
+                    }
+                  }
+                }
+              },
+              "error": { "type": "string", "description": "present only if this route failed" }
+            }
+          }
+        }
+      }
+    }
+  }
+}</pre>
+      <details>
+        <summary>Example payload</summary>
+        <div class="inner"><pre>{
+  "message": "Optimization completed successfully",
+  "optimizationResults": {
+    "message": "Optimization process initiated for multiple sequences.",
+    "results": [
+      {
+        "processID": "a1b2c3d4-...",
+        "processSequence": ["Disassembly", "Replace", "Reassembly", "AssemblyTesting"],
+        "dagPrereqs": {
+          "Disassembly": [], "Replace": ["Disassembly"],
+          "Reassembly": ["Replace"], "AssemblyTesting": ["Reassembly"]
+        },
+        "optimizationResultsJson": {
+          "Solutions": [
+            {
+              "SolNumber": 0,
+              "Assignments": [
+                { "processName": "Disassembly", "actorID": "ToolTechnologyProvider-037" },
+                { "processName": "Replace",     "actorID": "ToolTechnologyProvider-024" }
+              ],
+              "TransportCost": 812.4,
+              "ManufacturingCost": 56.9,
+              "Energy": 41.2
+            }
+          ]
+        }
+      }
+    ]
+  }
+}</pre></div>
+      </details>
+      <div class="status-row">
+        <span class="status ok">200 OK</span>
+        <span class="status">400 bad JSON / missing use_case</span>
+        <span class="status">503 optimizer or MongoDB unavailable</span>
+        <span class="status">500 matching / cost-matrix / optimizer connection failure</span>
+      </div>
+    </section>
+
+    <!-- ===================== select_option ===================== -->
+    <section class="endpoint" id="select_option">
+      <h2><span class="pill-lg post">POST</span><span class="path">/select_option</span></h2>
+      <p class="desc">Commits to one of the solutions returned by <code>/get_options</code> and creates a trackable execution graph for it.</p>
+
+      <p class="block-label">Request body</p>
+      <pre>{
+  "type": "object",
+  "properties": {
+    "processID": { "type": "string", "description": "the processID from a /get_options result" },
+    "solNumber": { "type": "integer", "description": "SolNumber of the chosen solution" }
+  }
+}</pre>
+
+      <p class="block-label">Response schema <span style="color:var(--muted); font-weight:400;">· 200 OK</span></p>
+      <pre>{
+  "type": "object",
+  "properties": {
+    "message": { "type": "string" },
+    "ProcessID": {                          /* ⚠ this is the STEP SEQUENCE, not the id — see gap #2 */
+      "type": "array", "items": { "type": "string" }
+    },
+    "sample": {
+      "type": "object",
+      "description": "⚠ only Processes survives — see gap #3",
+      "properties": {
+        "Processes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ProcessID":   { "type": "string" },
+              "ProcessName": { "type": "string" },
+              "Cost":        { "type": "number" },
+              "Co2":         { "type": "number" },
+              "Energy":      { "type": "number" }
+            }
+          }
+        }
+      }
+    },
+    "Choice": { "description": "same ProcessedSolution shape as above (SolNumber/Assignments/TransportCost/ManufacturingCost/Energy)" },
+    "executionGraph": { "description": "see ExecutionGraph below" }
+  }
+}</pre>
+      <div class="status-row">
+        <span class="status ok">200 OK</span>
+        <span class="status">400 bad JSON</span>
+        <span class="status">404 solution not found for that processID/solNumber</span>
+        <span class="status">500 lookup / graph-build failure</span>
+      </div>
+    </section>
+
+    <!-- ===================== get_batch_data ===================== -->
+    <section class="endpoint" id="get_batch_data">
+      <h2><span class="pill-lg get">GET</span><span class="path">/get_batch_data?graphId=&lt;id&gt;</span></h2>
+      <p class="desc">Fetches one execution graph by id. Same object shape as <code>/execution_graphs</code>'s array items.</p>
+      <p class="block-label">Response schema <span style="color:var(--muted); font-weight:400;">· 200 OK — ExecutionGraph</span></p>
+      <pre>{
+  "type": "object",
+  "properties": {
+    "graphId":                 { "type": "string" },
+    "nodes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "processName": { "type": "string" },
+          "actorId":     { "type": "string" },
+          "cost":        { "type": "number" },
+          "co2":         { "type": "number" },
+          "next":        { "type": "array", "items": { "type": "string" } },
+          "status":      { "type": "string", "enum": ["pending", "in_progress", "completed"] }
+        }
+      }
+    },
+    "currentSteps":            { "type": "array", "items": { "type": "string" } },
+    "processSequence":         { "type": "array", "items": { "type": "string" } },
+    "totalTransportCost":      { "type": "number" },
+    "totalManufacturingCost":  { "type": "number" }
+  }
+}</pre>
+      <div class="note">
+        <span>⚠</span>
+        <span>No <code>totalEnergyCost</code> / per-node <code>energy</code> field — the chosen solution's <code>Energy</code> value is dropped when the execution graph is built. See gap #4.</span>
+      </div>
+      <div class="status-row">
+        <span class="status ok">200 OK</span>
+        <span class="status">400 missing graphId</span>
+        <span class="status">404 not found</span>
+      </div>
+    </section>
+
+    <!-- ===================== advance_step ===================== -->
+    <section class="endpoint" id="advance_step">
+      <h2><span class="pill-lg post">POST</span><span class="path">/advance_step</span></h2>
+      <p class="desc">Marks the graph's current step(s) as completed and activates whatever comes next.</p>
+      <p class="block-label">Request body</p>
+      <pre>{ "graphId": "string, required" }</pre>
+      <p class="block-label">Response schema <span style="color:var(--muted); font-weight:400;">· 200 OK</span></p>
+      <pre>Same ExecutionGraph shape as /get_batch_data, with node statuses advanced.
+"currentSteps" is [] once the final step has completed.</pre>
+      <div class="status-row">
+        <span class="status ok">200 OK</span>
+        <span class="status">400 bad JSON / missing graphId</span>
+        <span class="status">500 graph not found / save failure</span>
+      </div>
+    </section>
+
+    <!-- ===================== execution_graphs ===================== -->
+    <section class="endpoint" id="execution_graphs">
+      <h2><span class="pill-lg get">GET</span><span class="path">/execution_graphs</span></h2>
+      <p class="desc">Lists every execution graph, sorted by <code>graphId</code>.</p>
+      <p class="block-label">Response schema <span style="color:var(--muted); font-weight:400;">· 200 OK</span></p>
+      <pre>{ "type": "array", "items": { "$ref": "ExecutionGraph (see /get_batch_data)" } }</pre>
+      <div class="status-row"><span class="status ok">200 OK — [] if none exist</span><span class="status">500</span></div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ===================== new_proposal ===================== -->
+    <section class="endpoint" id="new_proposal">
+      <h2><span class="pill-lg post">POST</span><span class="path">/new_proposal</span></h2>
+      <p class="desc">Creates a customer purchase proposal — the demand-side record <code>reverse</code>/<code>forward</code> optimization modes match against via <code>requiredParameters.efficiencyClass</code>.</p>
+      <p class="block-label">Request body</p>
+      <pre>{
+  "proposalId": "string, required",
+  "customerId": "string, required",
+  "customerLocation": {
+    "type": "Point",
+    "coordinates": [longitude, latitude]      /* ⚠ GeoJSON order — see gap #5 */
+  },
+  "cardinality": "integer > 0, required",
+  "productType": "string, required",
+  "requiredParameters": {
+    "ratedPower": "number",
+    "axisHeight": "integer",
+    "efficiencyClass": "string",
+    "phaseN": "integer, optional"
+  }
+}</pre>
+      <p class="block-label">Response schema <span style="color:var(--muted); font-weight:400;">· 201 Created</span></p>
+      <pre>Same object back, plus:
+{ "_id": "Mongo ObjectID", "createdAt": "RFC3339 datetime", "updatedAt": "RFC3339 datetime" }</pre>
+      <div class="status-row">
+        <span class="status ok">201 Created</span>
+        <span class="status">400 bad JSON</span>
+        <span class="status">409 proposalId already exists</span>
+      </div>
+    </section>
+
+    <!-- ===================== purchase_proposals ===================== -->
+    <section class="endpoint" id="purchase_proposals">
+      <h2><span class="pill-lg get">GET</span><span class="path">/purchase_proposals</span></h2>
+      <p class="desc">Lists proposals. Query params: <code class="mono">skip</code>, <code class="mono">limit</code> (max 1000), <code class="mono">customerId</code>, <code class="mono">productType</code>, <code class="mono">efficiencyClass</code> — all optional.</p>
+      <p class="block-label">Response schema <span style="color:var(--muted); font-weight:400;">· 200 OK</span></p>
+      <pre>{ "type": "array", "items": { "$ref": "Proposal (see /new_proposal response)" } }</pre>
+      <div class="status-row"><span class="status ok">200 OK — [] if none match</span><span class="status">500</span></div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ===================== products ===================== -->
+    <section class="endpoint" id="products_get">
+      <h2><span class="pill-lg get">GET</span><span class="path">/products</span></h2>
+      <p class="desc">Lists every product. <strong>Legacy, electric-motor-only schema</strong> — see gap #6 before assuming this covers cutting tools or reflects the batch model used internally for matchmaking.</p>
+      <p class="block-label">Response schema <span style="color:var(--muted); font-weight:400;">· 200 OK</span></p>
+      <pre>{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id":    { "type": "string" },
+      "cls":   { "type": "string", "description": "efficiency class, e.g. \"IE4\"" },
+      "axis":  { "type": "number" },
+      "pow":   { "type": "number" },
+      "batch": { "type": ["string", "null"] },
+      "components": {
+        "type": ["object", "null"],
+        "description": "null until first inspection",
+        "properties": {
+          "bearings": { "type": "string", "enum": ["Good","Worn","Degraded","Failed"] },
+          "stator":   { "type": "string", "enum": ["Good","Worn","Degraded","Failed"] },
+          "rotor":    { "type": "string", "enum": ["Good","Worn","Degraded","Failed"] },
+          "housing":  { "type": "string", "enum": ["Good","Worn","Degraded","Failed"] },
+          "windings": { "type": "string", "enum": ["Good","Worn","Degraded","Failed"] },
+          "shaft":    { "type": "string", "enum": ["Good","Worn","Degraded","Failed"] }
+        }
+      },
+      "ownerHistory":    { "type": ["array","null"], "items": { "type": "string" } },
+      "inspectionNotes": { "type": ["string","null"] },
+      "createdAt":       { "type": "string", "format": "date-time" },
+      "updatedAt":       { "type": "string", "format": "date-time" }
+    }
+  }
+}</pre>
+      <div class="status-row"><span class="status ok">200 OK — [] if none exist</span><span class="status">500</span></div>
+    </section>
+
+    <section class="endpoint" id="products_id">
+      <h2><span class="pill-lg get">GET</span><span class="path">/products/:id</span></h2>
+      <p class="desc">One product by id — same object shape as above.</p>
+      <div class="status-row"><span class="status ok">200 OK</span><span class="status">404 not found</span></div>
+    </section>
+
+    <section class="endpoint" id="products_post">
+      <h2><span class="pill-lg post">POST</span><span class="path">/products</span></h2>
+      <p class="desc">Creates a product record. Same shape as the GET response, minus <code>createdAt</code>/<code>updatedAt</code>; <code>components.*</code> values are validated against the enum if provided.</p>
+      <div class="status-row">
+        <span class="status ok">201 Created</span>
+        <span class="status">400 bad JSON / invalid component status</span>
+        <span class="status">409 id already exists</span>
+      </div>
+    </section>
+
+    <section class="endpoint" id="products_history">
+      <h2><span class="pill-lg get">GET</span><span class="path">/products/:id/history</span></h2>
+      <p class="desc">Service history for one product.</p>
+      <p class="block-label">Response schema <span style="color:var(--muted); font-weight:400;">· 200 OK</span></p>
+      <pre>{
+  "type": "object",
+  "properties": {
+    "owners":      { "type": "array", "items": { "type": "string" } },
+    "age":         { "type": "integer" },
+    "lastService": { "type": "string" },
+    "notes":       { "type": "string" }
+  }
+}</pre>
+      <div class="status-row"><span class="status ok">200 OK</span><span class="status">404 no history for this id</span></div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ===================== GAPS ===================== -->
+    <section class="gaps" id="gaps">
+      <h2>⚠ Before you integrate</h2>
+      <p class="desc" style="margin-bottom:20px;">Six real quirks in the current wire format, confirmed against the live code rather than assumed — build your parsing around these, not around what the naming suggests.</p>
+
+      <div class="gap-item">
+        <h3><span class="n">1</span>Mixed casing inside optimizationResultsJson</h3>
+        <p><code>Solutions</code>, <code>SolNumber</code>, <code>TransportCost</code>, <code>ManufacturingCost</code>, and <code>Energy</code> are PascalCase — those five Go struct fields carry no <code>json</code> tag, so <code>encoding/json</code> falls back to the literal Go field name. Everything around them (<code>processID</code>, <code>processSequence</code>, <code>dagPrereqs</code>, <code>processName</code>, <code>actorID</code>) is camelCase. Both cases appear in the same response object.</p>
+      </div>
+
+      <div class="gap-item">
+        <h3><span class="n">2</span><code>/select_option</code>'s "ProcessID" field isn't a process ID</h3>
+        <p>It's populated from <code>UserChoice.ProcessSequence</code> — the ordered list of step names for that route, not an identifier. Don't key off the name; check the actual array shape.</p>
+      </div>
+
+      <div class="gap-item">
+        <h3><span class="n">3</span><code>/select_option</code>'s "sample" drops the actor's identity</h3>
+        <p>The underlying Go type's <code>uid</code> (actor name) and <code>location</code> fields are unexported, so <code>encoding/json</code> silently omits them. Only <code>{"Processes": [...]}</code> reaches the wire — no actor name, no coordinates. If you need to know <em>which</em> actor this sample describes, it isn't in this field; cross-reference <code>Choice.Assignments</code> instead.</p>
+      </div>
+
+      <div class="gap-item">
+        <h3><span class="n">4</span>Energy doesn't survive into the execution graph</h3>
+        <p>A chosen solution's <code>Energy</code> (from <code>ProcessedSolution</code>) is never copied into <code>ExecutionGraph</code> or any <code>ProcessNode</code> — only <code>TransportCost</code> and <code>ManufacturingCost</code> make the trip. If your frontend wants to show energy consumption over the life of an execution graph, it isn't available past <code>/select_option</code>'s immediate response.</p>
+      </div>
+
+      <div class="gap-item">
+        <h3><span class="n">5</span>Coordinate order flips between endpoints</h3>
+        <p><code>/get_options</code>'s <code>starting_point</code> is <code>[lat, lon]</code>. <code>/new_proposal</code>'s <code>customerLocation.coordinates</code> is GeoJSON-standard <code>[longitude, latitude]</code> — the opposite order. Easy to transpose by habit; worth an explicit check at each call site.</p>
+      </div>
+
+      <div class="gap-item">
+        <h3><span class="n">6</span>/products is a separate, older, motor-only model</h3>
+        <p>It predates the generalized provider/capability/batch matchmaking model (<code>use_cases</code>, <code>providers</code>, <code>capabilities</code>, the batch-level product records those use) and was never migrated onto it. It has no cutting-tool equivalent, no notion of a batch quantity, and a fixed six-component shape (<code>bearings/stator/rotor/housing/windings/shaft</code>) that doesn't generalize to other product families. Treat it as a separate, legacy data source — not a view onto the same data the optimizer matches against.</p>
+      </div>
+    </section>
+  </main>
+</div>

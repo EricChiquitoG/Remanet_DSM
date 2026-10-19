@@ -1,24 +1,9 @@
 package src
 
 import (
-	"encoding/json"
-	"fmt"
 	"math"
 	"sort"
 )
-
-type Cost struct {
-	ProcessID   string  `json:"ProcessID"`
-	ProcessName string  `json:"ProcessName"`
-	Co2Em       float64 `json:"Co2_em"`
-	Energy      float64 `json:"Energy"`
-	Cost        float64 `json:"Cost"`
-}
-
-// ProcessData holds a list of processes
-type CostData struct {
-	Processes []Cost `json:"Processes"`
-}
 
 type OptionCost struct {
 	RouteID   string   `json:"route_id"`
@@ -47,16 +32,6 @@ var TransportEmissions = map[string]float64{
 	"Ship":  0.03,
 }
 
-func DatatoCost(json_data []byte) (*CostData, error) {
-	var cost CostData
-	err := json.Unmarshal(json_data, &cost)
-	if err != nil {
-		return nil, fmt.Errorf("error unmarshalling JSON: %v", err)
-	}
-
-	return &cost, nil
-}
-
 func Sort_Options(allcost *AllCost) *AllCost {
 	sort.Slice(allcost.Options, func(i, j int) bool {
 		if allcost.Options[i].CostEUR != allcost.Options[j].CostEUR {
@@ -71,18 +46,6 @@ func Sort_Options(allcost *AllCost) *AllCost {
 		return allcost.Options[i].Energy < allcost.Options[j].Energy // Finally: Lower energy consumption
 	})
 	return allcost
-}
-
-func Costs(filename string) (*CostData, error) {
-	jsonbytes, err := ReadJSONFile(filename)
-	if err != nil {
-		return nil, fmt.Errorf("error opening file: %v", err)
-	}
-	dir, err := DatatoCost(jsonbytes)
-	if err != nil {
-		return nil, fmt.Errorf("error opening file: %v", err)
-	}
-	return dir, err
 }
 
 func DistanceMatrixConstructor(resultCollection ResultCollection, dir *Directory) (DistanceMatrix map[string]map[string]float64) {
@@ -132,15 +95,11 @@ func Haversine(Point1, Point2 []float64) float64 {
 	return R * c
 }
 
-func CreateCostMatrixFromResults(rc ResultCollection, costs *CostData, techProv *responsesTP) (map[string]map[string]float64, error) {
+func CreateCostMatrixFromResults(rc ResultCollection, techProv *responsesTP) (map[string]map[string]float64, error) {
 
 	// Initialize the cost matrix
 	matrix := make(map[string]map[string]float64)
-	costLookup := make(map[string]float64)
 	baseCosts := []string{"origin", "end"}
-	for _, p := range costs.Processes {
-		costLookup[p.ProcessID] = p.Cost
-	}
 	for _, res := range rc.Results {
 		company := res.ContactName
 		matrix[company] = make(map[string]float64)
@@ -158,6 +117,34 @@ func CreateCostMatrixFromResults(rc ResultCollection, costs *CostData, techProv 
 				for _, process := range tp.Processes {
 					if contains(res.Matches, process.ProcessName) {
 						matrix[company][process.ProcessName] = process.Cost
+					} else {
+						matrix[company][process.ProcessName] = 0
+					}
+				}
+			}
+		}
+	}
+	return matrix, nil
+}
+
+// CreateEnergyMatrixFromResults mirrors CreateCostMatrixFromResults, but for
+// energy: matrix[actor][processName] = energy consumed by that actor
+// performing that process. Unlike cost, boundary/Redesign entries don't need
+// a nonzero sentinel — the optimizer's capability gating reads CostMatrix
+// only, so a 0 here just means "no energy tracked," never "infeasible."
+func CreateEnergyMatrixFromResults(rc ResultCollection, techProv *responsesTP) (map[string]map[string]float64, error) {
+	matrix := make(map[string]map[string]float64)
+	for _, res := range rc.Results {
+		company := res.ContactName
+		matrix[company] = make(map[string]float64)
+		if len(res.Matches) > 0 && contains([]string{"origin", "end", "Redesign"}, res.Matches[0]) {
+			matrix[res.ContactName][res.Matches[0]] = 0
+		}
+		for _, tp := range techProv.Responses {
+			if tp.uid == company {
+				for _, process := range tp.Processes {
+					if contains(res.Matches, process.ProcessName) {
+						matrix[company][process.ProcessName] = process.Energy
 					} else {
 						matrix[company][process.ProcessName] = 0
 					}

@@ -1,0 +1,368 @@
+{
+  "tenantId" : "connector-test",
+  "batchId" : "Clutch_batch-3_N-10_DSP-3",
+  "batchCardinality" : 10,
+  "productType" : "Clutch",
+  "inputProduct" : {
+    "efficencyClass" : "-",
+    "productClass" : "clutchType"
+  },
+  "feasibleStrategies" : [ {
+    "strategyName" : "remanufactureStrategy",
+    "outputProduct" : {
+      "efficencyClass" : "-",
+      "productClass" : "clutchType"
+    },
+    "steps" : [ {
+      "currentStepName" : "clutch001-assemblyInspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "clutch001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "remanufactureStrategy",
+      "predecessors" : [ ],
+      "successors" : [ "clutch001-disassembly" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "clutchOuterDiameter001",
+            "requirementValue" : 320.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "clutch001-disassembly",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "clutch001",
+      "beloningToMacroPhase" : "disassemblyPhase",
+      "beloningToRoute" : "remanufactureStrategy",
+      "predecessors" : [ "clutch001-assemblyInspection" ],
+      "successors" : [ "diaphragmSpring001-inspection", "torsionalDumper001-inspection", "frictionLining001-inspection", "hubSplines001-inspection", "pressurePlate001-inspection", "housingCover001-inspection" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "clutchOuterDiameter001",
+            "requirementValue" : 320.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "clutch001-performanceTesting",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "clutch001",
+      "beloningToMacroPhase" : "testingPhase",
+      "beloningToRoute" : "remanufactureStrategy",
+      "predecessors" : [ "clutch001-reassembly" ],
+      "successors" : [ ],
+      "service" : {
+        "serviceChaining" : "(performanceTestingService)",
+        "services" : [ {
+          "serviceName" : "performanceTestingService",
+          "serviceRequirements" : [ {
+            "requirementName" : "torqueCapacityClutch001",
+            "requirementValue" : 250.0,
+            "requirementUoM" : "newtonMetre"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "clutch001-reassembly",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "clutch001",
+      "beloningToMacroPhase" : "assemblyPhase",
+      "beloningToRoute" : "remanufactureStrategy",
+      "predecessors" : [ "diaphragmSpring001-replace", "torsionalDumper001-replace", "frictionLining001-testing", "hubSplines001-testing", "pressurePlate001-testing", "housingCover001-testing" ],
+      "successors" : [ "clutch001-performanceTesting" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "clutchOuterDiameter001",
+            "requirementValue" : 320.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "diaphragmSpring001-inspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "diaphragmSpring001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "replaceStrategy",
+      "predecessors" : [ "clutch001-disassembly" ],
+      "successors" : [ "diaphragmSpring001-replace" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "clutchOuterDiameter001",
+            "requirementValue" : 320.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "diaphragmSpring001-replace",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "diaphragmSpring001",
+      "beloningToMacroPhase" : "replacePhase",
+      "beloningToRoute" : "replaceStrategy",
+      "predecessors" : [ "diaphragmSpring001-inspection" ],
+      "successors" : [ "clutch001-reassembly" ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    }, {
+      "currentStepName" : "frictionLining001-inspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "frictionLining001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "refurbishStrategy",
+      "predecessors" : [ "clutch001-disassembly" ],
+      "successors" : [ "frictionLining001-turning" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "frictionLiningDiameter001",
+            "requirementValue" : 240.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "frictionLining001-turning",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "frictionLining001",
+      "beloningToMacroPhase" : "manufacturingPhase",
+      "beloningToRoute" : "refurbishStrategy",
+      "predecessors" : [ "frictionLining001-inspection" ],
+      "successors" : [ "frictionLining001-testing" ],
+      "service" : {
+        "serviceChaining" : "(turningService)",
+        "services" : [ {
+          "serviceName" : "turningService",
+          "serviceRequirements" : [ {
+            "requirementName" : "frictionLiningDiameter001",
+            "requirementValue" : 240.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "frictionLining001-testing",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "frictionLining001",
+      "beloningToMacroPhase" : "testingPhase",
+      "beloningToRoute" : "refurbishStrategy",
+      "predecessors" : [ "frictionLining001-turning" ],
+      "successors" : [ "clutch001-reassembly" ],
+      "service" : {
+        "serviceChaining" : "(testingService)",
+        "services" : [ {
+          "serviceName" : "testingService",
+          "serviceRequirements" : [ ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "housingCover001-inspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "housingCover001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "refurbishStrategy",
+      "predecessors" : [ "clutch001-disassembly" ],
+      "successors" : [ "housingCover001-blasting" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "clutchOuterDiameter001",
+            "requirementValue" : 320.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "housingCover001-blasting",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "housingCover001",
+      "beloningToMacroPhase" : "manufacturingPhase",
+      "beloningToRoute" : "refurbishStrategy",
+      "predecessors" : [ "housingCover001-inspection" ],
+      "successors" : [ "housingCover001-testing" ],
+      "service" : {
+        "serviceChaining" : "(blastingService)",
+        "services" : [ {
+          "serviceName" : "blastingService",
+          "serviceRequirements" : [ {
+            "requirementName" : "corrosionLevelHousing001",
+            "requirementValue" : "mid",
+            "requirementUoM" : null
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "housingCover001-testing",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "housingCover001",
+      "beloningToMacroPhase" : "testingPhase",
+      "beloningToRoute" : "refurbishStrategy",
+      "predecessors" : [ "housingCover001-blasting" ],
+      "successors" : [ "clutch001-reassembly" ],
+      "service" : {
+        "serviceChaining" : "(testingService)",
+        "services" : [ {
+          "serviceName" : "testingService",
+          "serviceRequirements" : [ ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "hubSplines001-inspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "hubSplines001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "refurbishStrategy",
+      "predecessors" : [ "clutch001-disassembly" ],
+      "successors" : [ "hubSplines001-blasting" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "clutchOuterDiameter001",
+            "requirementValue" : 320.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "hubSplines001-blasting",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "hubSplines001",
+      "beloningToMacroPhase" : "manufacturingPhase",
+      "beloningToRoute" : "refurbishStrategy",
+      "predecessors" : [ "hubSplines001-inspection" ],
+      "successors" : [ "hubSplines001-testing" ],
+      "service" : {
+        "serviceChaining" : "(blastingService)",
+        "services" : [ {
+          "serviceName" : "blastingService",
+          "serviceRequirements" : [ {
+            "requirementName" : "corrosionLevelHubSplines001",
+            "requirementValue" : "mid",
+            "requirementUoM" : null
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "hubSplines001-testing",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "hubSplines001",
+      "beloningToMacroPhase" : "testingPhase",
+      "beloningToRoute" : "refurbishStrategy",
+      "predecessors" : [ "hubSplines001-blasting" ],
+      "successors" : [ "clutch001-reassembly" ],
+      "service" : {
+        "serviceChaining" : "(testingService)",
+        "services" : [ {
+          "serviceName" : "testingService",
+          "serviceRequirements" : [ ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "pressurePlate001-inspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "pressurePlate001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "refurbishStrategy",
+      "predecessors" : [ "clutch001-disassembly" ],
+      "successors" : [ "pressurePlate001-turning" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "pressurePlateDiameter001",
+            "requirementValue" : 240.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "pressurePlate001-turning",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "pressurePlate001",
+      "beloningToMacroPhase" : "manufacturingPhase",
+      "beloningToRoute" : "refurbishStrategy",
+      "predecessors" : [ "pressurePlate001-inspection" ],
+      "successors" : [ "pressurePlate001-testing" ],
+      "service" : {
+        "serviceChaining" : "(turningService)",
+        "services" : [ {
+          "serviceName" : "turningService",
+          "serviceRequirements" : [ {
+            "requirementName" : "pressurePlateDiameter001",
+            "requirementValue" : 240.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "pressurePlate001-testing",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "pressurePlate001",
+      "beloningToMacroPhase" : "testingPhase",
+      "beloningToRoute" : "refurbishStrategy",
+      "predecessors" : [ "pressurePlate001-turning" ],
+      "successors" : [ "clutch001-reassembly" ],
+      "service" : {
+        "serviceChaining" : "(testingService)",
+        "services" : [ {
+          "serviceName" : "testingService",
+          "serviceRequirements" : [ ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "torsionalDumper001-inspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "torsionalDumper001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "replaceStrategy",
+      "predecessors" : [ "clutch001-disassembly" ],
+      "successors" : [ "torsionalDumper001-replace" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "clutchOuterDiameter001",
+            "requirementValue" : 320.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "torsionalDumper001-replace",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "torsionalDumper001",
+      "beloningToMacroPhase" : "replacePhase",
+      "beloningToRoute" : "replaceStrategy",
+      "predecessors" : [ "torsionalDumper001-inspection" ],
+      "successors" : [ "clutch001-reassembly" ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    } ]
+  } ]
+}

@@ -1,0 +1,13 @@
+﻿IdProvider,Name,SourceIdProvider,SourceName
+0,COST_01_AssemblyHub,70,ToolTechnologyProvider-070
+1,COST_02_DesignPunching,18,ToolTechnologyProvider-018
+2,COST_03_QualityTesting,23,ToolTechnologyProvider-023
+3,COST_04_IntegratedWorks,90,ToolTechnologyProvider-090
+4,ENERGY_01_AssemblyHub,12,ToolTechnologyProvider-012
+5,ENERGY_02_DesignPunching,14,ToolTechnologyProvider-014
+6,ENERGY_03_QualityTesting,44,ToolTechnologyProvider-044
+7,ENERGY_04_IntegratedWorks,91,ToolTechnologyProvider-091
+8,LOCAL_01_AssemblyHub,3,ToolTechnologyProvider-003
+9,LOCAL_02_DesignPunching,6,ToolTechnologyProvider-006
+10,LOCAL_03_QualityTesting,31,ToolTechnologyProvider-031
+11,LOCAL_04_IntegratedWorks,64,ToolTechnologyProvider-064

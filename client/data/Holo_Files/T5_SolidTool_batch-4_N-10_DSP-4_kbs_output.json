@@ -1,0 +1,48 @@
+{
+  "tenantId" : "connector-test",
+  "batchId" : "SolidTool_batch-4_N-10_DSP-4",
+  "batchCardinality" : 10,
+  "productType" : "SolidTool",
+  "inputProduct" : {
+    "efficencyClass" : "-",
+    "productClass" : "solidToolType"
+  },
+  "feasibleStrategies" : [ {
+    "strategyName" : "replaceStrategy",
+    "outputProduct" : {
+      "efficencyClass" : "-",
+      "productClass" : "solidToolType"
+    },
+    "steps" : [ {
+      "currentStepName" : "solidTool001-inspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "solidTool001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "replaceStrategy",
+      "predecessors" : [ ],
+      "successors" : [ "solidTool001-replace" ],
+      "service" : {
+        "serviceChaining" : "(opticalMicroscopeService OR digitalMicroscopeService)",
+        "services" : [ {
+          "serviceName" : "opticalMicroscopeService",
+          "serviceRequirements" : [ ]
+        }, {
+          "serviceName" : "digitalMicroscopeService",
+          "serviceRequirements" : [ ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "solidTool001-replace",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "solidTool001",
+      "beloningToMacroPhase" : "replacePhase",
+      "beloningToRoute" : "replaceStrategy",
+      "predecessors" : [ "solidTool001-inspection" ],
+      "successors" : [ ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    } ]
+  } ]
+}

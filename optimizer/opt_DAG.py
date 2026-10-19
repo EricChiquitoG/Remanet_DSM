@@ -20,7 +20,11 @@ def load_problem_data_from_json_string(filestr):
     - 'matrix': location transport costs
     - 'processes': dict where each process lists its predecessors
     - 'CostMatrix': manufacturing cost per process per location
-    
+    - 'EnergyMatrix': energy per process per location (optional; defaults to
+      0 for any (location, process) pair it doesn't cover — unlike
+      CostMatrix, a missing or zero entry never makes an assignment
+      infeasible, it just contributes nothing to the energy objective)
+
     Example:
     {
         "processes": {
@@ -35,7 +39,8 @@ def load_problem_data_from_json_string(filestr):
     # Extract data from JSON
     matrix_data = data["matrix"]
     cost_matrix_data = data["CostMatrix"]
-    
+    energy_matrix_data = data.get("EnergyMatrix", {})
+
     # Get processes - must be a dict with predecessor notation
     processes_data = data.get("processes", {})
     
@@ -123,10 +128,19 @@ def load_problem_data_from_json_string(filestr):
             if not isinstance(cost, (int, float)):
                 print(f"Warning: Non-numeric cost for location '{loc}', process '{process}'.")
 
+    # --- Process Energy Matrix Data (optional) ---
+    # Unlike CostMatrix, a missing/non-numeric entry is not an error — it
+    # just means 0 energy is tracked for that (location, process) pair, and
+    # never affects feasibility.
+    loaded_energy_matrix = energy_matrix_data if isinstance(energy_matrix_data, dict) else {}
+    for loc, process_energies in loaded_energy_matrix.items():
+        if not isinstance(process_energies, dict):
+            print(f"Warning: Value for location '{loc}' in EnergyMatrix is not an object; ignoring.")
+
     num_steps = len(manufacturing_route)
-    
-    return (manufacturing_route, users_data, _transport_costs_matrix_users, 
-            loaded_cost_matrix, num_steps, num_users, users, workflow_dag)
+
+    return (manufacturing_route, users_data, _transport_costs_matrix_users,
+            loaded_cost_matrix, loaded_energy_matrix, num_steps, num_users, users, workflow_dag)
 
 
 def convert_predecessors_to_successors(predecessor_dict, all_processes):
@@ -302,13 +316,14 @@ def calculate_total_transport_cost(workflow_dag, process_list, assignment,
 
 # --- Manufacturing Problem with DAG Support ---
 class ManufacturingProblemDAG(ElementwiseProblem):
-    def __init__(self, manufacturing_route, users_data, transport_costs_matrix_users, 
-                 loaded_cost_matrix, num_steps, num_users, users, workflow_dag):
+    def __init__(self, manufacturing_route, users_data, transport_costs_matrix_users,
+                 loaded_cost_matrix, energy_matrix, num_steps, num_users, users, workflow_dag):
         self.manufacturing_route = manufacturing_route
         self.users_data = users_data
         self.users = users
         self.transport_costs_matrix_users = transport_costs_matrix_users
         self.loaded_cost_matrix = loaded_cost_matrix
+        self.energy_matrix = energy_matrix
         self.num_steps = num_steps
         self.num_users = num_users
         self.workflow_dag = workflow_dag
@@ -316,10 +331,15 @@ class ManufacturingProblemDAG(ElementwiseProblem):
         # Precompute capability and manufacturing cost matrices
         self.user_step_manuf_cost = np.full((self.num_users, self.num_steps), float('inf'))
         self.user_step_capable = np.full((self.num_users, self.num_steps), False)
+        # Energy defaults to 0, not inf: unlike cost, a missing/zero entry
+        # never makes an assignment infeasible — it just adds nothing to
+        # the energy objective.
+        self.user_step_energy = np.zeros((self.num_users, self.num_steps))
 
         for uid, user in enumerate(self.users):
             costsForUser = self.loaded_cost_matrix.get(user, {})
-            
+            energyForUser = self.energy_matrix.get(user, {})
+
             for stepid, processName in enumerate(self.manufacturing_route):
                 costProcess = costsForUser.get(processName)
 
@@ -330,8 +350,12 @@ class ManufacturingProblemDAG(ElementwiseProblem):
                     self.user_step_capable[uid, stepid] = False
                     self.user_step_manuf_cost[uid, stepid] = float('inf')
 
+                energyProcess = energyForUser.get(processName)
+                if isinstance(energyProcess, (int, float)):
+                    self.user_step_energy[uid, stepid] = energyProcess
+
         super().__init__(n_var=self.num_steps,
-                         n_obj=3,  # Transport Cost, Manufacturing Cost, Makespan
+                         n_obj=4,  # Transport Cost, Manufacturing Cost, Makespan, Energy
                          n_constr=self.num_steps,
                          xl=0,
                          xu=self.num_users - 1,
@@ -341,6 +365,7 @@ class ManufacturingProblemDAG(ElementwiseProblem):
         total_manufacturing_cost = 0.0
         total_transport_cost = 0.0
         makespan = 0.0
+        total_energy = 0.0
         constraints = np.zeros(self.num_steps)
 
         # 1. Check capability constraints and calculate manufacturing cost
@@ -352,6 +377,7 @@ class ManufacturingProblemDAG(ElementwiseProblem):
                 total_manufacturing_cost = float('inf')
                 total_transport_cost = float('inf')
                 makespan = float('inf')
+                total_energy = float('inf')
                 break
             else:
                 cost = self.user_step_manuf_cost[user_idx, step_idx]
@@ -360,16 +386,18 @@ class ManufacturingProblemDAG(ElementwiseProblem):
                     total_manufacturing_cost = float('inf')
                     total_transport_cost = float('inf')
                     makespan = float('inf')
+                    total_energy = float('inf')
                     break
                 total_manufacturing_cost += cost
+                total_energy += self.user_step_energy[user_idx, step_idx]
 
         # 2. Calculate transport cost and makespan if feasible
         if total_manufacturing_cost != float('inf'):
             total_transport_cost = calculate_total_transport_cost(
-                self.workflow_dag, self.manufacturing_route, x, 
+                self.workflow_dag, self.manufacturing_route, x,
                 self.transport_costs_matrix_users
             )
-            
+
             makespan, is_feasible = calculate_makespan(
                 self.workflow_dag, self.manufacturing_route, x,
                 self.user_step_manuf_cost, self.transport_costs_matrix_users
@@ -379,7 +407,7 @@ class ManufacturingProblemDAG(ElementwiseProblem):
                 total_transport_cost = float('inf')
                 makespan = float('inf')
 
-        out["F"] = [total_transport_cost, total_manufacturing_cost, makespan]
+        out["F"] = [total_transport_cost, total_manufacturing_cost, makespan, total_energy]
         out["G"] = constraints
 
 

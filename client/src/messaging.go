@@ -27,6 +27,7 @@ import (
 // New structs for input to be used for MVP:
 type OptimizationInput struct {
 	Batch               int                           `json:"Batch"`
+	UseCase             string                        `json:"use_case"`
 	ProcessRequirements ProcessRequirements           `json:"process_requirements"`
 	Routes              map[string]map[string]DAGNode `json:"routes"`
 	StartingPoint       []float64                     `json:"starting_point"`
@@ -43,16 +44,37 @@ type ProcessRequirements struct {
 type DAGNode struct {
 	Prerequisites []string     `json:"prerequisites"`
 	Requirements  Requirements `json:"requirements"`
+	// Operation is the generic capability this node is matched against
+	// (e.g. "Inspection"). Optional — when empty, the node's own map key is
+	// used instead, which is what every hand-built route with bare
+	// operation names as keys already relies on. Only needed when a route
+	// can contain more than one node per operation, as KBS-derived routes
+	// do: e.g. one "Inspection" node per sub-artifact, each with its own
+	// predecessors/successors and possibly its own requirements, all
+	// matched against the same provider capability.
+	Operation string `json:"operation,omitempty"`
+	// Universal marks a node that requires no provider capability at all
+	// (a KBS step whose service.services is empty — e.g. a visual check or
+	// a reuse-as-is step with no assigned service). Every provider is
+	// treated as trivially capable of it, bypassing the normal
+	// GetCapability/MatchCapability lookup entirely: that lookup can only
+	// ever fail for an operation no provider has a CSV column for at all
+	// (there is nothing to check), and the validation ground truth this
+	// was built against confirms exactly that — "no requirements for the
+	// step" is marked satisfied for every actor, independent of whether
+	// that actor's data covers the derived operation at all.
+	Universal bool `json:"universal,omitempty"`
 }
 
-type Requirements struct {
-	AxisHeight               *float64 `json:"axis_height,omitempty"`
-	Power                    *float64 `json:"power,omitempty"`
-	KnowHowFormalizationTool *bool    `json:"know-how_formalization-tool,omitempty"`
-	Tolerance                *string  `json:"tolerance,omitempty"`
-	Length                   *int     `json:"length,omitempty"`
-	Diameter                 *int     `json:"diameter,omitempty"`
-}
+// Requirements is a generic attribute requirement for one process step: an
+// attribute name mapped to the values it must support. An empty (or
+// omitted) value list means "the attribute must be present, any value is
+// acceptable" — presence-only matching. Matched against a provider's
+// capability by MatchCapability (matching.go). Replaces the old fixed
+// per-domain field set (axis_height/power/know-how_formalization-tool/
+// tolerance/length/diameter), which couldn't express cutting-tool
+// attributes like CoatingType or CoreMaterial at all.
+type Requirements map[string][]string
 
 //End of new structs
 
@@ -78,6 +100,7 @@ type ProcessedSolution struct {
 	Assignments       []Assignment // in topological execution order, boundary nodes excluded
 	TransportCost     float64
 	ManufacturingCost float64
+	Energy            float64
 }
 
 // OptimizationResults holds the processed results from the gRPC response.
@@ -118,11 +141,25 @@ type process struct {
 	ProcessName string
 	Cost        float64
 	Co2         float64
+	Energy      float64
 }
 
 type StepEntry struct {
 	StepName     string       `json:"step_name"`
+	Operation    string       `json:"operation,omitempty"`
+	Universal    bool         `json:"universal,omitempty"`
 	Requirements Requirements `json:"requirements"`
+}
+
+// EffectiveOperation is what this step is matched against: Operation when
+// set, otherwise the step's own name — the fallback that keeps every
+// existing hand-built route (bare operation names as keys, Operation never
+// set) behaving exactly as it did before DAGNode gained Operation.
+func (s StepEntry) EffectiveOperation() string {
+	if s.Operation != "" {
+		return s.Operation
+	}
+	return s.StepName
 }
 
 type SolChoice = struct {
@@ -134,43 +171,110 @@ type SolChoice = struct {
 
 // ProcessDirectory using goroutines
 func ProcessDirectory(c *gin.Context) {
-	var request OptimizationInput
+	// Accepts either a hand-built OptimizationInput body (routes/
+	// requirements/...), or a {"starting_point", "optimization_mode",
+	// "kbs": {...}} envelope wrapping a real Holonix KBS batch output
+	// verbatim — see BindOptimizationInput.
+	request, err := BindOptimizationInput(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
-	// Bind JSON to the struct
-	if err := c.ShouldBindJSON(&request); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Invalid JSON format: %v", err)})
+	if request.UseCase == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "use_case is required"})
 		return
 	}
 
 	// Gate on external service availability before doing any work.
-	// AAS being unavailable is not fatal — callTechProvider falls back to the DB proxy.
-	if ok, msg := IsServiceAvailable(ServiceAASAPI); !ok {
-		log.Printf("[warn] AAS API unavailable: %s — DB proxy will be used for actor data", msg)
-	}
+	// Provider/capability matching reads MongoDB directly now (no AAS
+	// fetch in this path), so Mongo is required for every mode.
 	if ok, msg := IsServiceAvailable(ServiceOptimizer); !ok {
 		c.JSON(http.StatusServiceUnavailable, gin.H{"error": fmt.Sprintf("optimizer service unavailable: %s", msg)})
 		return
 	}
-	if request.OptimizationMode == "forward" {
-		if ok, msg := IsServiceAvailable(ServiceMongoDB); !ok {
-			c.JSON(http.StatusServiceUnavailable, gin.H{"error": fmt.Sprintf("MongoDB unavailable: %s", msg)})
-			return
-		}
-	}
-
-	processToFetch := GetDistinct(request)
-	fmt.Println("DSM process initialized for processes: ", processToFetch)
-
-	uniqueSteps := FlattenUniqueStepsWithData(request)
-	TPResponses, err := techProviderSearch(uniqueSteps, directory)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Unable to connect to the AAS %v", err)})
+	if ok, msg := IsServiceAvailable(ServiceMongoDB); !ok {
+		c.JSON(http.StatusServiceUnavailable, gin.H{"error": fmt.Sprintf("MongoDB unavailable: %s", msg)})
 		return
 	}
 
-	//fmt.Println("tech providers  ", TPResponses)
+	uniqueSteps := FlattenUniqueStepsWithData(request)
+	TPResponses, err := techProviderSearch(request.UseCase, uniqueSteps)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Unable to match technology providers: %v", err)})
+		return
+	}
+
+	runOptimizationPipeline(c, request, TPResponses)
+}
+
+// ProcessDirectoryValidate mirrors ProcessDirectory exactly, except actor
+// identification is sourced from the real AAS CapabilityDescription files
+// in client/data/dsm_validation_dataset/aas-instancies/ (see
+// AASTechProviderSearch) instead of the Mongo providers/capabilities
+// collections populated from the 100-provider CSV dataset — a hand-picked,
+// independently-verified 12-provider pool (see kbs_validation_test.go /
+// aas_validation_test.go for the ground-truth comparison this reproduces
+// exactly). Scoped to electric-motor only: that's the only product family
+// the validation dataset covers.
+func ProcessDirectoryValidate(c *gin.Context) {
+	request, err := BindOptimizationInput(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if request.UseCase == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "use_case is required"})
+		return
+	}
+	if request.UseCase != "electric-motor" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf(
+			"get_options_validate only supports the electric-motor use case right now (got %q) — the AAS validation dataset only covers Motor",
+			request.UseCase)})
+		return
+	}
+
+	if ok, msg := IsServiceAvailable(ServiceOptimizer); !ok {
+		c.JSON(http.StatusServiceUnavailable, gin.H{"error": fmt.Sprintf("optimizer service unavailable: %s", msg)})
+		return
+	}
+	if ok, msg := IsServiceAvailable(ServiceMongoDB); !ok {
+		c.JSON(http.StatusServiceUnavailable, gin.H{"error": fmt.Sprintf("MongoDB unavailable: %s", msg)})
+		return
+	}
+
+	// The use case's schema (attribute rules, requirement fields) still
+	// comes from the established config store — identical either way —
+	// only the provider/capability data (the actual "actors") is sourced
+	// from the AAS files instead of Mongo.
+	uc, err := execdb.GetUseCase(request.UseCase)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("loading use case %q: %v", request.UseCase, err)})
+		return
+	}
+
+	uniqueSteps := FlattenUniqueStepsWithData(request)
+	TPResponses, err := AASTechProviderSearch(uc, validationAASDir(), uniqueSteps)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Unable to match technology providers (AAS): %v", err)})
+		return
+	}
+
+	runOptimizationPipeline(c, request, TPResponses)
+}
+
+// runOptimizationPipeline is everything downstream of actor
+// identification: building the customer/provider/redesign result
+// collection, cost/energy/distance matrices, and the gRPC call to the
+// optimizer. Shared by ProcessDirectory and ProcessDirectoryValidate —
+// identical regardless of whether TPResponses came from Mongo or from AAS
+// files.
+func runOptimizationPipeline(c *gin.Context, request OptimizationInput, TPResponses responsesTP) {
+	processToFetch := GetDistinct(request)
+	fmt.Println("DSM process initialized for processes: ", processToFetch)
+
 	resultTP := ConvertTPToResultCollection(TPResponses)
-	//fmt.Println("tech providers converted   ", resultTP)
 
 	resultCollection := ResultCollection{}
 	resultCollection.Results = append(resultCollection.Results, resultTP.Results...)
@@ -222,18 +326,24 @@ func ProcessDirectory(c *gin.Context) {
 		resultCollection.Results = append(resultCollection.Results, redesignProcess.Results...)
 	}
 
-	// --- Create Cost Matrix and Distance Matrix ---
-	CostMatrix, err := CreateCostMatrixFromResults(resultCollection, costs, &TPResponses)
+	// --- Create Cost, Energy, and Distance Matrices ---
+	CostMatrix, err := CreateCostMatrixFromResults(resultCollection, &TPResponses)
 	if err != nil {
 		log.Printf("Error creating CostMatrix: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to create cost matrix: %v", err)})
+		return
+	}
+	EnergyMatrix, err := CreateEnergyMatrixFromResults(resultCollection, &TPResponses)
+	if err != nil {
+		log.Printf("Error creating EnergyMatrix: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to create energy matrix: %v", err)})
 		return
 	}
 	//fmt.Println("results", resultCollection.Results)
 
 	distMatrix := DistanceMatrixConstructor(resultCollection, directory)
 
-	optimizationResponse, err := OptimizationHandler(request, distMatrix, CostMatrix)
+	optimizationResponse, err := OptimizationHandler(request, distMatrix, CostMatrix, EnergyMatrix)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to connect to optimization service: %v", err)})
 	}
@@ -385,6 +495,7 @@ func processOptimizationResponse(res *pb.OptimizationResponse) (OptimizationResu
 				Assignments:       assignments,
 				TransportCost:     sol.TransportCost,
 				ManufacturingCost: sol.ManufacturingCost,
+				Energy:            sol.Energy,
 			}
 		}
 	} else {
@@ -472,7 +583,6 @@ func providerSearch(requirements ProcessRequirements) (ResultCollection, map[str
 	return resultCollectionLog, originMap, nil
 }
 
-
 func ExtractStepNamesFromRoutes(r OptimizationInput) []string {
 	stepNameSet := make(map[string]struct{})
 	for _, route := range r.Routes {
@@ -487,7 +597,7 @@ func ExtractStepNamesFromRoutes(r OptimizationInput) []string {
 	return stepNames
 }
 
-func OptimizationHandler(r OptimizationInput, distMatrix map[string]map[string]float64, costMatrix map[string]map[string]float64) (CombinedOptimizationResponse, error) {
+func OptimizationHandler(r OptimizationInput, distMatrix map[string]map[string]float64, costMatrix map[string]map[string]float64, energyMatrix map[string]map[string]float64) (CombinedOptimizationResponse, error) {
 
 	// Optimizer connection (running on docker as well)
 
@@ -525,7 +635,7 @@ func OptimizationHandler(r OptimizationInput, distMatrix map[string]map[string]f
 			optimizationProcesses = append(optimizationProcesses, "end")
 
 			fmt.Println("route:", routeName, "processes ordered:", optimizationProcesses)
-			jsonData := exportToJson(optimizationProcesses, costMatrix, distMatrix, augmentWithBoundaryNodes(prDAG))
+			jsonData := exportToJson(optimizationProcesses, costMatrix, energyMatrix, distMatrix, augmentWithBoundaryNodes(prDAG))
 			fmt.Println("data used for opt:", jsonData)
 
 			res, err := sendOptimize(jsonData, clientOpt)
@@ -562,56 +672,116 @@ func OptimizationHandler(r OptimizationInput, distMatrix map[string]map[string]f
 
 	for result := range optimizationResultsChan {
 		result.ProcessID = uuid.NewString()
-		err := SaveOptimizationResult(result.ProcessID, result, OptimizationTTL)
-		if err != nil {
+		if err := SaveOptimizationResult(result.ProcessID, result, OptimizationTTL); err != nil {
 			log.Printf("Optimization was not stored in cache")
 		}
 		finalResponse.Results = append(finalResponse.Results, result)
-		resultOpt, err := GetOptimizationResult(result.ProcessID)
-		if err != nil {
-			log.Printf("Optimization was not saved")
-		}
-		fmt.Println("Result for this opt run ", *resultOpt)
 	}
 	return finalResponse, nil
 
 }
 
-func techProviderSearch(steps []StepEntry, dir *Directory) (responsesTP, error) {
-	stepSet := make(map[string]bool)
+// techProviderSearch finds, for a given use case, every provider that can
+// perform at least one of the requested steps, and reports which of those
+// steps it actually satisfies — "offers the operation" (provider.Operations)
+// filtered down to "and its capability matches the step's Requirements"
+// (MatchCapability). Replaces the old directory.json/Contact-driven, AAS-
+// fetching version: providers/capabilities (seeded by
+// client/cmd/importdata) are the single source for this now, scoped by
+// request.UseCase, so the same code serves every product family.
+// capabilityLookupFunc resolves one (providerID, operation) pair to its
+// CapabilityRecord. techProviderSearch uses the Mongo-backed
+// execdb.GetCapability; AASTechProviderSearch uses an in-memory index
+// built from parsed AAS files instead — same matching logic either way,
+// only where the data comes from differs.
+type capabilityLookupFunc func(providerID, operation string) (execdb.CapabilityRecord, error)
+
+func techProviderSearch(useCaseID string, steps []StepEntry) (responsesTP, error) {
+	uc, err := execdb.GetUseCase(useCaseID)
+	if err != nil {
+		return responsesTP{}, fmt.Errorf("unknown use case %q: %w", useCaseID, err)
+	}
+
+	providers, err := execdb.ListProvidersByUseCase(useCaseID)
+	if err != nil {
+		return responsesTP{}, fmt.Errorf("listing providers for %q: %w", useCaseID, err)
+	}
+
+	return techProviderSearchWithProviders(uc, providers, steps, func(providerID, op string) (execdb.CapabilityRecord, error) {
+		return execdb.GetCapability(uc.ID, providerID, op)
+	})
+}
+
+// AASTechProviderSearch mirrors techProviderSearch exactly — same
+// relevance filtering, same Universal-step handling, same MatchCapability
+// call — except actor identification is sourced from real AAS
+// CapabilityDescription files on disk (via LoadAASCapabilityProviders)
+// instead of the Mongo providers/capabilities collections populated from
+// the 100-provider CSV dataset.
+func AASTechProviderSearch(uc execdb.UseCase, aasDir string, steps []StepEntry) (responsesTP, error) {
+	providers, capabilities, err := LoadAASCapabilityProviders(aasDir, uc.ID)
+	if err != nil {
+		return responsesTP{}, fmt.Errorf("loading AAS capability files from %q: %w", aasDir, err)
+	}
+
+	capIndex := make(map[string]execdb.CapabilityRecord, len(capabilities))
+	for _, c := range capabilities {
+		capIndex[c.ProviderID+"\x00"+c.Operation] = c
+	}
+	lookup := func(providerID, op string) (execdb.CapabilityRecord, error) {
+		c, ok := capIndex[providerID+"\x00"+op]
+		if !ok {
+			return execdb.CapabilityRecord{}, fmt.Errorf("no AAS capability for provider %s operation %s", providerID, op)
+		}
+		return c, nil
+	}
+	return techProviderSearchWithProviders(uc, providers, steps, lookup)
+}
+
+func techProviderSearchWithProviders(uc execdb.UseCase, providers []execdb.ProviderRecord, steps []StepEntry, lookup capabilityLookupFunc) (responsesTP, error) {
+	opSet := make(map[string]bool, len(steps))
+	hasUniversalStep := false
 	for _, s := range steps {
-		stepSet[s.StepName] = true
+		if s.Universal {
+			hasUniversalStep = true
+			continue
+		}
+		opSet[s.EffectiveOperation()] = true
 	}
 
 	var wg sync.WaitGroup
 	resultsChan := make(chan techProviderResponse)
-	for _, contact := range dir.Contacts {
-		relevant := false
-		for _, p := range contact.Processes {
-			if stepSet[p] {
-				relevant = true
-				break
+	for _, provider := range providers {
+		// A universal step (no service required at all) is satisfiable by
+		// every provider, so its presence alone makes every provider worth
+		// checking — even one that offers none of the other, real
+		// operations requested.
+		relevant := hasUniversalStep
+		if !relevant {
+			for _, op := range provider.Operations {
+				if opSet[op] {
+					relevant = true
+					break
+				}
 			}
 		}
 		if !relevant {
 			continue
 		}
 
-		contact := contact
+		provider := provider
 		wg.Add(1)
-		go func(contact Contact) {
+		go func(provider execdb.ProviderRecord) {
 			defer wg.Done()
 
-			resp, err := callTechProvider(contact.Processes, steps, contact.Address, contact.Name, contact.Location)
-			if err != nil {
-				log.Printf("Error calling tech provider %s: %v", contact.Name, err)
-				return
-			}
-
+			resp := matchProviderCapabilitiesWithLookup(uc, provider, steps, lookup)
 			if len(resp.Processes) > 0 {
+				if err := SaveTPResponse("TPRes_"+resp.uid, resp, OptimizationTTL); err != nil {
+					log.Printf("TP response not stored in cache for %s: %v", provider.Name, err)
+				}
 				resultsChan <- resp
 			}
-		}(contact)
+		}(provider)
 	}
 	go func() {
 		wg.Wait()
@@ -630,9 +800,67 @@ func techProviderSearch(steps []StepEntry, dir *Directory) (responsesTP, error) 
 	return finalResponse, nil
 }
 
+// matchProviderCapabilities checks one provider against every requested
+// step and returns the subset it's actually capable of, with cost/energy
+// taken from the matched CapabilityRecord. Co2 is left at 0 — the
+// demonstrator dataset carries Cost and Energy per operation, not a
+// separate emissions figure; the old AAS mock's "co2_static_per_hour" has
+// no real counterpart here.
+func matchProviderCapabilitiesWithLookup(uc execdb.UseCase, provider execdb.ProviderRecord, steps []StepEntry, lookup capabilityLookupFunc) techProviderResponse {
+	response := techProviderResponse{uid: provider.Name, location: provider.Location}
+	for _, step := range steps {
+		if step.Universal {
+			// No capability lookup makes sense here — there is no
+			// operation for any provider to have a record under. Cost
+			// must be this nonzero sentinel rather than 0: the optimizer
+			// (opt_DAG.py) treats a cost of exactly 0 as "not capable",
+			// identically to a missing entry, so a free-but-capable step
+			// needs a nominal positive cost to read as capable at all.
+			// Energy is genuinely 0 — no real energy is consumed — which
+			// is safe because the optimizer never uses 0 energy to mean
+			// "infeasible" the way it does for cost.
+			response.Processes = append(response.Processes, process{
+				ProcessID:   fmt.Sprintf("%s-%s", provider.Name, step.StepName),
+				ProcessName: step.StepName,
+				Cost:        universalStepCost,
+				Co2:         0,
+				Energy:      0,
+			})
+			continue
+		}
+		capability, err := lookup(provider.ProviderID, step.EffectiveOperation())
+		if err != nil {
+			continue // provider doesn't offer this operation at all
+		}
+		if !MatchCapability(uc, capability, step.Requirements) {
+			continue
+		}
+		var cost, energy float64
+		if capability.Cost != nil {
+			cost = *capability.Cost
+		}
+		if capability.Energy != nil {
+			energy = *capability.Energy
+		}
+		response.Processes = append(response.Processes, process{
+			ProcessID:   fmt.Sprintf("%s-%s", provider.Name, step.StepName),
+			ProcessName: step.StepName,
+			Cost:        cost,
+			Co2:         0,
+			Energy:      energy,
+		})
+	}
+	return response
+}
+
 const (
 	defaultCost = 50.0
 	defaultCo2  = 10.0
+	// universalStepCost is the nominal cost assigned to a Universal step
+	// for every provider — see matchProviderCapabilities. Deliberately the
+	// same sentinel as the DAG's origin/end boundary nodes use for "always
+	// feasible, not a real cost."
+	universalStepCost = 1.0
 )
 
 func buildFallbackResponse(actorProcesses []string, name string, loc []float64, steps []StepEntry) techProviderResponse {
@@ -797,17 +1025,17 @@ func getBoolFromAAS(aas AASResponse, name string) bool {
 }
 
 func FlattenUniqueStepsWithData(input OptimizationInput) []StepEntry {
-	uniqueSteps := make(map[string]Requirements)
+	uniqueSteps := make(map[string]DAGNode)
 	for _, route := range input.Routes {
 		for name, node := range route {
 			if _, exists := uniqueSteps[name]; !exists {
-				uniqueSteps[name] = node.Requirements
+				uniqueSteps[name] = node
 			}
 		}
 	}
 	result := make([]StepEntry, 0, len(uniqueSteps))
-	for name, reqs := range uniqueSteps {
-		result = append(result, StepEntry{StepName: name, Requirements: reqs})
+	for name, node := range uniqueSteps {
+		result = append(result, StepEntry{StepName: name, Operation: node.Operation, Universal: node.Universal, Requirements: node.Requirements})
 	}
 	return result
 }

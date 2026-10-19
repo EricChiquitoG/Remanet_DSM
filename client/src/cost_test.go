@@ -23,7 +23,7 @@ func TestHaversine_EquatorialOneDegree(t *testing.T) {
 }
 
 func TestHaversine_Symmetric(t *testing.T) {
-	p1 := []float64{48.8566, 2.3522} // Paris
+	p1 := []float64{48.8566, 2.3522}  // Paris
 	p2 := []float64{51.5074, -0.1278} // London
 	d1 := Haversine(p1, p2)
 	d2 := Haversine(p2, p1)
@@ -44,7 +44,7 @@ func TestHaversine_AlwaysNonNegative(t *testing.T) {
 	cases := [][4]float64{
 		{-33.8688, 151.2093, 35.6762, 139.6503}, // Sydney → Tokyo
 		{40.7128, -74.0060, 55.7558, 37.6173},   // New York → Moscow
-		{0, 0, 0, 180},                           // equatorial half-globe
+		{0, 0, 0, 180},                          // equatorial half-globe
 	}
 	for _, c := range cases {
 		d := Haversine([]float64{c[0], c[1]}, []float64{c[2], c[3]})
@@ -60,16 +60,12 @@ func emptyTP() *responsesTP {
 	return &responsesTP{}
 }
 
-func emptyCostData() *CostData {
-	return &CostData{}
-}
-
 func TestCreateCostMatrix_OriginEndGetCostOne(t *testing.T) {
 	rc := ResultCollection{Results: []Result{
 		{ContactName: "origin_actor", Matches: []string{"origin"}, Location: []float64{0, 0}},
 		{ContactName: "end_actor", Matches: []string{"end"}, Location: []float64{1, 1}},
 	}}
-	matrix, err := CreateCostMatrixFromResults(rc, emptyCostData(), emptyTP())
+	matrix, err := CreateCostMatrixFromResults(rc, emptyTP())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -91,7 +87,7 @@ func TestCreateCostMatrix_TechProviderCosts(t *testing.T) {
 			{ProcessName: "Reassembly", Cost: 80},
 		}},
 	}}
-	matrix, err := CreateCostMatrixFromResults(rc, emptyCostData(), tp)
+	matrix, err := CreateCostMatrixFromResults(rc, tp)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -113,7 +109,7 @@ func TestCreateCostMatrix_EmptyMatchesNoPanic(t *testing.T) {
 			t.Errorf("panicked on empty Matches: %v", r)
 		}
 	}()
-	_, err := CreateCostMatrixFromResults(rc, emptyCostData(), emptyTP())
+	_, err := CreateCostMatrixFromResults(rc, emptyTP())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -121,7 +117,7 @@ func TestCreateCostMatrix_EmptyMatchesNoPanic(t *testing.T) {
 
 func TestCreateCostMatrix_EmptyResultCollection(t *testing.T) {
 	rc := ResultCollection{}
-	matrix, err := CreateCostMatrixFromResults(rc, emptyCostData(), emptyTP())
+	matrix, err := CreateCostMatrixFromResults(rc, emptyTP())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -134,12 +130,74 @@ func TestCreateCostMatrix_RedesignCost(t *testing.T) {
 	rc := ResultCollection{Results: []Result{
 		{ContactName: "designer", Matches: []string{"Redesign"}, Location: []float64{0, 0}},
 	}}
-	matrix, err := CreateCostMatrixFromResults(rc, emptyCostData(), emptyTP())
+	matrix, err := CreateCostMatrixFromResults(rc, emptyTP())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	if matrix["designer"]["Redesign"] != 100 {
 		t.Errorf("Redesign should have hardcoded cost 100, got %f", matrix["designer"]["Redesign"])
+	}
+}
+
+// ---- CreateEnergyMatrixFromResults ------------------------------------------
+
+func TestCreateEnergyMatrix_TechProviderEnergy(t *testing.T) {
+	rc := ResultCollection{Results: []Result{
+		{ContactName: "ActorA", Matches: []string{"Cleaning", "Reassembly"}, Location: []float64{0, 0}},
+	}}
+	tp := &responsesTP{Responses: []techProviderResponse{
+		{uid: "ActorA", Processes: []process{
+			{ProcessName: "Cleaning", Cost: 50, Energy: 12.5},
+			{ProcessName: "Reassembly", Cost: 80, Energy: 7.25},
+		}},
+	}}
+	matrix, err := CreateEnergyMatrixFromResults(rc, tp)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if matrix["ActorA"]["Cleaning"] != 12.5 {
+		t.Errorf("expected Cleaning energy=12.5, got %f", matrix["ActorA"]["Cleaning"])
+	}
+	if matrix["ActorA"]["Reassembly"] != 7.25 {
+		t.Errorf("expected Reassembly energy=7.25, got %f", matrix["ActorA"]["Reassembly"])
+	}
+}
+
+func TestCreateEnergyMatrix_OriginEndRedesignAreZero(t *testing.T) {
+	// Unlike cost, boundary/Redesign entries don't need a nonzero sentinel —
+	// the optimizer's capability gating reads CostMatrix only.
+	rc := ResultCollection{Results: []Result{
+		{ContactName: "origin_actor", Matches: []string{"origin"}, Location: []float64{0, 0}},
+		{ContactName: "end_actor", Matches: []string{"end"}, Location: []float64{1, 1}},
+		{ContactName: "designer", Matches: []string{"Redesign"}, Location: []float64{0, 0}},
+	}}
+	matrix, err := CreateEnergyMatrixFromResults(rc, emptyTP())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if matrix["origin_actor"]["origin"] != 0 {
+		t.Errorf("origin actor should have energy 0, got %f", matrix["origin_actor"]["origin"])
+	}
+	if matrix["end_actor"]["end"] != 0 {
+		t.Errorf("end actor should have energy 0, got %f", matrix["end_actor"]["end"])
+	}
+	if matrix["designer"]["Redesign"] != 0 {
+		t.Errorf("Redesign should have energy 0, got %f", matrix["designer"]["Redesign"])
+	}
+}
+
+func TestCreateEnergyMatrix_EmptyMatchesNoPanic(t *testing.T) {
+	rc := ResultCollection{Results: []Result{
+		{ContactName: "ghost", Matches: []string{}, Location: []float64{0, 0}},
+	}}
+	defer func() {
+		if r := recover(); r != nil {
+			t.Errorf("panicked on empty Matches: %v", r)
+		}
+	}()
+	_, err := CreateEnergyMatrixFromResults(rc, emptyTP())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
 	}
 }
 

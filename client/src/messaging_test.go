@@ -43,6 +43,7 @@ func TestProcessOptimizationResponse_NormalAssignments(t *testing.T) {
 				},
 				TransportCost:     100.5,
 				ManufacturingCost: 200.0,
+				Energy:            42.5,
 			},
 		},
 	}
@@ -59,6 +60,9 @@ func TestProcessOptimizationResponse_NormalAssignments(t *testing.T) {
 	}
 	if sol.ManufacturingCost != 200.0 {
 		t.Errorf("expected ManufacturingCost=200.0, got %f", sol.ManufacturingCost)
+	}
+	if sol.Energy != 42.5 {
+		t.Errorf("expected Energy=42.5, got %f", sol.Energy)
 	}
 	if len(sol.Assignments) != 2 {
 		t.Fatalf("expected 2 assignments, got %d", len(sol.Assignments))

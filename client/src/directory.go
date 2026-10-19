@@ -8,7 +8,6 @@ import (
 
 var (
 	directory     *Directory
-	costs         *CostData
 	ProcessMap    map[string]int
 	HoloFiles     map[string]string
 	HoloLocations map[string][]float64
@@ -251,11 +250,6 @@ func InitData() error {
 	directory, err = MyDir(directoryPath)
 	if err != nil {
 		return fmt.Errorf("failed to load directory.json: %v", err)
-	}
-
-	costs, err = Costs("./data/cost.json")
-	if err != nil {
-		return fmt.Errorf("failed to load cost.json: %v", err)
 	}
 
 	ProcessMap = map[string]int{

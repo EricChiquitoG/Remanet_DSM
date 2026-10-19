@@ -1,0 +1,4353 @@
+{
+  "assetAdministrationShells": [
+    {
+      "idShort": "ElectricMotorValidationProviderCapabilityAAS_0",
+      "displayName": [
+        {
+          "language": "en",
+          "text": "COST_01_AssemblyHub Electric Motor Capabilities (validation dataset)"
+        }
+      ],
+      "description": [
+        {
+          "language": "en",
+          "text": "Capability AAS for COST_01_AssemblyHub, generated from the RemaNet DSM validation dataset (motor_providers_clustered.csv)."
+        }
+      ],
+      "id": "https://remanet-project.eu/ids/aas/electric-motor-validation-provider/0",
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "https://remanet-project.eu/ids/asset/electric-motor-validation-provider/0",
+        "assetType": "ElectricMotorServiceProvider",
+        "specificAssetIds": [
+          {
+            "name": "ProviderID",
+            "value": "0"
+          },
+          {
+            "name": "ProviderName",
+            "value": "COST_01_AssemblyHub"
+          },
+          {
+            "name": "Country",
+            "value": "ES"
+          }
+        ]
+      },
+      "submodels": [
+        {
+          "type": "ModelReference",
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "https://remanet-project.eu/ids/submodel/capability-description/electric-motor-validation-provider/0"
+            }
+          ]
+        }
+      ],
+      "modelType": "AssetAdministrationShell"
+    }
+  ],
+  "submodels": [
+    {
+      "idShort": "CapabilityDescription_ElectricMotorValidationProvider_0",
+      "displayName": [
+        {
+          "language": "en",
+          "text": "Electric Motor Capability Description for COST_01_AssemblyHub"
+        }
+      ],
+      "description": [
+        {
+          "language": "en",
+          "text": "Instance of IDTA 02020 Capability Description 1.0 for electric-motor remanufacturing services (DSM validation dataset)."
+        }
+      ],
+      "id": "https://remanet-project.eu/ids/submodel/capability-description/electric-motor-validation-provider/0",
+      "kind": "Instance",
+      "semanticId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "https://admin-shell.io/idta/SubmodelTemplate/CapabilityDescription/1/0"
+          }
+        ]
+      },
+      "submodelElements": [
+        {
+          "idShort": "CapabilitySet_ElectricMotorServices",
+          "displayName": [
+            {
+              "language": "en",
+              "text": "COST_01_AssemblyHub Electric Motor Services"
+            }
+          ],
+          "description": [
+            {
+              "language": "en",
+              "text": "Set of cutting-tool service capabilities offered by this provider."
+            }
+          ],
+          "semanticId": {
+            "type": "ExternalReference",
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "https://admin-shell.io/idta/CapabilityDescription/CapabilitySet/1/0"
+              }
+            ]
+          },
+          "value": [
+            {
+              "idShort": "CapabilityContainer_AssemblyInspection",
+              "displayName": [
+                {
+                  "language": "en",
+                  "text": "Assembly Inspection"
+                }
+              ],
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Offered recoating capability of tool provider 0."
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CapabilityDescription/CapabilityContainer/1/0"
+                  }
+                ]
+              },
+              "value": [
+                {
+                  "idShort": "AssemblyInspectionCapability",
+                  "displayName": [
+                    {
+                      "language": "en",
+                      "text": "Assembly Inspection Capability"
+                    }
+                  ],
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Restores or renews the cutting-tool coating using the available coating equipment."
+                    }
+                  ],
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://remanet-project.eu/semantic/capability/recoating"
+                      }
+                    ]
+                  },
+                  "qualifiers": [
+                    {
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/CapabilityRoleQualifier/Offered/1/0"
+                          }
+                        ]
+                      },
+                      "type": "Offered",
+                      "valueType": "xs:boolean",
+                      "value": "true"
+                    }
+                  ],
+                  "modelType": "Capability"
+                },
+                {
+                  "idShort": "CapabilityComment",
+                  "displayName": [
+                    {
+                      "language": "en",
+                      "text": "Capability Comment"
+                    }
+                  ],
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Human-readable description of the offered capability."
+                    }
+                  ],
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://admin-shell.io/idta/CapabilityDescription/CapabilityComment/1/0"
+                      }
+                    ]
+                  },
+                  "value": [
+                    {
+                      "language": "en",
+                      "text": "Assembly Inspection capability provided by COST_01_AssemblyHub in ES. Equipment: Assembly Disassembly Service; Operator Guiding Tool."
+                    }
+                  ],
+                  "modelType": "MultiLanguageProperty"
+                },
+                {
+                  "idShort": "PropertySet_AssemblyInspection",
+                  "displayName": [
+                    {
+                      "language": "en",
+                      "text": "Assembly Inspection Properties"
+                    }
+                  ],
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Properties describing the offered recoating capability."
+                    }
+                  ],
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://admin-shell.io/idta/CapabilityDescription/PropertySet/1/0"
+                      }
+                    ]
+                  },
+                  "value": [
+                    {
+                      "idShort": "PropertyContainer_CapabilityID",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "CapabilityID"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Stable identifier of this offered capability."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "CapabilityID",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "CapabilityID"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Stable identifier of this offered capability."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/CapabilityID"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "CAP-0-ASSEMBLYINSPECTION",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Stable identifier of this offered capability."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_OperationType",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "OperationType"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Type of remanufacturing or support operation offered by the provider."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "OperationType",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "OperationType"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Type of remanufacturing or support operation offered by the provider."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/OperationType"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "Assembly Inspection",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Type of remanufacturing or support operation offered by the provider."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_ProviderID",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "ProviderID"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Identifier of the provider in the source dataset."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "ProviderID",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "ProviderID"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Identifier of the provider in the source dataset."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/ProviderID"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:integer",
+                          "value": "0",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Identifier of the provider in the source dataset."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_ProviderCountry",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "ProviderCountry"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Country code of the provider."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "ProviderCountry",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "ProviderCountry"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Country code of the provider."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/ProviderCountry"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "ES",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Country code of the provider."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_ProviderLatitude",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "ProviderLatitude"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Latitude of the provider location."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "ProviderLatitude",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "ProviderLatitude"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Latitude of the provider location."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/ProviderLatitude"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:double",
+                          "value": "38.6913474083164",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Latitude of the provider location."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_ProviderLongitude",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "ProviderLongitude"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Longitude of the provider location."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "ProviderLongitude",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "ProviderLongitude"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Longitude of the provider location."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/ProviderLongitude"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:double",
+                          "value": "-3.181995111756282",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Longitude of the provider location."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_ProviderName",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "ProviderName"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Name of the technology provider in the source dataset."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "ProviderName",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "ProviderName"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Name of the technology provider in the source dataset."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/ProviderName"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "COST_01_AssemblyHub",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Name of the technology provider in the source dataset."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_EquipmentTypes",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "EquipmentTypes"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Semicolon-separated list of equipment available to realize the capability."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "EquipmentTypes",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "EquipmentTypes"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Semicolon-separated list of equipment available to realize the capability."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/EquipmentTypes"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "Assembly Disassembly Service; Operator Guiding Tool",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Semicolon-separated list of equipment available to realize the capability."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_EnergyPerOperation",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "EnergyPerOperation"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Energy value associated with one execution of the offered capability."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "EnergyPerOperation",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "EnergyPerOperation"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Energy value associated with one execution of the offered capability."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/EnergyPerOperation"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:double",
+                          "value": "42.3006",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Energy value associated with one execution of the offered capability. The source dataset does not specify the measurement unit."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_CostPerOperation",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "CostPerOperation"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Cost value associated with one execution of the offered capability."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "CostPerOperation",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "CostPerOperation"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Cost value associated with one execution of the offered capability."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/CostPerOperation"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:double",
+                          "value": "3.5358",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Cost value associated with one execution of the offered capability. The source dataset does not specify the currency."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_EquipmentSpecifications",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "EquipmentSpecifications"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Normalized source equipment dictionary, including supplied capability limits and parameters."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "EquipmentSpecifications",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "EquipmentSpecifications"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Normalized source equipment dictionary, including supplied capability limits and parameters."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/EquipmentSpecifications"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "{\"AssemblyDisassemblyService\":{\"AxisHeight\":\"112 mm\",\"RatedPower\":\"7.500 kW\",\"ShaftDiameter\":\"35 mm\"},\"OperatorGuidingTool\":{}}",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Normalized source equipment dictionary, including supplied capability limits and parameters."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    }
+                  ],
+                  "modelType": "SubmodelElementCollection"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "CapabilityContainer_Inspection",
+              "displayName": [
+                {
+                  "language": "en",
+                  "text": "Inspection"
+                }
+              ],
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Offered recoating capability of tool provider 0."
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CapabilityDescription/CapabilityContainer/1/0"
+                  }
+                ]
+              },
+              "value": [
+                {
+                  "idShort": "InspectionCapability",
+                  "displayName": [
+                    {
+                      "language": "en",
+                      "text": "Inspection Capability"
+                    }
+                  ],
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Restores or renews the cutting-tool coating using the available coating equipment."
+                    }
+                  ],
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://remanet-project.eu/semantic/capability/recoating"
+                      }
+                    ]
+                  },
+                  "qualifiers": [
+                    {
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/CapabilityRoleQualifier/Offered/1/0"
+                          }
+                        ]
+                      },
+                      "type": "Offered",
+                      "valueType": "xs:boolean",
+                      "value": "true"
+                    }
+                  ],
+                  "modelType": "Capability"
+                },
+                {
+                  "idShort": "CapabilityComment",
+                  "displayName": [
+                    {
+                      "language": "en",
+                      "text": "Capability Comment"
+                    }
+                  ],
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Human-readable description of the offered capability."
+                    }
+                  ],
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://admin-shell.io/idta/CapabilityDescription/CapabilityComment/1/0"
+                      }
+                    ]
+                  },
+                  "value": [
+                    {
+                      "language": "en",
+                      "text": "Inspection capability provided by COST_01_AssemblyHub in ES. Equipment: Operator Guiding Tool; Assembly Disassembly Service."
+                    }
+                  ],
+                  "modelType": "MultiLanguageProperty"
+                },
+                {
+                  "idShort": "PropertySet_Inspection",
+                  "displayName": [
+                    {
+                      "language": "en",
+                      "text": "Inspection Properties"
+                    }
+                  ],
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Properties describing the offered recoating capability."
+                    }
+                  ],
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://admin-shell.io/idta/CapabilityDescription/PropertySet/1/0"
+                      }
+                    ]
+                  },
+                  "value": [
+                    {
+                      "idShort": "PropertyContainer_CapabilityID",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "CapabilityID"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Stable identifier of this offered capability."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "CapabilityID",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "CapabilityID"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Stable identifier of this offered capability."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/CapabilityID"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "CAP-0-INSPECTION",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Stable identifier of this offered capability."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_OperationType",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "OperationType"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Type of remanufacturing or support operation offered by the provider."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "OperationType",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "OperationType"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Type of remanufacturing or support operation offered by the provider."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/OperationType"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "Inspection",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Type of remanufacturing or support operation offered by the provider."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_ProviderID",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "ProviderID"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Identifier of the provider in the source dataset."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "ProviderID",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "ProviderID"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Identifier of the provider in the source dataset."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/ProviderID"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:integer",
+                          "value": "0",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Identifier of the provider in the source dataset."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_ProviderCountry",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "ProviderCountry"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Country code of the provider."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "ProviderCountry",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "ProviderCountry"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Country code of the provider."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/ProviderCountry"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "ES",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Country code of the provider."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_ProviderLatitude",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "ProviderLatitude"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Latitude of the provider location."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "ProviderLatitude",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "ProviderLatitude"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Latitude of the provider location."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/ProviderLatitude"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:double",
+                          "value": "38.6913474083164",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Latitude of the provider location."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_ProviderLongitude",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "ProviderLongitude"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Longitude of the provider location."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "ProviderLongitude",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "ProviderLongitude"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Longitude of the provider location."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/ProviderLongitude"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:double",
+                          "value": "-3.181995111756282",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Longitude of the provider location."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_ProviderName",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "ProviderName"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Name of the technology provider in the source dataset."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "ProviderName",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "ProviderName"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Name of the technology provider in the source dataset."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/ProviderName"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "COST_01_AssemblyHub",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Name of the technology provider in the source dataset."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_EquipmentTypes",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "EquipmentTypes"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Semicolon-separated list of equipment available to realize the capability."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "EquipmentTypes",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "EquipmentTypes"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Semicolon-separated list of equipment available to realize the capability."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/EquipmentTypes"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "Operator Guiding Tool; Assembly Disassembly Service",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Semicolon-separated list of equipment available to realize the capability."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_EnergyPerOperation",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "EnergyPerOperation"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Energy value associated with one execution of the offered capability."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "EnergyPerOperation",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "EnergyPerOperation"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Energy value associated with one execution of the offered capability."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/EnergyPerOperation"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:double",
+                          "value": "35.8359",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Energy value associated with one execution of the offered capability. The source dataset does not specify the measurement unit."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_CostPerOperation",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "CostPerOperation"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Cost value associated with one execution of the offered capability."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "CostPerOperation",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "CostPerOperation"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Cost value associated with one execution of the offered capability."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/CostPerOperation"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:double",
+                          "value": "3.2542",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Cost value associated with one execution of the offered capability. The source dataset does not specify the currency."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_EquipmentSpecifications",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "EquipmentSpecifications"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Normalized source equipment dictionary, including supplied capability limits and parameters."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "EquipmentSpecifications",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "EquipmentSpecifications"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Normalized source equipment dictionary, including supplied capability limits and parameters."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/EquipmentSpecifications"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "{\"AssemblyDisassemblyService\":{\"AxisHeight\":\"112 mm\",\"RatedPower\":\"7.500 kW\",\"ShaftDiameter\":\"35 mm\"},\"OperatorGuidingTool\":{}}",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Normalized source equipment dictionary, including supplied capability limits and parameters."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    }
+                  ],
+                  "modelType": "SubmodelElementCollection"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "CapabilityContainer_Disassembly",
+              "displayName": [
+                {
+                  "language": "en",
+                  "text": "Disassembly"
+                }
+              ],
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Offered recoating capability of tool provider 0."
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CapabilityDescription/CapabilityContainer/1/0"
+                  }
+                ]
+              },
+              "value": [
+                {
+                  "idShort": "DisassemblyCapability",
+                  "displayName": [
+                    {
+                      "language": "en",
+                      "text": "Disassembly Capability"
+                    }
+                  ],
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Restores or renews the cutting-tool coating using the available coating equipment."
+                    }
+                  ],
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://remanet-project.eu/semantic/capability/recoating"
+                      }
+                    ]
+                  },
+                  "qualifiers": [
+                    {
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/CapabilityRoleQualifier/Offered/1/0"
+                          }
+                        ]
+                      },
+                      "type": "Offered",
+                      "valueType": "xs:boolean",
+                      "value": "true"
+                    }
+                  ],
+                  "modelType": "Capability"
+                },
+                {
+                  "idShort": "CapabilityComment",
+                  "displayName": [
+                    {
+                      "language": "en",
+                      "text": "Capability Comment"
+                    }
+                  ],
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Human-readable description of the offered capability."
+                    }
+                  ],
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://admin-shell.io/idta/CapabilityDescription/CapabilityComment/1/0"
+                      }
+                    ]
+                  },
+                  "value": [
+                    {
+                      "language": "en",
+                      "text": "Disassembly capability provided by COST_01_AssemblyHub in ES. Equipment: Assembly Disassembly Service; Operator Guiding Tool."
+                    }
+                  ],
+                  "modelType": "MultiLanguageProperty"
+                },
+                {
+                  "idShort": "PropertySet_Disassembly",
+                  "displayName": [
+                    {
+                      "language": "en",
+                      "text": "Disassembly Properties"
+                    }
+                  ],
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Properties describing the offered recoating capability."
+                    }
+                  ],
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://admin-shell.io/idta/CapabilityDescription/PropertySet/1/0"
+                      }
+                    ]
+                  },
+                  "value": [
+                    {
+                      "idShort": "PropertyContainer_CapabilityID",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "CapabilityID"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Stable identifier of this offered capability."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "CapabilityID",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "CapabilityID"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Stable identifier of this offered capability."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/CapabilityID"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "CAP-0-DISASSEMBLY",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Stable identifier of this offered capability."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_OperationType",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "OperationType"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Type of remanufacturing or support operation offered by the provider."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "OperationType",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "OperationType"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Type of remanufacturing or support operation offered by the provider."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/OperationType"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "Disassembly",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Type of remanufacturing or support operation offered by the provider."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_ProviderID",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "ProviderID"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Identifier of the provider in the source dataset."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "ProviderID",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "ProviderID"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Identifier of the provider in the source dataset."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/ProviderID"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:integer",
+                          "value": "0",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Identifier of the provider in the source dataset."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_ProviderCountry",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "ProviderCountry"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Country code of the provider."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "ProviderCountry",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "ProviderCountry"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Country code of the provider."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/ProviderCountry"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "ES",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Country code of the provider."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_ProviderLatitude",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "ProviderLatitude"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Latitude of the provider location."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "ProviderLatitude",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "ProviderLatitude"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Latitude of the provider location."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/ProviderLatitude"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:double",
+                          "value": "38.6913474083164",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Latitude of the provider location."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_ProviderLongitude",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "ProviderLongitude"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Longitude of the provider location."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "ProviderLongitude",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "ProviderLongitude"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Longitude of the provider location."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/ProviderLongitude"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:double",
+                          "value": "-3.181995111756282",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Longitude of the provider location."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_ProviderName",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "ProviderName"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Name of the technology provider in the source dataset."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "ProviderName",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "ProviderName"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Name of the technology provider in the source dataset."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/ProviderName"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "COST_01_AssemblyHub",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Name of the technology provider in the source dataset."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_EquipmentTypes",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "EquipmentTypes"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Semicolon-separated list of equipment available to realize the capability."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "EquipmentTypes",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "EquipmentTypes"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Semicolon-separated list of equipment available to realize the capability."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/EquipmentTypes"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "Assembly Disassembly Service; Operator Guiding Tool",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Semicolon-separated list of equipment available to realize the capability."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_EnergyPerOperation",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "EnergyPerOperation"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Energy value associated with one execution of the offered capability."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "EnergyPerOperation",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "EnergyPerOperation"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Energy value associated with one execution of the offered capability."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/EnergyPerOperation"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:double",
+                          "value": "59.3426",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Energy value associated with one execution of the offered capability. The source dataset does not specify the measurement unit."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_CostPerOperation",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "CostPerOperation"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Cost value associated with one execution of the offered capability."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "CostPerOperation",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "CostPerOperation"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Cost value associated with one execution of the offered capability."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/CostPerOperation"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:double",
+                          "value": "5.1572",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Cost value associated with one execution of the offered capability. The source dataset does not specify the currency."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_EquipmentSpecifications",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "EquipmentSpecifications"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Normalized source equipment dictionary, including supplied capability limits and parameters."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "EquipmentSpecifications",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "EquipmentSpecifications"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Normalized source equipment dictionary, including supplied capability limits and parameters."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/EquipmentSpecifications"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "{\"AssemblyDisassemblyService\":{\"AxisHeight\":\"112 mm\",\"RatedPower\":\"7.500 kW\",\"ShaftDiameter\":\"35 mm\"},\"OperatorGuidingTool\":{}}",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Normalized source equipment dictionary, including supplied capability limits and parameters."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    }
+                  ],
+                  "modelType": "SubmodelElementCollection"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "CapabilityContainer_Reassembly",
+              "displayName": [
+                {
+                  "language": "en",
+                  "text": "Reassembly"
+                }
+              ],
+              "description": [
+                {
+                  "language": "en",
+                  "text": "Offered recoating capability of tool provider 0."
+                }
+              ],
+              "semanticId": {
+                "type": "ExternalReference",
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "https://admin-shell.io/idta/CapabilityDescription/CapabilityContainer/1/0"
+                  }
+                ]
+              },
+              "value": [
+                {
+                  "idShort": "ReassemblyCapability",
+                  "displayName": [
+                    {
+                      "language": "en",
+                      "text": "Reassembly Capability"
+                    }
+                  ],
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Restores or renews the cutting-tool coating using the available coating equipment."
+                    }
+                  ],
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://remanet-project.eu/semantic/capability/recoating"
+                      }
+                    ]
+                  },
+                  "qualifiers": [
+                    {
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/CapabilityRoleQualifier/Offered/1/0"
+                          }
+                        ]
+                      },
+                      "type": "Offered",
+                      "valueType": "xs:boolean",
+                      "value": "true"
+                    }
+                  ],
+                  "modelType": "Capability"
+                },
+                {
+                  "idShort": "CapabilityComment",
+                  "displayName": [
+                    {
+                      "language": "en",
+                      "text": "Capability Comment"
+                    }
+                  ],
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Human-readable description of the offered capability."
+                    }
+                  ],
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://admin-shell.io/idta/CapabilityDescription/CapabilityComment/1/0"
+                      }
+                    ]
+                  },
+                  "value": [
+                    {
+                      "language": "en",
+                      "text": "Reassembly capability provided by COST_01_AssemblyHub in ES. Equipment: Assembly Disassembly Service; Operator Guiding Tool."
+                    }
+                  ],
+                  "modelType": "MultiLanguageProperty"
+                },
+                {
+                  "idShort": "PropertySet_Reassembly",
+                  "displayName": [
+                    {
+                      "language": "en",
+                      "text": "Reassembly Properties"
+                    }
+                  ],
+                  "description": [
+                    {
+                      "language": "en",
+                      "text": "Properties describing the offered recoating capability."
+                    }
+                  ],
+                  "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "https://admin-shell.io/idta/CapabilityDescription/PropertySet/1/0"
+                      }
+                    ]
+                  },
+                  "value": [
+                    {
+                      "idShort": "PropertyContainer_CapabilityID",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "CapabilityID"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Stable identifier of this offered capability."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "CapabilityID",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "CapabilityID"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Stable identifier of this offered capability."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/CapabilityID"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "CAP-0-REASSEMBLY",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Stable identifier of this offered capability."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_OperationType",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "OperationType"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Type of remanufacturing or support operation offered by the provider."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "OperationType",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "OperationType"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Type of remanufacturing or support operation offered by the provider."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/OperationType"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "Reassembly",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Type of remanufacturing or support operation offered by the provider."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_ProviderID",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "ProviderID"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Identifier of the provider in the source dataset."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "ProviderID",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "ProviderID"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Identifier of the provider in the source dataset."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/ProviderID"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:integer",
+                          "value": "0",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Identifier of the provider in the source dataset."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_ProviderCountry",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "ProviderCountry"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Country code of the provider."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "ProviderCountry",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "ProviderCountry"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Country code of the provider."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/ProviderCountry"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "ES",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Country code of the provider."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_ProviderLatitude",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "ProviderLatitude"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Latitude of the provider location."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "ProviderLatitude",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "ProviderLatitude"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Latitude of the provider location."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/ProviderLatitude"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:double",
+                          "value": "38.6913474083164",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Latitude of the provider location."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_ProviderLongitude",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "ProviderLongitude"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Longitude of the provider location."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "ProviderLongitude",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "ProviderLongitude"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Longitude of the provider location."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/ProviderLongitude"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:double",
+                          "value": "-3.181995111756282",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Longitude of the provider location."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_ProviderName",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "ProviderName"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Name of the technology provider in the source dataset."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "ProviderName",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "ProviderName"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Name of the technology provider in the source dataset."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/ProviderName"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "COST_01_AssemblyHub",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Name of the technology provider in the source dataset."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_EquipmentTypes",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "EquipmentTypes"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Semicolon-separated list of equipment available to realize the capability."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "EquipmentTypes",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "EquipmentTypes"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Semicolon-separated list of equipment available to realize the capability."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/EquipmentTypes"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "Assembly Disassembly Service; Operator Guiding Tool",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Semicolon-separated list of equipment available to realize the capability."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_EnergyPerOperation",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "EnergyPerOperation"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Energy value associated with one execution of the offered capability."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "EnergyPerOperation",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "EnergyPerOperation"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Energy value associated with one execution of the offered capability."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/EnergyPerOperation"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:double",
+                          "value": "72.2007",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Energy value associated with one execution of the offered capability. The source dataset does not specify the measurement unit."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_CostPerOperation",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "CostPerOperation"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Cost value associated with one execution of the offered capability."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "CostPerOperation",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "CostPerOperation"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Cost value associated with one execution of the offered capability."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/CostPerOperation"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:double",
+                          "value": "5.7173",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Cost value associated with one execution of the offered capability. The source dataset does not specify the currency."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    },
+                    {
+                      "idShort": "PropertyContainer_EquipmentSpecifications",
+                      "displayName": [
+                        {
+                          "language": "en",
+                          "text": "EquipmentSpecifications"
+                        }
+                      ],
+                      "description": [
+                        {
+                          "language": "en",
+                          "text": "Normalized source equipment dictionary, including supplied capability limits and parameters."
+                        }
+                      ],
+                      "semanticId": {
+                        "type": "ExternalReference",
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyContainer/1/0"
+                          }
+                        ]
+                      },
+                      "value": [
+                        {
+                          "idShort": "EquipmentSpecifications",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "EquipmentSpecifications"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Normalized source equipment dictionary, including supplied capability limits and parameters."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://remanet-project.eu/semantic/capability-property/EquipmentSpecifications"
+                              }
+                            ]
+                          },
+                          "valueType": "xs:string",
+                          "value": "{\"AssemblyDisassemblyService\":{\"AxisHeight\":\"112 mm\",\"RatedPower\":\"7.500 kW\",\"ShaftDiameter\":\"35 mm\"},\"OperatorGuidingTool\":{}}",
+                          "modelType": "Property"
+                        },
+                        {
+                          "idShort": "PropertyComment",
+                          "displayName": [
+                            {
+                              "language": "en",
+                              "text": "Property Comment"
+                            }
+                          ],
+                          "description": [
+                            {
+                              "language": "en",
+                              "text": "Human-readable information about the capability property."
+                            }
+                          ],
+                          "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "https://admin-shell.io/idta/CapabilityDescription/PropertyComment/1/0"
+                              }
+                            ]
+                          },
+                          "value": [
+                            {
+                              "language": "en",
+                              "text": "Normalized source equipment dictionary, including supplied capability limits and parameters."
+                            }
+                          ],
+                          "modelType": "MultiLanguageProperty"
+                        }
+                      ],
+                      "modelType": "SubmodelElementCollection"
+                    }
+                  ],
+                  "modelType": "SubmodelElementCollection"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        }
+      ],
+      "modelType": "Submodel"
+    }
+  ]
+}

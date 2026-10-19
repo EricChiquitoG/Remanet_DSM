@@ -47,6 +47,9 @@ func InitRedis() error {
 } */
 
 func SaveOptimizationResult(key string, result OptimizationResultForSequence, ttl time.Duration) error {
+	if RedisClient == nil {
+		return fmt.Errorf("redis client not initialized")
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -59,6 +62,9 @@ func SaveOptimizationResult(key string, result OptimizationResultForSequence, tt
 }
 
 func SaveTPResponse(key string, response techProviderResponse, ttl time.Duration) error {
+	if RedisClient == nil {
+		return fmt.Errorf("redis client not initialized")
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -71,6 +77,9 @@ func SaveTPResponse(key string, response techProviderResponse, ttl time.Duration
 }
 
 func GetOptimizationResult(key string) (*OptimizationResultForSequence, error) {
+	if RedisClient == nil {
+		return nil, fmt.Errorf("redis client not initialized")
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -91,6 +100,9 @@ func GetOptimizationResult(key string) (*OptimizationResultForSequence, error) {
 }
 
 func GetTPData(key string) (*techProviderResponse, error) {
+	if RedisClient == nil {
+		return nil, fmt.Errorf("redis client not initialized")
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 

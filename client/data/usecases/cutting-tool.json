@@ -1,0 +1,52 @@
+{
+  "id": "cutting-tool",
+  "displayName": "Cutting Tool",
+  "operations": [
+    "Coating",
+    "DimensionalTesting",
+    "Grinding",
+    "Inspection",
+    "Replace"
+  ],
+  "requirementFields": [
+    "ConnectionDiameter",
+    "TargetWorkpieceMaterial",
+    "TargetApplication",
+    "CurrentNumberOfResharpenings",
+    "NumberOfFlutes",
+    "CoreMaterial",
+    "CoatingMaterial",
+    "MinimumCuttingSpeed",
+    "MaximumCuttingSpeed",
+    "MinimumFeed",
+    "MaximumFeed",
+    "NominalOverallLength",
+    "NominalCuttingDiameter",
+    "NominalCuttingLength",
+    "CurrentOverallLength",
+    "CurrentCuttingDiameter",
+    "CurrentCuttingLength",
+    "ManufacturingEnergy",
+    "EmbodiedEnergy"
+  ],
+  "condition": {
+    "type": "overallWithDefects",
+    "overallField": "SelfAssessment",
+    "defectFields": ["Chipping", "FaceDamage", "FlankWear", "ThermalCrack", "CoreDamage"]
+  },
+  "existenceOnlyOperations": ["DimensionalTesting", "Grinding", "Inspection"],
+  "identity": {
+    "serial": "SerialNumber",
+    "ownerId": "IdOwner",
+    "currentHolderId": "CurrentHolderID",
+    "manufacturer": "ManufacturerName",
+    "designation": "ManufacturerProductDesignation"
+  },
+  "kbsProductType": "SolidTool",
+  "kbsAttributeAliases": {},
+  "dataset": {
+    "providersCsv": "client/data/NewData/cutting-tools/V2/Data/dataset_V3/tool_providers/tool_providers.csv",
+    "ownersCsv": "client/data/NewData/cutting-tools/V2/Data/dataset_V3/tool_owners/tool_owners.csv",
+    "productsDir": "client/data/NewData/cutting-tools/V2/Data/dataset_V3/tool_batches"
+  }
+}

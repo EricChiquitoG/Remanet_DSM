@@ -137,11 +137,12 @@ func augmentWithBoundaryNodes(prDAG map[string][]string) map[string][]string {
 	return augmented
 }
 
-func exportToJson(processes []string, CostMatrix map[string]map[string]float64, distM map[string]map[string]float64, prDAG map[string][]string) map[string]interface{} {
+func exportToJson(processes []string, CostMatrix map[string]map[string]float64, EnergyMatrix map[string]map[string]float64, distM map[string]map[string]float64, prDAG map[string][]string) map[string]interface{} {
 	return map[string]interface{}{
-		"processes":  prDAG,
-		"CostMatrix": CostMatrix,
-		"matrix":     distM,
+		"processes":    prDAG,
+		"CostMatrix":   CostMatrix,
+		"EnergyMatrix": EnergyMatrix,
+		"matrix":       distM,
 	}
 }
 func IdentifyActorClasses(processes []string, actorProcesses map[string][]string) []string {

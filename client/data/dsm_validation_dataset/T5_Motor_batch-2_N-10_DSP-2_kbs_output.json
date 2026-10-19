@@ -1,0 +1,854 @@
+{
+  "tenantId" : "connector-test",
+  "batchId" : "Motor_batch-2_N-10_DSP-2",
+  "batchCardinality" : 10,
+  "productType" : "Motor",
+  "inputProduct" : {
+    "efficencyClass" : "IE3",
+    "productClass" : "asyMotorType"
+  },
+  "feasibleStrategies" : [ {
+    "strategyName" : "reconditionStrategy",
+    "outputProduct" : {
+      "efficencyClass" : "-",
+      "productClass" : "asyMotorType"
+    },
+    "steps" : [ {
+      "currentStepName" : "bearing001-inspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "bearing001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "replaceStrategy",
+      "predecessors" : [ "motor001-disassembly" ],
+      "successors" : [ "bearing001-replace" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "ratedPowerMotor001",
+            "requirementValue" : 5.5,
+            "requirementUoM" : "kW"
+          }, {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "bearing001-replace",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "bearing001",
+      "beloningToMacroPhase" : "replacePhase",
+      "beloningToRoute" : "replaceStrategy",
+      "predecessors" : [ "bearing001-inspection" ],
+      "successors" : [ "motor001-reassembly" ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    }, {
+      "currentStepName" : "motor001-assemblyInspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "motor001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "reconditionStrategy",
+      "predecessors" : [ ],
+      "successors" : [ "motor001-disassembly" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "ratedPowerMotor001",
+            "requirementValue" : 5.5,
+            "requirementUoM" : "kW"
+          }, {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "motor001-disassembly",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "motor001",
+      "beloningToMacroPhase" : "disassemblyPhase",
+      "beloningToRoute" : "reconditionStrategy",
+      "predecessors" : [ "motor001-assemblyInspection" ],
+      "successors" : [ "rotor001-assemblyInspection", "bearing001-inspection", "stator001-assemblyInspection" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "ratedPowerMotor001",
+            "requirementValue" : 5.5,
+            "requirementUoM" : "kW"
+          }, {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "motor001-assemblyTesting",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "motor001",
+      "beloningToMacroPhase" : "testingPhase",
+      "beloningToRoute" : "reconditionStrategy",
+      "predecessors" : [ "motor001-reassembly" ],
+      "successors" : [ ],
+      "service" : {
+        "serviceChaining" : "(motorStandardTestingIEC60034)",
+        "services" : [ {
+          "serviceName" : "motorStandardTestingIEC60034",
+          "serviceRequirements" : [ ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "motor001-reassembly",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "motor001",
+      "beloningToMacroPhase" : "assemblyPhase",
+      "beloningToRoute" : "reconditionStrategy",
+      "predecessors" : [ "rotor001-assemblyTesting", "bearing001-replace", "stator001-assemblyTesting" ],
+      "successors" : [ "motor001-assemblyTesting" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "ratedPowerMotor001",
+            "requirementValue" : 5.5,
+            "requirementUoM" : "kW"
+          }, {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "rotor001-assemblyInspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "rotor001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "reconditionStrategy",
+      "predecessors" : [ "motor001-disassembly" ],
+      "successors" : [ "rotor001-disassembly" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "ratedPowerMotor001",
+            "requirementValue" : 5.5,
+            "requirementUoM" : "kW"
+          }, {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "rotor001-disassembly",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "rotor001",
+      "beloningToMacroPhase" : "disassemblyPhase",
+      "beloningToRoute" : "reconditionStrategy",
+      "predecessors" : [ "rotor001-assemblyInspection" ],
+      "successors" : [ "squirrelCage001-inspection", "rotorLamination001-inspection", "shaft001-inspection" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "ratedPowerMotor001",
+            "requirementValue" : 5.5,
+            "requirementUoM" : "kW"
+          }, {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "rotor001-assemblyTesting",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "rotor001",
+      "beloningToMacroPhase" : "testingPhase",
+      "beloningToRoute" : "reconditionStrategy",
+      "predecessors" : [ "rotor001-reassembly" ],
+      "successors" : [ "motor001-reassembly" ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    }, {
+      "currentStepName" : "rotor001-reassembly",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "rotor001",
+      "beloningToMacroPhase" : "assemblyPhase",
+      "beloningToRoute" : "reconditionStrategy",
+      "predecessors" : [ "squirrelCage001-reuse", "rotorLamination001-replace", "shaft001-replace" ],
+      "successors" : [ "rotor001-assemblyTesting" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "ratedPowerMotor001",
+            "requirementValue" : 5.5,
+            "requirementUoM" : "kW"
+          }, {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "rotorLamination001-inspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "rotorLamination001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "replaceStrategy",
+      "predecessors" : [ "rotor001-disassembly" ],
+      "successors" : [ "rotorLamination001-replace" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "ratedPowerMotor001",
+            "requirementValue" : 5.5,
+            "requirementUoM" : "kW"
+          }, {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "rotorLamination001-replace",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "rotorLamination001",
+      "beloningToMacroPhase" : "replacePhase",
+      "beloningToRoute" : "replaceStrategy",
+      "predecessors" : [ "rotorLamination001-inspection" ],
+      "successors" : [ "rotor001-reassembly" ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    }, {
+      "currentStepName" : "shaft001-inspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "shaft001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "replaceStrategy",
+      "predecessors" : [ "rotor001-disassembly" ],
+      "successors" : [ "shaft001-replace" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "ratedPowerMotor001",
+            "requirementValue" : 5.5,
+            "requirementUoM" : "kW"
+          }, {
+            "requirementName" : "shaftDiameterMotor001",
+            "requirementValue" : 30.0,
+            "requirementUoM" : "mm"
+          }, {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "shaft001-replace",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "shaft001",
+      "beloningToMacroPhase" : "replacePhase",
+      "beloningToRoute" : "replaceStrategy",
+      "predecessors" : [ "shaft001-inspection" ],
+      "successors" : [ "rotor001-reassembly" ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    }, {
+      "currentStepName" : "squirrelCage001-inspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "squirrelCage001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "reuseStrategy",
+      "predecessors" : [ "rotor001-disassembly" ],
+      "successors" : [ "squirrelCage001-reuse" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "ratedPowerMotor001",
+            "requirementValue" : 5.5,
+            "requirementUoM" : "kW"
+          }, {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "squirrelCage001-reuse",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "squirrelCage001",
+      "beloningToMacroPhase" : "reusePhase",
+      "beloningToRoute" : "reuseStrategy",
+      "predecessors" : [ "squirrelCage001-inspection" ],
+      "successors" : [ "rotor001-reassembly" ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    }, {
+      "currentStepName" : "stator001-assemblyInspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "stator001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "reuseStrategy",
+      "predecessors" : [ "motor001-disassembly" ],
+      "successors" : [ "stator001-disassembly" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "ratedPowerMotor001",
+            "requirementValue" : 5.5,
+            "requirementUoM" : "kW"
+          }, {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "stator001-disassembly",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "stator001",
+      "beloningToMacroPhase" : "disassemblyPhase",
+      "beloningToRoute" : "reuseStrategy",
+      "predecessors" : [ "stator001-assemblyInspection" ],
+      "successors" : [ "statorLamination001-inspection", "winding001-inspection" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "ratedPowerMotor001",
+            "requirementValue" : 5.5,
+            "requirementUoM" : "kW"
+          }, {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "stator001-assemblyTesting",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "stator001",
+      "beloningToMacroPhase" : "testingPhase",
+      "beloningToRoute" : "reuseStrategy",
+      "predecessors" : [ "stator001-reassembly" ],
+      "successors" : [ "motor001-reassembly" ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    }, {
+      "currentStepName" : "stator001-reassembly",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "stator001",
+      "beloningToMacroPhase" : "assemblyPhase",
+      "beloningToRoute" : "reuseStrategy",
+      "predecessors" : [ "statorLamination001-reuse", "winding001-reuse" ],
+      "successors" : [ "stator001-assemblyTesting" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "ratedPowerMotor001",
+            "requirementValue" : 5.5,
+            "requirementUoM" : "kW"
+          }, {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "statorLamination001-inspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "statorLamination001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "reuseStrategy",
+      "predecessors" : [ "stator001-disassembly" ],
+      "successors" : [ "statorLamination001-reuse" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "ratedPowerMotor001",
+            "requirementValue" : 5.5,
+            "requirementUoM" : "kW"
+          }, {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "statorLamination001-reuse",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "statorLamination001",
+      "beloningToMacroPhase" : "reusePhase",
+      "beloningToRoute" : "reuseStrategy",
+      "predecessors" : [ "statorLamination001-inspection" ],
+      "successors" : [ "stator001-reassembly" ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    }, {
+      "currentStepName" : "winding001-inspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "winding001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "reuseStrategy",
+      "predecessors" : [ "stator001-disassembly" ],
+      "successors" : [ "winding001-reuse" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "ratedPowerMotor001",
+            "requirementValue" : 5.5,
+            "requirementUoM" : "kW"
+          }, {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "winding001-reuse",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "winding001",
+      "beloningToMacroPhase" : "reusePhase",
+      "beloningToRoute" : "reuseStrategy",
+      "predecessors" : [ "winding001-inspection" ],
+      "successors" : [ "stator001-reassembly" ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    } ]
+  }, {
+    "strategyName" : "Upgrade",
+    "outputProduct" : {
+      "efficencyClass" : "-",
+      "productClass" : "reluctanceMotorType"
+    },
+    "steps" : [ {
+      "currentStepName" : "bearing_001-visualInspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "bearing_001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "motorUpgrade",
+      "predecessors" : [ "motor_001-disassembly" ],
+      "successors" : [ "bearing_001-replace" ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    }, {
+      "currentStepName" : "bearing_001-replace",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "bearing_001",
+      "beloningToMacroPhase" : "replacePhase",
+      "beloningToRoute" : "motorUpgrade",
+      "predecessors" : [ "bearing_001-visualInspection" ],
+      "successors" : [ "reluctanceMotorType-assemblyForManufacturingStep" ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    }, {
+      "currentStepName" : "motor_001-disassembly",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "motor_001",
+      "beloningToMacroPhase" : "disassemblyPhase",
+      "beloningToRoute" : "upgradeStrategy",
+      "predecessors" : [ "motor_001-assemblyInspection" ],
+      "successors" : [ "bearing_001-visualInspection", "stator_001-assemblyInspection", "reluctanceMotorRotorPart-design" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService AND operatorGuidingTool)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "ratedPowerMotor001",
+            "requirementValue" : 5.5,
+            "requirementUoM" : "kW"
+          }, {
+            "requirementName" : "shaftDiameterMotor001",
+            "requirementValue" : 30.0,
+            "requirementUoM" : "mm"
+          }, {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        }, {
+          "serviceName" : "operatorGuidingTool",
+          "serviceRequirements" : [ ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "motor_001-assemblyInspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "motor_001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "upgradeStrategy",
+      "predecessors" : [ ],
+      "successors" : [ "motor_001-disassembly" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService AND operatorGuidingTool)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "ratedPowerMotor001",
+            "requirementValue" : 5.5,
+            "requirementUoM" : "kW"
+          }, {
+            "requirementName" : "shaftDiameterMotor001",
+            "requirementValue" : 30.0,
+            "requirementUoM" : "mm"
+          }, {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        }, {
+          "serviceName" : "operatorGuidingTool",
+          "serviceRequirements" : [ ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "reluctanceMotorRotorLaminationType-punching",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "reluctanceMotorRotorLaminationType",
+      "beloningToMacroPhase" : "manufacturingPhase",
+      "beloningToRoute" : "manufactureStrategy",
+      "predecessors" : [ "reluctanceMotorRotorPart-design" ],
+      "successors" : [ "reluctanceMotorRotorPart-assemblyForManufacturingStep" ],
+      "service" : {
+        "serviceChaining" : "(punchingService AND asyMotorRedesignTool)",
+        "services" : [ {
+          "serviceName" : "punchingService",
+          "serviceRequirements" : [ {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        }, {
+          "serviceName" : "asyMotorRedesignTool",
+          "serviceRequirements" : [ ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "reluctanceMotorRotorPart-assemblyForManufacturingStep",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "reluctanceMotorRotorPart",
+      "beloningToMacroPhase" : "assemblyPhase",
+      "beloningToRoute" : "assembleStrategy",
+      "predecessors" : [ "reluctanceMotorRotorLaminationType-punching", "shaft_001-replace" ],
+      "successors" : [ "reluctanceMotorType-assemblyForManufacturingStep" ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    }, {
+      "currentStepName" : "reluctanceMotorRotorPart-design",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "reluctanceMotorRotorPart",
+      "beloningToMacroPhase" : "manufacturingPhase",
+      "beloningToRoute" : "replaceForRoute",
+      "predecessors" : [ "motor_001-disassembly" ],
+      "successors" : [ "rotor_001-visualInspection", "reluctanceMotorRotorLaminationType-punching" ],
+      "service" : {
+        "serviceChaining" : "asyMotorRedesignTool",
+        "services" : [ {
+          "serviceName" : "asyMotorRedesignTool",
+          "serviceRequirements" : [ {
+            "requirementName" : "ratedPowerMotor001",
+            "requirementValue" : 5.5,
+            "requirementUoM" : "kW"
+          }, {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "reluctanceMotorType-assemblyForManufacturingStep",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "reluctanceMotorType",
+      "beloningToMacroPhase" : "assemblyPhase",
+      "beloningToRoute" : "assembleStrategy",
+      "predecessors" : [ "reluctanceMotorRotorPart-assemblyForManufacturingStep", "bearing_001-replace", "stator_001-assemblyTesting" ],
+      "successors" : [ ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    }, {
+      "currentStepName" : "rotor_001-disassembly",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "rotor_001",
+      "beloningToMacroPhase" : "disassemblyPhase",
+      "beloningToRoute" : "replaceForRoute",
+      "predecessors" : [ "rotor_001-visualInspection" ],
+      "successors" : [ "shaft_001-visualInspection" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService AND operatorGuidingTool)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "ratedPowerMotor001",
+            "requirementValue" : 5.5,
+            "requirementUoM" : "kW"
+          }, {
+            "requirementName" : "shaftDiameterMotor001",
+            "requirementValue" : 30.0,
+            "requirementUoM" : "mm"
+          }, {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        }, {
+          "serviceName" : "operatorGuidingTool",
+          "serviceRequirements" : [ ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "rotor_001-visualInspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "rotor_001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "replaceForRoute",
+      "predecessors" : [ "reluctanceMotorRotorPart-design" ],
+      "successors" : [ "rotor_001-disassembly" ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    }, {
+      "currentStepName" : "shaft_001-visualInspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "shaft_001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "upgradeStrategy",
+      "predecessors" : [ "rotor_001-disassembly" ],
+      "successors" : [ "shaft_001-replace" ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    }, {
+      "currentStepName" : "shaft_001-replace",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "shaft_001",
+      "beloningToMacroPhase" : "replacePhase",
+      "beloningToRoute" : "upgradeStrategy",
+      "predecessors" : [ "shaft_001-visualInspection" ],
+      "successors" : [ "reluctanceMotorRotorPart-assemblyForManufacturingStep" ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    }, {
+      "currentStepName" : "statorLamination_001-visualInspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "statorLamination_001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "upgradeStrategy",
+      "predecessors" : [ "stator_001-disassembly" ],
+      "successors" : [ "statorLamination_001-reuse" ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    }, {
+      "currentStepName" : "statorLamination_001-reuse",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "statorLamination_001",
+      "beloningToMacroPhase" : "reusePhase",
+      "beloningToRoute" : "upgradeStrategy",
+      "predecessors" : [ "statorLamination_001-visualInspection" ],
+      "successors" : [ "stator_001-reassembly" ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    }, {
+      "currentStepName" : "stator_001-reassembly",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "stator_001",
+      "beloningToMacroPhase" : "assemblyPhase",
+      "beloningToRoute" : "motorUpgrade",
+      "predecessors" : [ "winding_001-reuse", "statorLamination_001-reuse" ],
+      "successors" : [ "stator_001-assemblyTesting" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService AND operatorGuidingTool)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "ratedPowerMotor001",
+            "requirementValue" : 5.5,
+            "requirementUoM" : "kW"
+          }, {
+            "requirementName" : "shaftDiameterMotor001",
+            "requirementValue" : 30.0,
+            "requirementUoM" : "mm"
+          }, {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        }, {
+          "serviceName" : "operatorGuidingTool",
+          "serviceRequirements" : [ ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "stator_001-disassembly",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "stator_001",
+      "beloningToMacroPhase" : "disassemblyPhase",
+      "beloningToRoute" : "motorUpgrade",
+      "predecessors" : [ "stator_001-assemblyInspection" ],
+      "successors" : [ "winding_001-visualInspection", "statorLamination_001-visualInspection" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService AND operatorGuidingTool)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "ratedPowerMotor001",
+            "requirementValue" : 5.5,
+            "requirementUoM" : "kW"
+          }, {
+            "requirementName" : "shaftDiameterMotor001",
+            "requirementValue" : 30.0,
+            "requirementUoM" : "mm"
+          }, {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        }, {
+          "serviceName" : "operatorGuidingTool",
+          "serviceRequirements" : [ ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "stator_001-assemblyInspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "stator_001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "motorUpgrade",
+      "predecessors" : [ "motor_001-disassembly" ],
+      "successors" : [ "stator_001-disassembly" ],
+      "service" : {
+        "serviceChaining" : "(assemblyDisassemblyService AND operatorGuidingTool)",
+        "services" : [ {
+          "serviceName" : "assemblyDisassemblyService",
+          "serviceRequirements" : [ {
+            "requirementName" : "ratedPowerMotor001",
+            "requirementValue" : 5.5,
+            "requirementUoM" : "kW"
+          }, {
+            "requirementName" : "shaftDiameterMotor001",
+            "requirementValue" : 30.0,
+            "requirementUoM" : "mm"
+          }, {
+            "requirementName" : "axisHeightMotor001",
+            "requirementValue" : 100.0,
+            "requirementUoM" : "mm"
+          } ]
+        }, {
+          "serviceName" : "operatorGuidingTool",
+          "serviceRequirements" : [ ]
+        } ]
+      }
+    }, {
+      "currentStepName" : "stator_001-assemblyTesting",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "stator_001",
+      "beloningToMacroPhase" : "testingPhase",
+      "beloningToRoute" : "motorUpgrade",
+      "predecessors" : [ "stator_001-reassembly" ],
+      "successors" : [ "reluctanceMotorType-assemblyForManufacturingStep" ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    }, {
+      "currentStepName" : "winding_001-visualInspection",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "winding_001",
+      "beloningToMacroPhase" : "inspectionPhase",
+      "beloningToRoute" : "upgradeStrategy",
+      "predecessors" : [ "stator_001-disassembly" ],
+      "successors" : [ "winding_001-reuse" ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    }, {
+      "currentStepName" : "winding_001-reuse",
+      "currentStepType" : "principalStep",
+      "appliedToArtifact" : "winding_001",
+      "beloningToMacroPhase" : "reusePhase",
+      "beloningToRoute" : "upgradeStrategy",
+      "predecessors" : [ "winding_001-visualInspection" ],
+      "successors" : [ "stator_001-reassembly" ],
+      "service" : {
+        "serviceChaining" : "",
+        "services" : [ ]
+      }
+    } ]
+  } ]
+}

@@ -1,0 +1,75 @@
+{
+  "id": "electric-motor",
+  "displayName": "Electric Motor",
+  "operations": [
+    "AssemblyTesting",
+    "Reassembly",
+    "Reuse",
+    "AssemblyForManufacturingStep",
+    "Grinding",
+    "Replace",
+    "Design",
+    "DimensionalTesting",
+    "Turning",
+    "Punching",
+    "Inspection",
+    "AssemblyInspection",
+    "Disassembly"
+  ],
+  "requirementFields": [
+    "phaseN",
+    "RatedPower",
+    "EfficiencyClass",
+    "AxisHeight",
+    "StatorMassFraction",
+    "StatorLaminationMassFraction",
+    "StatorLaminationMaterial",
+    "WindingMassFraction",
+    "WindingMaterial",
+    "RotorMassFraction",
+    "RotorLaminationMassFraction",
+    "RotorLaminationMaterial",
+    "RotorLaminationStackLength",
+    "SquirrelCageMassFraction",
+    "SquirrelCageMaterial",
+    "ShaftMassFraction",
+    "ShaftMaterial",
+    "ShaftLength",
+    "ShaftDiameter",
+    "ShaftToleranceClass",
+    "BearingMassFraction",
+    "BearingMaterial",
+    "ManufacturingEnergy",
+    "EmbodiedEnergy"
+  ],
+  "condition": {
+    "type": "perComponent",
+    "components": ["Bearing", "Winding", "StatorLamination", "SquirrelCage", "Shaft", "RotorLamination"]
+  },
+  "existenceOnlyOperations": ["AssemblyTesting", "Reuse", "Replace"],
+  "attributeRules": {
+    "AxisHeight": {"type": "numeric_min"},
+    "RatedPower": {"type": "numeric_min"},
+    "ShaftLength": {"type": "numeric_min"},
+    "ShaftDiameter": {"type": "numeric_min"},
+    "ShaftToleranceClass": {"type": "ordinal", "order": ["bad", "mid", "good"]}
+  },
+  "identity": {
+    "serial": "SerialNumber",
+    "ownerId": "IdOwner",
+    "currentHolderId": "CurrentHolderID",
+    "manufacturer": "ManufacturerName",
+    "designation": "ManufacturerProductDesignation"
+  },
+  "kbsProductType": "Motor",
+  "kbsAttributeAliases": {
+    "axisheightmotor": "AxisHeight",
+    "ratedpowermotor": "RatedPower",
+    "shaftdiametermotor": "ShaftDiameter"
+  },
+  "dataset": {
+    "providersCsv": "client/data/NewData/electric-motors/V2/data/dataset_V3/motor_providers/motor_providers.csv",
+    "ownersCsv": "client/data/NewData/electric-motors/V2/data/dataset_V3/motor_owners/motor_owners.csv",
+    "productsDir": "client/data/NewData/electric-motors/V2/data/dataset_V3/motor_batches"
+  }
+}

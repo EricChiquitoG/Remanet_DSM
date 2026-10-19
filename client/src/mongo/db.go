@@ -69,15 +69,20 @@ func InitMongoDB() error {
 	ProductCollection = Database.Collection(ProductCollectionName)
 	HistoryCollection = Database.Collection(HistoryCollectionName)
 	AASActorCollection = Database.Collection(AASActorCollectionName)
+	initCatalogCollections()
 
 	// Create indexes
 	if err := createIndexes(ctx); err != nil {
 		return fmt.Errorf("failed to create indexes: %v", err)
 	}
+	if err := createCatalogIndexes(ctx); err != nil {
+		return fmt.Errorf("failed to create catalog indexes: %v", err)
+	}
 
 	log.Printf("✓ Connected to MongoDB: %s", mongoURL)
 	log.Printf("✓ Database: %s", databaseName())
 	log.Printf("✓ Collections: %s, %s, %s, %s, %s", CollectionName, ExecutionCollectionName, ProductCollectionName, HistoryCollectionName, AASActorCollectionName)
+	log.Printf("✓ Catalog collections: %s, %s, %s, %s, %s", UseCaseCollectionName, ProviderCollectionName, CapabilityCollectionName, ProductCatalogCollectionName, OwnerCollectionName)
 	log.Printf("✓ Indexes created")
 
 	return nil
